@@ -1,0 +1,22 @@
+language: scala
+scala:
+- 2.11.8
+jdk:
+- oraclejdk8
+branches:
+  only:
+  - master
+script:
+- sbt clean coverage test && sbt coverageReport && sbt coverageAggregate
+after_success:
+- sbt codacyCoverage
+sudo: false
+cache:
+  directories:
+  - $HOME/.ivy2/cache
+before_cache:
+- rm -rf $HOME/.ivy2/cache/scala_*/sbt_*/com.github.gseitz
+- find $HOME/.ivy2/cache -name "ivydata-*.properties" | xargs rm
+notifications:
+  email:
+  - fgwei521@gmail.com
