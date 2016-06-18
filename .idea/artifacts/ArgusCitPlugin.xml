@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact name="ArgusCitPlugin">
+    <output-path>$PROJECT_DIR$/out/artifacts/ArgusCitPlugin</output-path>
+    <root id="root" />
+  </artifact>
+</component>

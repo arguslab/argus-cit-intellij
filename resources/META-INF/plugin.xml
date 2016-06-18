@@ -24,7 +24,7 @@
   -->
 
   <extensions defaultExtensionNs="com.intellij">
-    <!-- Add your extensions here -->
+    <fileTypeFactory implementation="org.argus.cit.intellij.core.JawaFileTypeFactory"/>
   </extensions>
 
   <actions>

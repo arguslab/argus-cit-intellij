@@ -1,6 +1,8 @@
-
-
 lazy val `argus-cit-intellij` = project in file(".")
+
+unmanagedSourceDirectories in Compile += baseDirectory.value / "src"
+unmanagedSourceDirectories in Test += baseDirectory.value / "test"
+unmanagedResourceDirectories in Compile += baseDirectory.value / "resources"
 
 name := "argus-cit-intellij"
 organization := "com.github.arguslab"
