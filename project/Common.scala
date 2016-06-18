@@ -9,9 +9,24 @@
  */
 
 import sbt.Keys._
-import sbt.{Path, PathFinder, _}
+import sbt._
+
+import scala.language.{implicitConversions, postfixOps}
 
 object Common {
+  def newProject(projectName: String, base: File): Project =
+    Project(projectName, base).settings(
+      name := projectName,
+      organization := "com.github.arguslab",
+      scalaVersion := CitVersions.scalaVersion,
+      unmanagedSourceDirectories in Compile += baseDirectory.value / "src",
+      unmanagedSourceDirectories in Test += baseDirectory.value / "test",
+      unmanagedResourceDirectories in Compile += baseDirectory.value / "resources"
+    )
+
+  def newProject(projectName: String): Project =
+    newProject(projectName, file(projectName))
+
   def unmanagedJarsFrom(sdkDirectory: File, subdirectories: String*): Classpath = {
     val sdkPathFinder = subdirectories.foldLeft(PathFinder.empty) { (finder, dir) =>
       finder +++ (sdkDirectory / dir)

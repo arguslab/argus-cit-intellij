@@ -1,13 +1,17 @@
 logLevel := Level.Warn
 
-addSbtPlugin("me.lessis" % "bintray-sbt" % "0.3.0")
-
-addSbtPlugin("com.jsuereth" % "sbt-pgp" % "1.0.0")
-
-addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.3")
-
 resolvers += "Typesafe Repository" at "https://repo.typesafe.com/typesafe/releases/"
 
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.3.5")
 
 addSbtPlugin("com.codacy" % "sbt-codacy-coverage" % "1.3.0")
+
+resolvers += Resolver.url("jetbrains-bintray",
+  url("http://dl.bintray.com/jetbrains/sbt-plugins/"))(Resolver.ivyStylePatterns)
+
+addSbtPlugin("org.jetbrains" % "sbt-ide-settings" % "0.1.1")
+
+resolvers += Resolver.url("dancingrobot84-bintray",
+  url("http://dl.bintray.com/dancingrobot84/sbt-plugins/"))(Resolver.ivyStylePatterns)
+
+addSbtPlugin("com.dancingrobot84" % "sbt-idea-plugin" % "0.3.1")
