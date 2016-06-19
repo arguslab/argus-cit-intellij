@@ -8,17 +8,14 @@
  * Detailed contributors are listed in the CONTRIBUTOR.md
  */
 
-package org.argus.cit.intellij.core;
+package org.argus.cit.intellij.core.lang.lexer
 
-import com.intellij.lang.Language;
+import com.intellij.psi.tree.IElementType
+import org.argus.cit.intellij.core.lang.JawaFileType
 
 /**
- * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
- */
-public class JawaLanguage extends Language {
-    public static final JawaLanguage INSTANCE = new JawaLanguage();
-
-    private JawaLanguage() {
-        super("Jawa");
-    }
+  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
+  */
+case class JawaElementType(debugName: String) extends IElementType(debugName, JawaFileType.getLanguage) {
+  override def toString: String = debugName
 }
