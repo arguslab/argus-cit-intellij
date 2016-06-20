@@ -10,6 +10,7 @@ public interface JawaTypes {
 
   IElementType ACCESS_EXPRESSION = new JawaElementType("ACCESS_EXPRESSION");
   IElementType ANNOTATION = new JawaElementType("ANNOTATION");
+  IElementType ANNOTATION_KEY = new JawaElementType("ANNOTATION_KEY");
   IElementType ANNOTATION_VALUE = new JawaElementType("ANNOTATION_VALUE");
   IElementType ARG_CLAUSE = new JawaElementType("ARG_CLAUSE");
   IElementType ASSIGNMENT_STATEMENT = new JawaElementType("ASSIGNMENT_STATEMENT");
@@ -76,6 +77,8 @@ public interface JawaTypes {
   IElementType VAR_DEF_SYMBOL = new JawaElementType("VAR_DEF_SYMBOL");
   IElementType VAR_SYMBOL = new JawaElementType("VAR_SYMBOL");
 
+  IElementType ADD = new JawaTokenType("+");
+  IElementType AND = new JawaTokenType("^&");
   IElementType APOSTROPHE_ID = new JawaTokenType("APOSTROPHE_ID");
   IElementType ARROW = new JawaTokenType("=>");
   IElementType ASSIGN_OP = new JawaTokenType(":=");
@@ -83,13 +86,19 @@ public interface JawaTypes {
   IElementType BAR = new JawaTokenType("|");
   IElementType CALL = new JawaTokenType("call");
   IElementType CATCH = new JawaTokenType("catch");
+  IElementType CLASS_DESCRIPTOR_KEY = new JawaTokenType("@classDescriptor");
   IElementType CLASS_OR_INTERFACE = new JawaTokenType("record");
   IElementType COMMA = new JawaTokenType(",");
   IElementType CONST_CLASS = new JawaTokenType("constclass");
+  IElementType DCMPG = new JawaTokenType("dcmpg");
+  IElementType DCMPL = new JawaTokenType("dcmpl");
+  IElementType DIV = new JawaTokenType("/");
   IElementType DOT = new JawaTokenType(".");
   IElementType ELSE = new JawaTokenType("else");
   IElementType EXCEPTION = new JawaTokenType("Exception");
   IElementType EXTENDS_AND_IMPLEMENTS = new JawaTokenType("extends");
+  IElementType FCMPG = new JawaTokenType("fcmpg");
+  IElementType FCMPL = new JawaTokenType("fcmpl");
   IElementType GOTO = new JawaTokenType("goto");
   IElementType HAT = new JawaTokenType("^");
   IElementType ID = new JawaTokenType("id");
@@ -97,28 +106,40 @@ public interface JawaTypes {
   IElementType INSTANCEOF = new JawaTokenType("instanceof");
   IElementType LBRACE = new JawaTokenType("{");
   IElementType LBRACKET = new JawaTokenType("[");
+  IElementType LCMP = new JawaTokenType("lcmp");
   IElementType LENGTH = new JawaTokenType("length");
   IElementType LPAREN = new JawaTokenType("(");
   IElementType METHOD = new JawaTokenType("procedure");
   IElementType MONITOR_ENTER = new JawaTokenType("monitorenter");
   IElementType MONITOR_EXIT = new JawaTokenType("monitorexit");
+  IElementType MUL = new JawaTokenType("*");
   IElementType NEW = new JawaTokenType("new");
   IElementType NULL_LITERAL = new JawaTokenType("null");
   IElementType NUMBER = new JawaTokenType("number");
+  IElementType OR = new JawaTokenType("^|");
+  IElementType OWNER_KEY = new JawaTokenType("@owner");
   IElementType POUND = new JawaTokenType("#");
   IElementType RANGE = new JawaTokenType("..");
   IElementType RBRACE = new JawaTokenType("}");
   IElementType RBRACKET = new JawaTokenType("]");
+  IElementType REM = new JawaTokenType("%%");
   IElementType RETURN = new JawaTokenType("return");
   IElementType RPAREN = new JawaTokenType(")");
   IElementType SEMI = new JawaTokenType(";");
+  IElementType SHL = new JawaTokenType("^<");
+  IElementType SHR = new JawaTokenType("^>");
+  IElementType SIGNATURE_KEY = new JawaTokenType("@signature");
   IElementType STATIC_FIELD = new JawaTokenType("global");
   IElementType STATIC_ID = new JawaTokenType("STATIC_ID");
   IElementType STATIC_PREFIX = new JawaTokenType("@@");
   IElementType STRING_LITERAL = new JawaTokenType("STRING_LITERAL");
+  IElementType SUB = new JawaTokenType("-");
   IElementType SWITCH = new JawaTokenType("switch");
   IElementType THEN = new JawaTokenType("then");
   IElementType THROW = new JawaTokenType("throw");
+  IElementType TYPE_KEY = new JawaTokenType("@type");
+  IElementType USHR = new JawaTokenType("^>>");
+  IElementType XOR = new JawaTokenType("^~");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {
@@ -128,6 +149,9 @@ public interface JawaTypes {
       }
       else if (type == ANNOTATION) {
         return new JawaAnnotationImpl(node);
+      }
+      else if (type == ANNOTATION_KEY) {
+        return new JawaAnnotationKeyImpl(node);
       }
       else if (type == ANNOTATION_VALUE) {
         return new JawaAnnotationValueImpl(node);

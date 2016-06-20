@@ -53,8 +53,29 @@
     INSTANCEOF='instanceof'
     NULL_LITERAL='null'
     CATCH='catch'
+    OWNER_KEY='@owner'
+    TYPE_KEY='@type'
+    CLASS_DESCRIPTOR_KEY='@classDescriptor'
+    SIGNATURE_KEY='@signature'
 
-    WS='regexp:\s+'
+    fcmpl='fcmpl'
+    fcmpg='fcmpg'
+    dcmpl='dcmpl'
+    dcmpg='dcmpg'
+    lcmp='lcmp'
+
+    ADD='+'
+    SUB='-'
+    MUL='*'
+    DIV='/'
+    REM='%%'
+    AND='^&'
+    OR='^|'
+    XOR='^~'
+    SHL='^<'
+    SHR='^>'
+    USHR='^>>'
+
     ID='regexp:(\p{Alpha}([\w]|[$])*)'
     APOSTROPHE_ID="regexp:(`[^`]+`)"
     STATIC_ID="regexp:(`@@([^`]|[^@])+`)"
@@ -70,7 +91,8 @@ ClassOrInterfaceDeclaration ::= 'record' TypeDefSymbol Annotation* ExtendsAndImp
 
 TypeAnnotation ::= ('@owner'|'@type'|'@classDescriptor') TypeExpression
 SignatureAnnotation ::= '@signature' APOSTROPHE_ID
-Annotation ::= '@' id AnnotationValue?
+Annotation ::= ANNOTATION_KEY AnnotationValue?
+ANNOTATION_KEY ::= '@' ID
 AnnotationValue ::= ID
 
 ExtendsAndImplementsClauses ::= 'extends' ExtendAndImplement (',' ExtendAndImplement)* {pin=2}

@@ -8,13 +8,17 @@
  * Detailed contributors are listed in the CONTRIBUTOR.md
  */
 
-package org.argus.cit.intellij.core.lang.lexer
+package org.argus.cit.intellij.core.lang.lexer;
 
-import com.intellij.lexer.FlexAdapter
+import com.intellij.lexer.FlexAdapter;
+
+import java.io.Reader;
 
 /**
   * Created by fgwei on 6/20/16.
   */
-class JawaLexerAdapter extends FlexAdapter(null) {
-
+public class JawaLexerAdapter extends FlexAdapter {
+    public JawaLexerAdapter() {
+        super(new _JawaLexer((Reader) null));
+    }
 }

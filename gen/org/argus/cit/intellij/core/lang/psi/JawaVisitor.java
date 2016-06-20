@@ -7,6 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public class JawaVisitor extends PsiElementVisitor {
 
+  public void visitAnnotationKey(@NotNull JawaAnnotationKey o) {
+    visitPsiElement(o);
+  }
+
   public void visitAccessExpression(@NotNull JawaAccessExpression o) {
     visitPsiElement(o);
   }

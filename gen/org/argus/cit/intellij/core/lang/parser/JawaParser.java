@@ -23,7 +23,10 @@ public class JawaParser implements PsiParser, LightPsiParser {
     boolean r;
     b = adapt_builder_(t, b, this, null);
     Marker m = enter_section_(b, 0, _COLLAPSE_, null);
-    if (t == ACCESS_EXPRESSION) {
+    if (t == ANNOTATION_KEY) {
+      r = ANNOTATION_KEY(b, 0);
+    }
+    else if (t == ACCESS_EXPRESSION) {
       r = AccessExpression(b, 0);
     }
     else if (t == ANNOTATION) {
@@ -235,6 +238,19 @@ public class JawaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // '@' ID
+  public static boolean ANNOTATION_KEY(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ANNOTATION_KEY")) return false;
+    if (!nextTokenIs(b, AT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, AT);
+    r = r && consumeToken(b, ID);
+    exit_section_(b, m, ANNOTATION_KEY, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // VarSymbol '.' FieldNameSymbol
   public static boolean AccessExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AccessExpression")) return false;
@@ -249,22 +265,21 @@ public class JawaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // '@' id AnnotationValue?
+  // ANNOTATION_KEY AnnotationValue?
   public static boolean Annotation(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Annotation")) return false;
     if (!nextTokenIs(b, AT)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, AT);
-    r = r && consumeToken(b, ID);
-    r = r && Annotation_2(b, l + 1);
+    r = ANNOTATION_KEY(b, l + 1);
+    r = r && Annotation_1(b, l + 1);
     exit_section_(b, m, ANNOTATION, r);
     return r;
   }
 
   // AnnotationValue?
-  private static boolean Annotation_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "Annotation_2")) return false;
+  private static boolean Annotation_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Annotation_1")) return false;
     AnnotationValue(b, l + 1);
     return true;
   }
@@ -458,11 +473,11 @@ public class JawaParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "CMP")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, CMP, "<cmp>");
-    r = consumeToken(b, "fcmpl");
-    if (!r) r = consumeToken(b, "fcmpg");
-    if (!r) r = consumeToken(b, "dcmpl");
-    if (!r) r = consumeToken(b, "dcmpg");
-    if (!r) r = consumeToken(b, "lcmp");
+    r = consumeToken(b, FCMPL);
+    if (!r) r = consumeToken(b, FCMPG);
+    if (!r) r = consumeToken(b, DCMPL);
+    if (!r) r = consumeToken(b, DCMPG);
+    if (!r) r = consumeToken(b, LCMP);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -1345,11 +1360,12 @@ public class JawaParser implements PsiParser, LightPsiParser {
   // '@signature' APOSTROPHE_ID
   public static boolean SignatureAnnotation(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "SignatureAnnotation")) return false;
+    if (!nextTokenIs(b, SIGNATURE_KEY)) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, SIGNATURE_ANNOTATION, "<signature annotation>");
-    r = consumeToken(b, "@signature");
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SIGNATURE_KEY);
     r = r && consumeToken(b, APOSTROPHE_ID);
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, m, SIGNATURE_ANNOTATION, r);
     return r;
   }
 
@@ -1622,9 +1638,9 @@ public class JawaParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "TypeAnnotation_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, "@owner");
-    if (!r) r = consumeToken(b, "@type");
-    if (!r) r = consumeToken(b, "@classDescriptor");
+    r = consumeToken(b, OWNER_KEY);
+    if (!r) r = consumeToken(b, TYPE_KEY);
+    if (!r) r = consumeToken(b, CLASS_DESCRIPTOR_KEY);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -1759,17 +1775,17 @@ public class JawaParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "binary_op")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, "+");
-    if (!r) r = consumeToken(b, "-");
-    if (!r) r = consumeToken(b, "*");
-    if (!r) r = consumeToken(b, "/");
-    if (!r) r = consumeToken(b, "%%");
-    if (!r) r = consumeToken(b, "^&");
-    if (!r) r = consumeToken(b, "^|");
-    if (!r) r = consumeToken(b, "^~");
-    if (!r) r = consumeToken(b, "^<");
-    if (!r) r = consumeToken(b, "^>");
-    if (!r) r = consumeToken(b, "^>>");
+    r = consumeToken(b, ADD);
+    if (!r) r = consumeToken(b, SUB);
+    if (!r) r = consumeToken(b, MUL);
+    if (!r) r = consumeToken(b, DIV);
+    if (!r) r = consumeToken(b, REM);
+    if (!r) r = consumeToken(b, AND);
+    if (!r) r = consumeToken(b, OR);
+    if (!r) r = consumeToken(b, XOR);
+    if (!r) r = consumeToken(b, SHL);
+    if (!r) r = consumeToken(b, SHR);
+    if (!r) r = consumeToken(b, USHR);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -1780,7 +1796,7 @@ public class JawaParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "unary_op")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, "-");
+    r = consumeToken(b, SUB);
     if (!r) r = consumeToken(b, "~");
     exit_section_(b, m, null, r);
     return r;
