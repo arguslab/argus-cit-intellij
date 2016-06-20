@@ -8,11 +8,14 @@
  * Detailed contributors are listed in the CONTRIBUTOR.md
  */
 
-package org.argus.cit.intellij.core.lang
+package org.argus.cit.intellij.core.lang.psi
 
-import com.intellij.lang.Language
+import com.intellij.psi.tree.IElementType
+import org.argus.cit.intellij.core.lang.JawaFileType
 
 /**
- * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
- */
-object JawaLanguage extends Language("Jawa") {}
+  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
+  */
+case class JawaTokenType(debugName: String) extends IElementType(debugName, JawaFileType.JAWA_LANGUAGE) {
+  override def toString: String = debugName
+}

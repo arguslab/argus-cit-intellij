@@ -11,20 +11,21 @@
 package org.argus.cit.intellij.core.lang.parser
 
 import com.intellij.lang.ParserDefinition.SpaceRequirements
-import com.intellij.lang.{ASTNode, ParserDefinition, PsiParser}
+import com.intellij.lang.{ASTNode, Language, ParserDefinition, PsiParser}
 import com.intellij.lexer.Lexer
 import com.intellij.openapi.project.Project
 import com.intellij.psi.tree.{IFileElementType, TokenSet}
 import com.intellij.psi.{FileViewProvider, PsiElement, PsiFile}
 import org.argus.cit.intellij.core.lang.JawaLanguage
-import org.argus.cit.intellij.core.lang.lexer.{JawaLexer, JawaTokenTypes}
+import org.argus.cit.intellij.core.lang.lexer.{JawaLexerAdapter, JawaTokenTypes}
+import org.argus.cit.intellij.core.lang.psi.JawaTypes
 import org.argus.cit.intellij.core.lang.psi.impl.JawaFileImpl
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
 class JawaParserDefinition extends ParserDefinition {
-  import JawaParserDefinition._
+  val FILE: IFileElementType = new IFileElementType(Language.findInstance[JawaLanguage](classOf[JawaLanguage]))
 
   override def getWhitespaceTokens: TokenSet = JawaTokenTypes.WHITE_SPACES
 
@@ -34,17 +35,13 @@ class JawaParserDefinition extends ParserDefinition {
 
   override def getCommentTokens: TokenSet = JawaTokenTypes.COMMENTS
 
-  override def createElement(astNode: ASTNode): PsiElement = ???
+  override def createElement(astNode: ASTNode): PsiElement = JawaTypes.Factory.createElement(astNode)
 
   override def getStringLiteralElements: TokenSet = JawaTokenTypes.STRINGS
 
-  override def createLexer(project: Project): Lexer = new JawaLexer
+  override def createLexer(project: Project): Lexer = new JawaLexerAdapter
 
   override def getFileNodeType: IFileElementType = FILE
 
-  override def createParser(project: Project): PsiParser = ???
-}
-
-object JawaParserDefinition {
-  val FILE: IFileElementType = new IFileElementType(JawaLanguage)
+  override def createParser(project: Project): PsiParser = new JawaParser
 }

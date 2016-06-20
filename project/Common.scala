@@ -18,7 +18,8 @@ object Common {
     Project(projectName, base).settings(
       name := projectName,
       organization := "com.github.arguslab",
-      scalaVersion := CitVersions.scalaVersion
+      scalaVersion := CitVersions.scalaVersion,
+      unmanagedSourceDirectories in Compile += baseDirectory.value / "gen"
     )
 
   def newProject(projectName: String): Project =

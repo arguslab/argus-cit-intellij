@@ -10,12 +10,11 @@
 
 package org.argus.cit.intellij.core.lang.lexer
 
-import com.intellij.psi.tree.IElementType
-import org.argus.cit.intellij.core.lang.JawaFileType
+import com.intellij.lexer.FlexAdapter
 
 /**
-  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
+  * Created by fgwei on 6/20/16.
   */
-case class JawaElementType(debugName: String) extends IElementType(debugName, JawaFileType.getLanguage) {
-  override def toString: String = debugName
+class JawaLexerAdapter extends FlexAdapter(null) {
+
 }

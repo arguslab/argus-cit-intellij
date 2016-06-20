@@ -8,22 +8,17 @@
  * Detailed contributors are listed in the CONTRIBUTOR.md
  */
 
-package org.argus.cit.intellij.core.lang
+package org.argus.cit.intellij.core.lang;
 
-import javax.swing.Icon
-
-import com.intellij.openapi.fileTypes.LanguageFileType
-import org.argus.cit.intellij.core.icons.Icons
+import com.intellij.openapi.fileTypes.FileTypeConsumer;
+import com.intellij.openapi.fileTypes.FileTypeFactory;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
  */
-object JawaFileType extends LanguageFileType(JawaLanguage) {
-    override def getDefaultExtension: String = "pilar"
-
-    override def getName: String = "Jawa"
-
-    override def getIcon: Icon = Icons.FILE
-
-    override def getDescription: String = "Jawa files"
+public class JawaFileTypeFactory extends FileTypeFactory {
+    public void createFileTypes(final @NotNull FileTypeConsumer consumer) {
+        consumer.consume(JawaFileType.INSTANCE, JawaFileType.DEFAULT_EXTENSION);
+    }
 }

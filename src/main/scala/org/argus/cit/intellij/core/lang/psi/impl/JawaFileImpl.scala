@@ -18,7 +18,8 @@ import org.argus.cit.intellij.core.lang.{JawaFileType, JawaLanguage}
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
-class JawaFileImpl(viewProvider: FileViewProvider) extends PsiFileBase(viewProvider, JawaLanguage) {
-  override def getFileType: FileType = JawaFileType
+class JawaFileImpl(viewProvider: FileViewProvider) extends PsiFileBase(viewProvider, JawaLanguage.Instance) {
+  override def getFileType: FileType = JawaFileType.INSTANCE
   override def toString: String = "Jawa File"
+  override def getIcon(flags: Int) = super.getIcon(flags)
 }

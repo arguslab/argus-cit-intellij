@@ -8,15 +8,17 @@
  * Detailed contributors are listed in the CONTRIBUTOR.md
  */
 
-package org.argus.cit.intellij.core.lang
+package org.argus.cit.intellij.core.lang;
 
-import com.intellij.openapi.fileTypes.{FileTypeConsumer, FileTypeFactory}
+import com.intellij.lang.Language;
 
 /**
  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
  */
-class JawaFileTypeFactory extends FileTypeFactory {
-    def createFileTypes(fileTypeConsumer: FileTypeConsumer) {
-        fileTypeConsumer.consume(JawaFileType, "pilar")
+public class JawaLanguage extends Language {
+    public static Language Instance = new JawaLanguage();
+
+    private JawaLanguage() {
+        super("Jawa");
     }
 }

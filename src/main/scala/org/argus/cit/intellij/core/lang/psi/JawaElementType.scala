@@ -8,14 +8,14 @@
  * Detailed contributors are listed in the CONTRIBUTOR.md
  */
 
-package org.argus.cit.intellij.core.lang.parser
+package org.argus.cit.intellij.core.lang.psi
 
-import com.intellij.lang.{ASTNode, PsiBuilder, PsiParser}
 import com.intellij.psi.tree.IElementType
+import org.argus.cit.intellij.core.lang.JawaFileType
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
-class JawaParser extends PsiParser {
-  override def parse(iElementType: IElementType, psiBuilder: PsiBuilder): ASTNode = ???
+case class JawaElementType(debugName: String) extends IElementType(debugName, JawaFileType.JAWA_LANGUAGE) {
+  override def toString: String = debugName
 }
