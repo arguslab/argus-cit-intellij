@@ -82,7 +82,7 @@ object DefaultHighlighter {
   val LOCAL_VARIABLES = createKey(LOCAL_VARIABLES_ID, JavaHighlightInfoTypes.LOCAL_VARIABLE.getAttributesKey)
   val INSTANCE_FIELD = createKey(INSTANCE_FIELD_ID, JavaHighlightInfoTypes.INSTANCE_FIELD.getAttributesKey)
   val STATIC_FIELD = createKey(STATIC_FIELD_ID, JavaHighlightInfoTypes.STATIC_FIELD.getAttributesKey)
-  val LOCATION = createKey(LOCATION_ID, DefaultLanguageHighlighterColors.LABEL)
+  val LOCATION = createKey(LOCATION_ID, DefaultLanguageHighlighterColors.METADATA)
   val METHOD_DECLARATION = createKey(METHOD_DECLARATION_ID, JavaHighlightInfoTypes.METHOD_DECLARATION.getAttributesKey)
   val METHOD_CALL = createKey(METHOD_CALL_ID, JavaHighlightInfoTypes.METHOD_CALL.getAttributesKey)
   val ANNOTATION = createKey(ANNOTATION_ID, JavaHighlightInfoTypes.ANNOTATION_NAME.getAttributesKey)
