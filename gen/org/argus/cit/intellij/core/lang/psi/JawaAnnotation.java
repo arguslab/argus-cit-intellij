@@ -7,10 +7,22 @@ import com.intellij.psi.PsiElement;
 
 public interface JawaAnnotation extends PsiElement {
 
-  @NotNull
+  @Nullable
+  JawaAccessFlagAnnotation getAccessFlagAnnotation();
+
+  @Nullable
   JawaAnnotationKey getAnnotationKey();
 
   @Nullable
-  JawaAnnotationValue getAnnotationValue();
+  JawaKindAnnotation getKindAnnotation();
+
+  @Nullable
+  JawaSignatureAnnotation getSignatureAnnotation();
+
+  @Nullable
+  JawaTypeAnnotation getTypeAnnotation();
+
+  @Nullable
+  PsiElement getId();
 
 }

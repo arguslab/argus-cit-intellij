@@ -7,11 +7,11 @@ import com.intellij.psi.PsiElement;
 
 public class JawaVisitor extends PsiElementVisitor {
 
-  public void visitAnnotationKey(@NotNull JawaAnnotationKey o) {
+  public void visitAccessExpression(@NotNull JawaAccessExpression o) {
     visitPsiElement(o);
   }
 
-  public void visitAccessExpression(@NotNull JawaAccessExpression o) {
+  public void visitAccessFlagAnnotation(@NotNull JawaAccessFlagAnnotation o) {
     visitPsiElement(o);
   }
 
@@ -19,7 +19,7 @@ public class JawaVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitAnnotationValue(@NotNull JawaAnnotationValue o) {
+  public void visitAnnotationKey(@NotNull JawaAnnotationKey o) {
     visitPsiElement(o);
   }
 
@@ -127,7 +127,7 @@ public class JawaVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitLocationId(@NotNull JawaLocationId o) {
+  public void visitKindAnnotation(@NotNull JawaKindAnnotation o) {
     visitPsiElement(o);
   }
 

@@ -27,15 +27,39 @@ public class JawaAnnotationImpl extends ASTWrapperPsiElement implements JawaAnno
   }
 
   @Override
-  @NotNull
-  public JawaAnnotationKey getAnnotationKey() {
-    return findNotNullChildByClass(JawaAnnotationKey.class);
+  @Nullable
+  public JawaAccessFlagAnnotation getAccessFlagAnnotation() {
+    return findChildByClass(JawaAccessFlagAnnotation.class);
   }
 
   @Override
   @Nullable
-  public JawaAnnotationValue getAnnotationValue() {
-    return findChildByClass(JawaAnnotationValue.class);
+  public JawaAnnotationKey getAnnotationKey() {
+    return findChildByClass(JawaAnnotationKey.class);
+  }
+
+  @Override
+  @Nullable
+  public JawaKindAnnotation getKindAnnotation() {
+    return findChildByClass(JawaKindAnnotation.class);
+  }
+
+  @Override
+  @Nullable
+  public JawaSignatureAnnotation getSignatureAnnotation() {
+    return findChildByClass(JawaSignatureAnnotation.class);
+  }
+
+  @Override
+  @Nullable
+  public JawaTypeAnnotation getTypeAnnotation() {
+    return findChildByClass(JawaTypeAnnotation.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getId() {
+    return findChildByType(ID);
   }
 
 }

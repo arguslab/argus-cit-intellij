@@ -57,25 +57,13 @@ object JawaTokenTypes {
 
   val NUMBERS = TokenSet.create(JawaTypes.NUMBER_LITERAL)
 
-  val VARIABLES = TokenSet.create(JawaTypes.ID, JawaTypes.STATIC_ID, JawaTypes.LOCATION_ID)
-
   val LINE_COMMENTS = TokenSet.create(LINE_COMMENT)
 
   val BLOCK_COMMENTS = TokenSet.create(BLOCK_COMMENT)
 
   val DOC_COMMENTS = TokenSet.create(DOC_COMMENT)
 
-  val TYPEPARAM = TokenSet.create(JawaTypes.APOSTROPHE_ID)
-
-  val CLASS = TokenSet.create(JawaTypes.TYPE_DEF_SYMBOL)
-
   val BAD_CHARACTER = TokenSet.create(TokenType.BAD_CHARACTER)
 
-  val LOCAL_VARIABLES = TokenSet.create(JawaTypes.VAR_DEF_SYMBOL)
-
-  val METHOD_CALL = TokenSet.create(JawaTypes.METHOD_NAME_SYMBOL)
-
-  val ANNOTATION = TokenSet.create(JawaTypes.OWNER_KEY, JawaTypes.TYPE_KEY, JawaTypes.CLASS_DESCRIPTOR_KEY, JawaTypes.SIGNATURE_KEY, JawaTypes.ANNOTATION_KEY)
-
-  val ANNOTATION_ATTRIBUTE = TokenSet.create(JawaTypes.ANNOTATION_VALUE)
+  val ANNOTATION = TokenSet.create(JawaTypes.OWNER_KEY, JawaTypes.TYPE_KEY, JawaTypes.CLASS_DESCRIPTOR_KEY, JawaTypes.SIGNATURE_KEY, JawaTypes.KIND_KEY, JawaTypes.ACCESS_FLAG_KEY)
 }

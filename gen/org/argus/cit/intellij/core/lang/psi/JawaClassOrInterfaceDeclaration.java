@@ -8,13 +8,16 @@ import com.intellij.psi.PsiElement;
 public interface JawaClassOrInterfaceDeclaration extends PsiElement {
 
   @NotNull
-  List<JawaAnnotation> getAnnotationList();
+  JawaAccessFlagAnnotation getAccessFlagAnnotation();
 
   @Nullable
   JawaExtendsAndImplementsClauses getExtendsAndImplementsClauses();
 
   @NotNull
   JawaInstanceFieldDeclarationBlock getInstanceFieldDeclarationBlock();
+
+  @NotNull
+  JawaKindAnnotation getKindAnnotation();
 
   @NotNull
   List<JawaMethodDeclaration> getMethodDeclarationList();

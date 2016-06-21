@@ -26,6 +26,7 @@
     <lang.parserDefinition language="Jawa" implementationClass="org.argus.cit.intellij.core.lang.parser.JawaParserDefinition"/>
     <lang.syntaxHighlighterFactory key="Jawa" implementationClass="org.argus.cit.intellij.core.highlighter.JawaSyntaxHighlighterFactory"/>
     <colorSettingsPage implementation="org.argus.cit.intellij.core.highlighter.JawaColorSettingsPage"/>
+    <annotator language="Jawa" implementationClass="org.argus.cit.intellij.core.annotator.JawaHighlightingAnnotator"/>
   </extensions>
 
   <actions>

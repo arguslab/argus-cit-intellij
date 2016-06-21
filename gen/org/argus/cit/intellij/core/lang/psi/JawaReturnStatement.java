@@ -7,8 +7,8 @@ import com.intellij.psi.PsiElement;
 
 public interface JawaReturnStatement extends PsiElement {
 
-  @NotNull
-  List<JawaAnnotation> getAnnotationList();
+  @Nullable
+  JawaKindAnnotation getKindAnnotation();
 
   @Nullable
   JawaVarSymbol getVarSymbol();

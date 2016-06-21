@@ -8,13 +8,13 @@ import com.intellij.psi.PsiElement;
 public interface JawaCallStatement extends PsiElement {
 
   @NotNull
-  List<JawaAnnotation> getAnnotationList();
-
-  @NotNull
   JawaArgClause getArgClause();
 
   @Nullable
   JawaCallLhs getCallLhs();
+
+  @NotNull
+  JawaKindAnnotation getKindAnnotation();
 
   @NotNull
   JawaMethodNameSymbol getMethodNameSymbol();

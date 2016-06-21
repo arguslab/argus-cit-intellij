@@ -5,6 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface JawaLocationId extends PsiElement {
+public interface JawaAccessFlagAnnotation extends PsiElement {
+
+  @Nullable
+  PsiElement getId();
 
 }

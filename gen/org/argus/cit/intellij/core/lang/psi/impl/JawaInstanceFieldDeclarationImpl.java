@@ -28,8 +28,8 @@ public class JawaInstanceFieldDeclarationImpl extends ASTWrapperPsiElement imple
 
   @Override
   @NotNull
-  public List<JawaAnnotation> getAnnotationList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, JawaAnnotation.class);
+  public JawaAccessFlagAnnotation getAccessFlagAnnotation() {
+    return findNotNullChildByClass(JawaAccessFlagAnnotation.class);
   }
 
   @Override

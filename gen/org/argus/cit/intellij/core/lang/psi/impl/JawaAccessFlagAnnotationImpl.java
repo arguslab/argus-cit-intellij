@@ -11,19 +11,25 @@ import static org.argus.cit.intellij.core.lang.psi.JawaTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.argus.cit.intellij.core.lang.psi.*;
 
-public class JawaLocationIdImpl extends ASTWrapperPsiElement implements JawaLocationId {
+public class JawaAccessFlagAnnotationImpl extends ASTWrapperPsiElement implements JawaAccessFlagAnnotation {
 
-  public JawaLocationIdImpl(ASTNode node) {
+  public JawaAccessFlagAnnotationImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull JawaVisitor visitor) {
-    visitor.visitLocationId(this);
+    visitor.visitAccessFlagAnnotation(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof JawaVisitor) accept((JawaVisitor)visitor);
     else super.accept(visitor);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getId() {
+    return findChildByType(ID);
   }
 
 }

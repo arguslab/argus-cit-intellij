@@ -43,13 +43,8 @@ object JawaSyntaxHighlighter extends SyntaxHighlighterBase {
   SyntaxHighlighterBase.fillMap(ATTRIBUTES, JawaTokenTypes.SEMICOLON, DefaultHighlighter.SEMICOLON)
   SyntaxHighlighterBase.fillMap(ATTRIBUTES, JawaTokenTypes.DOT, DefaultHighlighter.DOT)
   SyntaxHighlighterBase.fillMap(ATTRIBUTES, JawaTokenTypes.COMMA, DefaultHighlighter.COMMA)
-  SyntaxHighlighterBase.fillMap(ATTRIBUTES, JawaTokenTypes.TYPEPARAM, DefaultHighlighter.TYPEPARAM)
-  SyntaxHighlighterBase.fillMap(ATTRIBUTES, JawaTokenTypes.CLASS, DefaultHighlighter.CLASS)
   SyntaxHighlighterBase.fillMap(ATTRIBUTES, JawaTokenTypes.BAD_CHARACTER, DefaultHighlighter.BAD_CHARACTER)
-  SyntaxHighlighterBase.fillMap(ATTRIBUTES, JawaTokenTypes.LOCAL_VARIABLES, DefaultHighlighter.LOCAL_VARIABLES)
-  SyntaxHighlighterBase.fillMap(ATTRIBUTES, JawaTokenTypes.METHOD_CALL, DefaultHighlighter.METHOD_CALL)
   SyntaxHighlighterBase.fillMap(ATTRIBUTES, JawaTokenTypes.ANNOTATION, DefaultHighlighter.ANNOTATION)
-  SyntaxHighlighterBase.fillMap(ATTRIBUTES, JawaTokenTypes.ANNOTATION_ATTRIBUTE, DefaultHighlighter.ANNOTATION_ATTRIBUTE)
 
   override def getTokenHighlights(iElementType: IElementType): Array[TextAttributesKey] = {
     SyntaxHighlighterBase.pack(ATTRIBUTES.get(iElementType))

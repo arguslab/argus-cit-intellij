@@ -28,8 +28,8 @@ public class JawaExtendAndImplementImpl extends ASTWrapperPsiElement implements 
 
   @Override
   @NotNull
-  public List<JawaAnnotation> getAnnotationList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, JawaAnnotation.class);
+  public JawaKindAnnotation getKindAnnotation() {
+    return findNotNullChildByClass(JawaKindAnnotation.class);
   }
 
   @Override

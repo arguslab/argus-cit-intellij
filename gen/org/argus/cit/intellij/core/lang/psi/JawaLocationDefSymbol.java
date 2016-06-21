@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface JawaLocationDefSymbol extends PsiElement {
 
   @NotNull
-  JawaLocationId getLocationId();
+  PsiElement getLocationId();
 
 }

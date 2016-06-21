@@ -27,9 +27,9 @@ public class JawaReturnStatementImpl extends ASTWrapperPsiElement implements Jaw
   }
 
   @Override
-  @NotNull
-  public List<JawaAnnotation> getAnnotationList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, JawaAnnotation.class);
+  @Nullable
+  public JawaKindAnnotation getKindAnnotation() {
+    return findChildByClass(JawaKindAnnotation.class);
   }
 
   @Override

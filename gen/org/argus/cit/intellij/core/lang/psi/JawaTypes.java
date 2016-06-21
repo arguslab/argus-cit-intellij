@@ -9,9 +9,9 @@ import org.argus.cit.intellij.core.lang.psi.impl.*;
 public interface JawaTypes {
 
   IElementType ACCESS_EXPRESSION = new JawaElementType("ACCESS_EXPRESSION");
+  IElementType ACCESS_FLAG_ANNOTATION = new JawaElementType("ACCESS_FLAG_ANNOTATION");
   IElementType ANNOTATION = new JawaElementType("ANNOTATION");
   IElementType ANNOTATION_KEY = new JawaElementType("ANNOTATION_KEY");
-  IElementType ANNOTATION_VALUE = new JawaElementType("ANNOTATION_VALUE");
   IElementType ARG_CLAUSE = new JawaElementType("ARG_CLAUSE");
   IElementType ASSIGNMENT_STATEMENT = new JawaElementType("ASSIGNMENT_STATEMENT");
   IElementType BINARY_EXPRESSION = new JawaElementType("BINARY_EXPRESSION");
@@ -38,12 +38,12 @@ public interface JawaTypes {
   IElementType INSTANCEOF_EXPRESSION = new JawaElementType("INSTANCEOF_EXPRESSION");
   IElementType INSTANCE_FIELD_DECLARATION = new JawaElementType("INSTANCE_FIELD_DECLARATION");
   IElementType INSTANCE_FIELD_DECLARATION_BLOCK = new JawaElementType("INSTANCE_FIELD_DECLARATION_BLOCK");
+  IElementType KIND_ANNOTATION = new JawaElementType("KIND_ANNOTATION");
   IElementType LENGTH_EXPRESSION = new JawaElementType("LENGTH_EXPRESSION");
   IElementType LITERAL_EXPRESSION = new JawaElementType("LITERAL_EXPRESSION");
   IElementType LOCAL_VAR_DECLARATION = new JawaElementType("LOCAL_VAR_DECLARATION");
   IElementType LOCATION = new JawaElementType("LOCATION");
   IElementType LOCATION_DEF_SYMBOL = new JawaElementType("LOCATION_DEF_SYMBOL");
-  IElementType LOCATION_ID = new JawaElementType("LOCATION_ID");
   IElementType LOCATION_SYMBOL = new JawaElementType("LOCATION_SYMBOL");
   IElementType METHOD_DECLARATION = new JawaElementType("METHOD_DECLARATION");
   IElementType METHOD_DEF_SYMBOL = new JawaElementType("METHOD_DEF_SYMBOL");
@@ -77,6 +77,7 @@ public interface JawaTypes {
   IElementType VAR_DEF_SYMBOL = new JawaElementType("VAR_DEF_SYMBOL");
   IElementType VAR_SYMBOL = new JawaElementType("VAR_SYMBOL");
 
+  IElementType ACCESS_FLAG_KEY = new JawaTokenType("@AccessFlag");
   IElementType ADD = new JawaTokenType("+");
   IElementType AND = new JawaTokenType("^&");
   IElementType APOSTROPHE_ID = new JawaTokenType("APOSTROPHE_ID");
@@ -101,13 +102,15 @@ public interface JawaTypes {
   IElementType FCMPL = new JawaTokenType("fcmpl");
   IElementType GOTO = new JawaTokenType("goto");
   IElementType HAT = new JawaTokenType("^");
-  IElementType ID = new JawaTokenType("id");
+  IElementType ID = new JawaTokenType("ID");
   IElementType IF = new JawaTokenType("if");
   IElementType INSTANCEOF = new JawaTokenType("instanceof");
+  IElementType KIND_KEY = new JawaTokenType("@kind");
   IElementType LBRACE = new JawaTokenType("{");
   IElementType LBRACKET = new JawaTokenType("[");
   IElementType LCMP = new JawaTokenType("lcmp");
   IElementType LENGTH = new JawaTokenType("length");
+  IElementType LOCATION_ID = new JawaTokenType("LOCATION_ID");
   IElementType LPAREN = new JawaTokenType("(");
   IElementType METHOD = new JawaTokenType("procedure");
   IElementType MONITOR_ENTER = new JawaTokenType("monitorenter");
@@ -147,14 +150,14 @@ public interface JawaTypes {
        if (type == ACCESS_EXPRESSION) {
         return new JawaAccessExpressionImpl(node);
       }
+      else if (type == ACCESS_FLAG_ANNOTATION) {
+        return new JawaAccessFlagAnnotationImpl(node);
+      }
       else if (type == ANNOTATION) {
         return new JawaAnnotationImpl(node);
       }
       else if (type == ANNOTATION_KEY) {
         return new JawaAnnotationKeyImpl(node);
-      }
-      else if (type == ANNOTATION_VALUE) {
-        return new JawaAnnotationValueImpl(node);
       }
       else if (type == ARG_CLAUSE) {
         return new JawaArgClauseImpl(node);
@@ -234,6 +237,9 @@ public interface JawaTypes {
       else if (type == INSTANCE_FIELD_DECLARATION_BLOCK) {
         return new JawaInstanceFieldDeclarationBlockImpl(node);
       }
+      else if (type == KIND_ANNOTATION) {
+        return new JawaKindAnnotationImpl(node);
+      }
       else if (type == LENGTH_EXPRESSION) {
         return new JawaLengthExpressionImpl(node);
       }
@@ -248,9 +254,6 @@ public interface JawaTypes {
       }
       else if (type == LOCATION_DEF_SYMBOL) {
         return new JawaLocationDefSymbolImpl(node);
-      }
-      else if (type == LOCATION_ID) {
-        return new JawaLocationIdImpl(node);
       }
       else if (type == LOCATION_SYMBOL) {
         return new JawaLocationSymbolImpl(node);

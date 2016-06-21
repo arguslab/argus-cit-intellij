@@ -28,12 +28,6 @@ public class JawaCallStatementImpl extends ASTWrapperPsiElement implements JawaC
 
   @Override
   @NotNull
-  public List<JawaAnnotation> getAnnotationList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, JawaAnnotation.class);
-  }
-
-  @Override
-  @NotNull
   public JawaArgClause getArgClause() {
     return findNotNullChildByClass(JawaArgClause.class);
   }
@@ -42,6 +36,12 @@ public class JawaCallStatementImpl extends ASTWrapperPsiElement implements JawaC
   @Nullable
   public JawaCallLhs getCallLhs() {
     return findChildByClass(JawaCallLhs.class);
+  }
+
+  @Override
+  @NotNull
+  public JawaKindAnnotation getKindAnnotation() {
+    return findNotNullChildByClass(JawaKindAnnotation.class);
   }
 
   @Override

@@ -28,12 +28,6 @@ public class JawaAssignmentStatementImpl extends ASTWrapperPsiElement implements
 
   @Override
   @NotNull
-  public List<JawaAnnotation> getAnnotationList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, JawaAnnotation.class);
-  }
-
-  @Override
-  @NotNull
   public JawaExpressionLhs getExpressionLhs() {
     return findNotNullChildByClass(JawaExpressionLhs.class);
   }
@@ -45,9 +39,15 @@ public class JawaAssignmentStatementImpl extends ASTWrapperPsiElement implements
   }
 
   @Override
-  @NotNull
-  public List<JawaTypeAnnotation> getTypeAnnotationList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, JawaTypeAnnotation.class);
+  @Nullable
+  public JawaKindAnnotation getKindAnnotation() {
+    return findChildByClass(JawaKindAnnotation.class);
+  }
+
+  @Override
+  @Nullable
+  public JawaTypeAnnotation getTypeAnnotation() {
+    return findChildByClass(JawaTypeAnnotation.class);
   }
 
 }

@@ -28,8 +28,8 @@ public class JawaLocationDefSymbolImpl extends ASTWrapperPsiElement implements J
 
   @Override
   @NotNull
-  public JawaLocationId getLocationId() {
-    return findNotNullChildByClass(JawaLocationId.class);
+  public PsiElement getLocationId() {
+    return findNotNullChildByType(LOCATION_ID);
   }
 
 }

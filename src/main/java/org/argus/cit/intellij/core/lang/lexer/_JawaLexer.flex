@@ -26,6 +26,7 @@ ID=([:letter:]([\w]|[$])*)
 APOSTROPHE_ID=(`[^`]+`)
 STATIC_ID=(`@@([^`]|[^@])+`)
 NUMBER=[0-9]+(\.[0-9]*)?
+LOCATION_ID=(#[\w]*\.)
 STRING_LITERAL=('([^'\\]|\\.)*'|\"([^\"\\]|\\.)*\")
 
 END_OF_LINE_COMMENT="/""/"[^\r\n]*
@@ -78,6 +79,8 @@ END_OF_LINE_COMMENT="/""/"[^\r\n]*
   "@type"                 { return TYPE_KEY; }
   "@classDescriptor"      { return CLASS_DESCRIPTOR_KEY; }
   "@signature"            { return SIGNATURE_KEY; }
+  "@kind"                 { return KIND_KEY; }
+  "@AccessFlag"           { return ACCESS_FLAG_KEY; }
   "fcmpl"                 { return FCMPL; }
   "fcmpg"                 { return FCMPG; }
   "dcmpl"                 { return DCMPL; }
@@ -98,6 +101,7 @@ END_OF_LINE_COMMENT="/""/"[^\r\n]*
   {ID}                    { return ID; }
   {APOSTROPHE_ID}         { return APOSTROPHE_ID; }
   {STATIC_ID}             { return STATIC_ID; }
+  {LOCATION_ID}           { return LOCATION_ID; }
   {NUMBER}                { return NUMBER; }
   {STRING_LITERAL}        { return STRING_LITERAL; }
 

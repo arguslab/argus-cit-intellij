@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface JawaAnnotationValue extends PsiElement {
+public interface JawaKindAnnotation extends PsiElement {
 
   @NotNull
   PsiElement getId();

@@ -28,8 +28,8 @@ public class JawaClassOrInterfaceDeclarationImpl extends ASTWrapperPsiElement im
 
   @Override
   @NotNull
-  public List<JawaAnnotation> getAnnotationList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, JawaAnnotation.class);
+  public JawaAccessFlagAnnotation getAccessFlagAnnotation() {
+    return findNotNullChildByClass(JawaAccessFlagAnnotation.class);
   }
 
   @Override
@@ -42,6 +42,12 @@ public class JawaClassOrInterfaceDeclarationImpl extends ASTWrapperPsiElement im
   @NotNull
   public JawaInstanceFieldDeclarationBlock getInstanceFieldDeclarationBlock() {
     return findNotNullChildByClass(JawaInstanceFieldDeclarationBlock.class);
+  }
+
+  @Override
+  @NotNull
+  public JawaKindAnnotation getKindAnnotation() {
+    return findNotNullChildByClass(JawaKindAnnotation.class);
   }
 
   @Override

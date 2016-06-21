@@ -8,15 +8,15 @@ import com.intellij.psi.PsiElement;
 public interface JawaAssignmentStatement extends PsiElement {
 
   @NotNull
-  List<JawaAnnotation> getAnnotationList();
-
-  @NotNull
   JawaExpressionLhs getExpressionLhs();
 
   @NotNull
   JawaExpressionRhs getExpressionRhs();
 
-  @NotNull
-  List<JawaTypeAnnotation> getTypeAnnotationList();
+  @Nullable
+  JawaKindAnnotation getKindAnnotation();
+
+  @Nullable
+  JawaTypeAnnotation getTypeAnnotation();
 
 }

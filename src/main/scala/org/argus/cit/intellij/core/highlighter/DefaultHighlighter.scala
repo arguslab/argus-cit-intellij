@@ -31,13 +31,15 @@ object DefaultHighlighter {
   final val SEMICOLON_NAME = "Semicolon"
   final val DOT_NAME = "Dot"
   final val COMMA_NAME = "Comma"
-  final val TYPEPARAM_NAME = "Type parameter"
   final val CLASS_NAME = "Class"
   final val BAD_CHARACTER_NAME = "Bad character"
   final val LOCAL_VARIABLES_NAME = "Local variable"
-  final val METHOD_CALL_NAME = "Class method call"
+  final val INSTANCE_FIELD_NAME = "Instance field"
+  final val STATIC_FIELD_NAME = "Static field"
+  final val LOCATION_NAME = "Location"
+  final val METHOD_DECLARATION_NAME = "Method declaration"
+  final val METHOD_CALL_NAME = "Method call"
   final val ANNOTATION_NAME = "Annotation name"
-  final val ANNOTATION_ATTRIBUTE_NAME = "Annotation attribute name"
 
   final val LINE_COMMENT_ID = "Jawa Line comment"
   final val BLOCK_COMMENT_ID = "Jawa Block comment"
@@ -52,13 +54,15 @@ object DefaultHighlighter {
   final val SEMICOLON_ID = "Jawa Semicolon"
   final val DOT_ID = "Jawa Dot"
   final val COMMA_ID = "Jawa Comma"
-  final val TYPEPARAM_ID = "Jawa Type parameter"
   final val CLASS_ID = "Jawa Class"
   final val BAD_CHARACTER_ID = "Jawa Bad character"
   final val LOCAL_VARIABLES_ID = "Jawa Local variable"
-  final val METHOD_CALL_ID = "Jawa Class method call"
+  final val INSTANCE_FIELD_ID = "Jawa Instance field"
+  final val STATIC_FIELD_ID = "Jawa Static field"
+  final val LOCATION_ID = "Jawa Location"
+  final val METHOD_DECLARATION_ID = "Jawa Method declaration"
+  final val METHOD_CALL_ID = "Jawa Method call"
   final val ANNOTATION_ID = "Jawa Annotation name"
-  final val ANNOTATION_ATTRIBUTE_ID = "Jawa Annotation attribute name"
 
   val LINE_COMMENT = createKey(LINE_COMMENT_ID, DefaultLanguageHighlighterColors.LINE_COMMENT)
   val BLOCK_COMMENT = createKey(BLOCK_COMMENT_ID, DefaultLanguageHighlighterColors.BLOCK_COMMENT)
@@ -73,13 +77,15 @@ object DefaultHighlighter {
   val SEMICOLON = createKey(SEMICOLON_ID, DefaultLanguageHighlighterColors.SEMICOLON)
   val DOT = createKey(DOT_ID, DefaultLanguageHighlighterColors.DOT)
   val COMMA = createKey(COMMA_ID, DefaultLanguageHighlighterColors.COMMA)
-  val TYPEPARAM = createKey(TYPEPARAM_ID, JavaHighlightInfoTypes.TYPE_PARAMETER_NAME.getAttributesKey)
   val CLASS = createKey(CLASS_ID, JavaHighlightInfoTypes.CLASS_NAME.getAttributesKey)
   val BAD_CHARACTER = createKey(BAD_CHARACTER_ID, HighlighterColors.BAD_CHARACTER)
   val LOCAL_VARIABLES = createKey(LOCAL_VARIABLES_ID, JavaHighlightInfoTypes.LOCAL_VARIABLE.getAttributesKey)
+  val INSTANCE_FIELD = createKey(INSTANCE_FIELD_ID, JavaHighlightInfoTypes.INSTANCE_FIELD.getAttributesKey)
+  val STATIC_FIELD = createKey(STATIC_FIELD_ID, JavaHighlightInfoTypes.STATIC_FIELD.getAttributesKey)
+  val LOCATION = createKey(LOCATION_ID, DefaultLanguageHighlighterColors.LABEL)
+  val METHOD_DECLARATION = createKey(METHOD_DECLARATION_ID, JavaHighlightInfoTypes.METHOD_DECLARATION.getAttributesKey)
   val METHOD_CALL = createKey(METHOD_CALL_ID, JavaHighlightInfoTypes.METHOD_CALL.getAttributesKey)
   val ANNOTATION = createKey(ANNOTATION_ID, JavaHighlightInfoTypes.ANNOTATION_NAME.getAttributesKey)
-  val ANNOTATION_ATTRIBUTE = createKey(ANNOTATION_ATTRIBUTE_ID, JavaHighlightInfoTypes.ANNOTATION_ATTRIBUTE_NAME.getAttributesKey)
 
   private def createKey(externalName: String, prototype: TextAttributesKey): TextAttributesKey = {
     TextAttributesKey.createTextAttributesKey(externalName, prototype)

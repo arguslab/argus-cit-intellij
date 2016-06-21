@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface JawaStaticFieldDeclaration extends PsiElement {
 
   @NotNull
-  List<JawaAnnotation> getAnnotationList();
+  JawaAccessFlagAnnotation getAccessFlagAnnotation();
 
   @NotNull
   JawaStaticFieldDefSymbol getStaticFieldDefSymbol();
