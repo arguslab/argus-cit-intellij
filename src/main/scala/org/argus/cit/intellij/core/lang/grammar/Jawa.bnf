@@ -114,7 +114,7 @@ TypeFragmentWithInit ::= '[' VarSymbol (',' VarSymbol)* ']'
 MethodDeclaration ::= 'procedure' Type MethodDefSymbol ParamClause TypeAnnotation SignatureAnnotation AccessFlagAnnotation Body
 
 ParamClause ::= '(' (Param (',' Param)*)? ')'
-Param ::= Type VarDefSymbol KindAnnotation
+Param ::= Type VarDefSymbol KindAnnotation?
 
 Body ::= '{' LocalVarDeclaration* Location* CatchClause* '}'
 

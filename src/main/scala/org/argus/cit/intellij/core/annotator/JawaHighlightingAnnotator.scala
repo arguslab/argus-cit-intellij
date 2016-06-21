@@ -15,7 +15,7 @@ import org.argus.cit.intellij.core.highlighter.AnnotatorHighlighter
 import org.argus.cit.intellij.core.lang.psi._
 
 /**
-  * Created by fgwei on 6/21/16.
+  * @author <a href="mailto:fgwei521@gmail.com">FenggWei</a>
   */
 class JawaHighlightingAnnotator extends JawaAnnotator {
   override def annotate(psiElement: PsiElement, annotationHolder: AnnotationHolder): Unit = psiElement.accept(new JawaVisitor{
@@ -74,6 +74,10 @@ class JawaHighlightingAnnotator extends JawaAnnotator {
     override def visitNumberLiteral(o: JawaNumberLiteral) = {
       AnnotatorHighlighter.highlightElement(o, annotationHolder)
       super.visitNumberLiteral(o)
+    }
+    override def visitParam(o: JawaParam) = {
+      AnnotatorHighlighter.highlightElement(o, annotationHolder)
+      super.visitParam(o)
     }
   })
 }

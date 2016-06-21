@@ -1196,7 +1196,7 @@ public class JawaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // Type VarDefSymbol KindAnnotation
+  // Type VarDefSymbol KindAnnotation?
   public static boolean Param(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Param")) return false;
     if (!nextTokenIs(b, APOSTROPHE_ID)) return false;
@@ -1204,9 +1204,16 @@ public class JawaParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = Type(b, l + 1);
     r = r && VarDefSymbol(b, l + 1);
-    r = r && KindAnnotation(b, l + 1);
+    r = r && Param_2(b, l + 1);
     exit_section_(b, m, PARAM, r);
     return r;
+  }
+
+  // KindAnnotation?
+  private static boolean Param_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Param_2")) return false;
+    KindAnnotation(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */

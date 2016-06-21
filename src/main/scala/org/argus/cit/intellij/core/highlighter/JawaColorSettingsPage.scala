@@ -33,23 +33,27 @@ class JawaColorSettingsPage extends ColorSettingsPage {
       | * This is a doc comment.
       | * @author fgwei
       | */
-      |record <class>`com.fgwei.Test`</class>  @kind class @AccessFlag PUBLIC {
-      |  <class>`int`</class> <instance-field>`com.fgwei.Test.i1`</instance-field> @AccessFlag PRIVATE;
+      |<keyword>record</keyword> <class>`com.fgwei.Test`</class>  <annotation>@kind</annotation> class <annotation>@AccessFlag</annotation> PUBLIC {
+      |  <class>`int`</class> <instance-field>`com.fgwei.Test.i1`</instance-field> <annotation>@AccessFlag</annotation> PRIVATE<semi>;</semi>
       |}
-      |global <class>`java.lang.String`</class> <static-field>`@@com.fgwei.Test.str1`</static-field> @AccessFlag STATIC;
-      |procedure <class>`int`</class> <method-declaration>`com.fgwei.Test.main`</method-declaration> () @owner ^<class>`com.fgwei.Test`</class> @signature `Lcom/fgwei/Test;.main:()I` @AccessFlag PUBLIC_STATIC {
-      |  <class>`int`</class> <local-variable>int_temp</local-variable>;
-      |  <class>`int`</class> <local-variable>int_v0</local-variable>;
-      |  <class>`com.fgwei.Test`</class> <local-variable>Test_v1</local-variable>;
-      |  <class>`int`</class> <local-variable>int_v2</local-variable>;
+      |<keyword>global</keyword> <class>`java.lang.String`</class> <static-field>`@@com.fgwei.Test.str1`</static-field> <annotation>@AccessFlag</annotation> STATIC<semi>;</semi>
+      |<keyword>procedure</keyword> <class>`int`</class> <method-declaration>`com.fgwei.Test.main`</method-declaration> <par>(</par><class>`int`</class> <para>v3</para><comma>,</comma> <class>`int`</class> <para>v4</para><par>)</par>
+      |       <annotation>@owner</annotation> ^<class>`com.fgwei.Test`</class>
+      |       <annotation>@signature</annotation> `Lcom/fgwei/Test;.main:()I`
+      |       <annotation>@AccessFlag</annotation> PUBLIC_STATIC {
+      |  <class>`int`</class> <local-variable>v0</local-variable><semi>;</semi>
+      |  <class>`int`</class><bracket>[</bracket><bracket>]</bracket> <local-variable>v1</local-variable><semi>;</semi>
+      |  <class>`com.fgwei.Test`</class> <local-variable>test</local-variable><semi>;</semi>
       |
-      |  <location>#L027040.</location> <local-variable>Test_v1</local-variable>:= new <class>`com.fgwei.Test`</class>; // This is a line comment
-      |  <location>#L027041.</location> call <method-call>`com.fgwei.Test.<init>`</method-call>(<local-variable>Test_v1</local-variable>) @signature `Lcom/fgwei/Test;.<init>:()V` @classDescriptor ^<class>`com.fgwei.Test`</class> @kind direct;
-      |  <location>#L027044.</location> <local-variable>int_v0</local-variable>:= <number>1I</number>;
-      |  <location>#L027048.</location> call <method-call>`com.fgwei.Test.setTaint`</method-call>(<local-variable>Test_v1</local-variable>, <local-variable>int_v0</local-variable>) @signature `Lcom/fgwei/Test;.setTaint:(I)V` @classDescriptor ^<class>`com.fgwei.Test`</class> @kind direct;
-      |  <location>#L027054.</location> call <local-variable>int_temp</local-variable>:=  <method-call>`com.fgwei.Test.getTaint`</method-call>(<local-variable>Test_v1</local-variable>) @signature `Lcom/fgwei/Test;.getTaint:()I` @classDescriptor ^<class>`com.fgwei.Test`</class> @kind direct;
-      |  <location>#L027055.</location> <local-variable>int_v2</local-variable>:= <local-variable>int_temp</local-variable>;
-      |  <location>#L02705a.</location> return <local-variable>int_v2</local-variable>;
+      |  <location>#L027040.</location> <local-variable>test</local-variable><assign>:=</assign> new <class>`com.fgwei.Test`</class>; <line-comment>// This is a line comment</line-comment>
+      |  <location>#L027041.</location> <keyword>call</keyword> <method-call>`com.fgwei.Test.<init>`</method-call><par>(</par><local-variable>test</local-variable><par>)</par>
+      |         <annotation>@signature</annotation> `Lcom/fgwei/Test;.<init>:()V`
+      |         <annotation>@classDescriptor</annotation> ^<class>`com.fgwei.Test`</class>
+      |         <annotation>@kind</annotation> direct<semi>;</semi>
+      |  <location>#L027044.</location> <local-variable>v0</local-variable><assign>:=</assign> <number>1I</number><semi>;</semi>
+      |  <location>#L027046.</location> <local-variable>v0</local-variable><assign>:=</assign> <local-variable>test</local-variable><dot>.</dot><instance-field>`com.fgwei.Test.i1`</instance-field> <annotation>@kind</annotation> int <annotation>@type</annotation> ^<class>`int`</class><semi>;</semi>
+      |  <location>#L027048.</location> <static-field>`@@com.fgwei.Test.str1`</static-field><assign>:=</assign> <string>"String"</string> <semi>;</semi>
+      |  <location>#L02705a.</location> <keyword>return</keyword> <local-variable>v0</local-variable><semi>;</semi>
       |
       |}
     """.stripMargin
@@ -88,11 +92,22 @@ object JawaColorSettingsPage {
     new AttributesDescriptor(DefaultHighlighter.METHOD_DECLARATION_NAME, DefaultHighlighter.METHOD_DECLARATION),
     new AttributesDescriptor(DefaultHighlighter.METHOD_CALL_NAME, DefaultHighlighter.METHOD_CALL),
     new AttributesDescriptor(DefaultHighlighter.BAD_CHARACTER_NAME, DefaultHighlighter.BAD_CHARACTER),
-    new AttributesDescriptor(DefaultHighlighter.ANNOTATION_NAME, DefaultHighlighter.ANNOTATION)
+    new AttributesDescriptor(DefaultHighlighter.ANNOTATION_NAME, DefaultHighlighter.ANNOTATION),
+    new AttributesDescriptor(DefaultHighlighter.PARAMETER_NAME, DefaultHighlighter.PARAMETER)
   )
 
   final val ANNOTATOR_TAGS: util.HashMap[String, TextAttributesKey] = {
     val tags = new util.HashMap[String, TextAttributesKey]()
+    tags.put("keyword", DefaultHighlighter.KEYWORD)
+    tags.put("string", DefaultHighlighter.STRING)
+    tags.put("assign", DefaultHighlighter.ASSIGN)
+    tags.put("par", DefaultHighlighter.PARENTHESES)
+    tags.put("brace", DefaultHighlighter.BRACES)
+    tags.put("bracket", DefaultHighlighter.BRACKETS)
+    tags.put("semi", DefaultHighlighter.SEMICOLON)
+    tags.put("dot", DefaultHighlighter.DOT)
+    tags.put("comma", DefaultHighlighter.COMMA)
+    tags.put("line-comment", DefaultHighlighter.LINE_COMMENT)
     tags.put("class", DefaultHighlighter.CLASS)
     tags.put("local-variable", DefaultHighlighter.LOCAL_VARIABLES)
     tags.put("instance-field", DefaultHighlighter.INSTANCE_FIELD)
@@ -101,6 +116,8 @@ object JawaColorSettingsPage {
     tags.put("method-declaration", DefaultHighlighter.METHOD_DECLARATION)
     tags.put("method-call", DefaultHighlighter.METHOD_CALL)
     tags.put("number", DefaultHighlighter.NUMBER)
+    tags.put("annotation", DefaultHighlighter.ANNOTATION)
+    tags.put("para", DefaultHighlighter.PARAMETER)
     tags
   }
 }

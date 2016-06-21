@@ -27,6 +27,8 @@
     <lang.syntaxHighlighterFactory key="Jawa" implementationClass="org.argus.cit.intellij.core.highlighter.JawaSyntaxHighlighterFactory"/>
     <colorSettingsPage implementation="org.argus.cit.intellij.core.highlighter.JawaColorSettingsPage"/>
     <annotator language="Jawa" implementationClass="org.argus.cit.intellij.core.annotator.JawaHighlightingAnnotator"/>
+    <lang.commenter language="Jawa" implementationClass="org.argus.cit.intellij.core.commenter.JawaCommenter"/>
+    <lang.foldingBuilder language="Jawa" implementationClass="org.argus.cit.intellij.core.folding.JawaFoldingBuilder"/>
   </extensions>
 
   <actions>

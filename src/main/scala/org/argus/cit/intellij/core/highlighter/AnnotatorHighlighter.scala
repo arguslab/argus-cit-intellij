@@ -46,6 +46,9 @@ object AnnotatorHighlighter {
     case _: JawaNumberLiteral =>
       val annotation = holder.createInfoAnnotation(element, null)
       annotation.setTextAttributes(DefaultHighlighter.NUMBER)
+    case o: JawaParam =>
+      val annotation = holder.createInfoAnnotation(o.getVarDefSymbol, null)
+      annotation.setTextAttributes(DefaultHighlighter.PARAMETER)
     case _ =>
   }
 }

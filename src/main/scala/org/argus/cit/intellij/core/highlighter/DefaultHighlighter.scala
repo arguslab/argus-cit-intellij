@@ -39,7 +39,8 @@ object DefaultHighlighter {
   final val LOCATION_NAME = "Location"
   final val METHOD_DECLARATION_NAME = "Method declaration"
   final val METHOD_CALL_NAME = "Method call"
-  final val ANNOTATION_NAME = "Annotation name"
+  final val ANNOTATION_NAME = "Annotation"
+  final val PARAMETER_NAME = "Parameter"
 
   final val LINE_COMMENT_ID = "Jawa Line comment"
   final val BLOCK_COMMENT_ID = "Jawa Block comment"
@@ -63,6 +64,7 @@ object DefaultHighlighter {
   final val METHOD_DECLARATION_ID = "Jawa Method declaration"
   final val METHOD_CALL_ID = "Jawa Method call"
   final val ANNOTATION_ID = "Jawa Annotation name"
+  final val PARAMETER_ID = "Jawa parameter"
 
   val LINE_COMMENT = createKey(LINE_COMMENT_ID, DefaultLanguageHighlighterColors.LINE_COMMENT)
   val BLOCK_COMMENT = createKey(BLOCK_COMMENT_ID, DefaultLanguageHighlighterColors.BLOCK_COMMENT)
@@ -86,6 +88,7 @@ object DefaultHighlighter {
   val METHOD_DECLARATION = createKey(METHOD_DECLARATION_ID, JavaHighlightInfoTypes.METHOD_DECLARATION.getAttributesKey)
   val METHOD_CALL = createKey(METHOD_CALL_ID, JavaHighlightInfoTypes.METHOD_CALL.getAttributesKey)
   val ANNOTATION = createKey(ANNOTATION_ID, JavaHighlightInfoTypes.ANNOTATION_NAME.getAttributesKey)
+  val PARAMETER = createKey(PARAMETER_ID, JavaHighlightInfoTypes.PARAMETER.getAttributesKey)
 
   private def createKey(externalName: String, prototype: TextAttributesKey): TextAttributesKey = {
     TextAttributesKey.createTextAttributesKey(externalName, prototype)

@@ -27,9 +27,9 @@ public class JawaParamImpl extends ASTWrapperPsiElement implements JawaParam {
   }
 
   @Override
-  @NotNull
+  @Nullable
   public JawaKindAnnotation getKindAnnotation() {
-    return findNotNullChildByClass(JawaKindAnnotation.class);
+    return findChildByClass(JawaKindAnnotation.class);
   }
 
   @Override
