@@ -203,6 +203,10 @@ public class JawaVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitSignatureSymbol(@NotNull JawaSignatureSymbol o) {
+    visitPsiElement(o);
+  }
+
   public void visitStatement(@NotNull JawaStatement o) {
     visitPsiElement(o);
   }

@@ -28,8 +28,8 @@ public class JawaSignatureAnnotationImpl extends ASTWrapperPsiElement implements
 
   @Override
   @NotNull
-  public PsiElement getApostropheId() {
-    return findNotNullChildByType(APOSTROPHE_ID);
+  public JawaSignatureSymbol getSignatureSymbol() {
+    return findNotNullChildByClass(JawaSignatureSymbol.class);
   }
 
 }

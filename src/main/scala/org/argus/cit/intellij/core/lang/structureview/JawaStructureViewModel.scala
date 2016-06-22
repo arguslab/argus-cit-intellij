@@ -8,21 +8,23 @@
  * Detailed contributors are listed in the CONTRIBUTOR.md
  */
 
-package org.argus.cit.intellij.core.structureview
+package org.argus.cit.intellij.core.lang.structureview
 
-import com.intellij.ide.structureView.{StructureViewModel, StructureViewModelBase, StructureViewTreeElement}
+import com.intellij.ide.structureView.{StructureViewModel, StructureViewModelBase, StructureViewTreeElement, TextEditorBasedStructureViewModel}
 import com.intellij.ide.util.treeView.smartTree.Sorter
 import com.intellij.psi.PsiFile
 import org.argus.cit.intellij.core.lang.psi.impl.JawaFileImpl
 
 /**
-  * @author <a href="mailto:fgwei521@gmail.com">FenggWei</a>
+  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
-class JawaStructureViewModel(psiFile: PsiFile) extends StructureViewModelBase(psiFile, new JawaStructureViewElement(psiFile)) with StructureViewModel.ElementInfoProvider {
+class JawaStructureViewModel(psiFile: JawaFileImpl) extends TextEditorBasedStructureViewModel(psiFile) with StructureViewModel.ElementInfoProvider {
 
   override def getSorters: Array[Sorter] = List(Sorter.ALPHA_SORTER).toArray
 
   override def isAlwaysLeaf(element: StructureViewTreeElement): Boolean = element.isInstanceOf[JawaFileImpl]
 
   override def isAlwaysShowsPlus(structureViewTreeElement: StructureViewTreeElement): Boolean = false
+
+  override def getRoot: StructureViewTreeElement = ???
 }

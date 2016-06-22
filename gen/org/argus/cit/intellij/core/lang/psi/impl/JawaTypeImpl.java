@@ -38,4 +38,8 @@ public class JawaTypeImpl extends ASTWrapperPsiElement implements JawaType {
     return findNotNullChildByClass(JawaTypeSymbol.class);
   }
 
+  public org.argus.jawa.core.JawaType getType() {
+    return JawaPsiImplUtil.getType(this);
+  }
+
 }

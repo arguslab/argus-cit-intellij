@@ -8,7 +8,7 @@
  * Detailed contributors are listed in the CONTRIBUTOR.md
  */
 
-package org.argus.cit.intellij.core.structureview
+package org.argus.cit.intellij.core.lang.structureview
 
 import com.intellij.ide.structureView.{StructureViewBuilder, StructureViewModel, TreeBasedStructureViewBuilder}
 import com.intellij.lang.PsiStructureViewFactory
@@ -16,7 +16,7 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.psi.PsiFile
 
 /**
-  * @author <a href="mailto:fgwei521@gmail.com">FenggWei</a>
+  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
 class JawaStructureViewFactory extends PsiStructureViewFactory {
   override def getStructureViewBuilder(psiFile: PsiFile): StructureViewBuilder = {

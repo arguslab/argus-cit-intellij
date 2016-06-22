@@ -57,6 +57,7 @@ public interface JawaTypes {
   IElementType PARAM_CLAUSE = new JawaElementType("PARAM_CLAUSE");
   IElementType RETURN_STATEMENT = new JawaElementType("RETURN_STATEMENT");
   IElementType SIGNATURE_ANNOTATION = new JawaElementType("SIGNATURE_ANNOTATION");
+  IElementType SIGNATURE_SYMBOL = new JawaElementType("SIGNATURE_SYMBOL");
   IElementType STATEMENT = new JawaElementType("STATEMENT");
   IElementType STATIC_FIELD_DECLARATION = new JawaElementType("STATIC_FIELD_DECLARATION");
   IElementType STATIC_FIELD_DEF_SYMBOL = new JawaElementType("STATIC_FIELD_DEF_SYMBOL");
@@ -293,6 +294,9 @@ public interface JawaTypes {
       }
       else if (type == SIGNATURE_ANNOTATION) {
         return new JawaSignatureAnnotationImpl(node);
+      }
+      else if (type == SIGNATURE_SYMBOL) {
+        return new JawaSignatureSymbolImpl(node);
       }
       else if (type == STATEMENT) {
         return new JawaStatementImpl(node);

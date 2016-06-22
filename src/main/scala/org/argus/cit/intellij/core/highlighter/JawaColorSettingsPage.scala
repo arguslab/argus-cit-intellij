@@ -39,7 +39,7 @@ class JawaColorSettingsPage extends ColorSettingsPage {
       |<keyword>global</keyword> <class>`java.lang.String`</class> <static-field>`@@com.fgwei.Test.str1`</static-field> <annotation>@AccessFlag</annotation> STATIC<semi>;</semi>
       |<keyword>procedure</keyword> <class>`int`</class> <method-declaration>`com.fgwei.Test.main`</method-declaration> <par>(</par><class>`int`</class> <para>v3</para><comma>,</comma> <class>`int`</class> <para>v4</para><par>)</par>
       |       <annotation>@owner</annotation> ^<class>`com.fgwei.Test`</class>
-      |       <annotation>@signature</annotation> `Lcom/fgwei/Test;.main:()I`
+      |       <annotation>@signature</annotation> <sig>`Lcom/fgwei/Test;.main:()I`</sig>
       |       <annotation>@AccessFlag</annotation> PUBLIC_STATIC {
       |  <class>`int`</class> <local-variable>v0</local-variable><semi>;</semi>
       |  <class>`int`</class><bracket>[</bracket><bracket>]</bracket> <local-variable>v1</local-variable><semi>;</semi>
@@ -47,7 +47,7 @@ class JawaColorSettingsPage extends ColorSettingsPage {
       |
       |  <location>#L027040.</location> <local-variable>test</local-variable><assign>:=</assign> new <class>`com.fgwei.Test`</class>; <line-comment>// This is a line comment</line-comment>
       |  <location>#L027041.</location> <keyword>call</keyword> <method-call>`com.fgwei.Test.<init>`</method-call><par>(</par><local-variable>test</local-variable><par>)</par>
-      |         <annotation>@signature</annotation> `Lcom/fgwei/Test;.<init>:()V`
+      |         <annotation>@signature</annotation> <sig>`Lcom/fgwei/Test;.<init>:()V`</sig>
       |         <annotation>@classDescriptor</annotation> ^<class>`com.fgwei.Test`</class>
       |         <annotation>@kind</annotation> direct<semi>;</semi>
       |  <location>#L027044.</location> <local-variable>v0</local-variable><assign>:=</assign> <number>1I</number><semi>;</semi>
@@ -93,7 +93,8 @@ object JawaColorSettingsPage {
     new AttributesDescriptor(DefaultHighlighter.METHOD_CALL_NAME, DefaultHighlighter.METHOD_CALL),
     new AttributesDescriptor(DefaultHighlighter.BAD_CHARACTER_NAME, DefaultHighlighter.BAD_CHARACTER),
     new AttributesDescriptor(DefaultHighlighter.ANNOTATION_NAME, DefaultHighlighter.ANNOTATION),
-    new AttributesDescriptor(DefaultHighlighter.PARAMETER_NAME, DefaultHighlighter.PARAMETER)
+    new AttributesDescriptor(DefaultHighlighter.PARAMETER_NAME, DefaultHighlighter.PARAMETER),
+    new AttributesDescriptor(DefaultHighlighter.SIGNATURE_NAME, DefaultHighlighter.SIGNATURE)
   )
 
   final val ANNOTATOR_TAGS: util.HashMap[String, TextAttributesKey] = {
@@ -118,6 +119,7 @@ object JawaColorSettingsPage {
     tags.put("number", DefaultHighlighter.NUMBER)
     tags.put("annotation", DefaultHighlighter.ANNOTATION)
     tags.put("para", DefaultHighlighter.PARAMETER)
+    tags.put("sig", DefaultHighlighter.SIGNATURE)
     tags
   }
 }

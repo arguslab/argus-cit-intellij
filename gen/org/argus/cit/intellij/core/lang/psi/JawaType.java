@@ -13,4 +13,6 @@ public interface JawaType extends PsiElement {
   @NotNull
   JawaTypeSymbol getTypeSymbol();
 
+  org.argus.jawa.core.JawaType getType();
+
 }

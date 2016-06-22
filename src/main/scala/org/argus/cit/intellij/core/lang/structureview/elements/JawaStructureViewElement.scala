@@ -8,37 +8,23 @@
  * Detailed contributors are listed in the CONTRIBUTOR.md
  */
 
-package org.argus.cit.intellij.core.structureview
+package org.argus.cit.intellij.core.lang.structureview.elements
 
 import com.intellij.ide.structureView.StructureViewTreeElement
-import com.intellij.ide.util.treeView.smartTree.{SortableTreeElement, TreeElement}
+import com.intellij.ide.util.treeView.smartTree.SortableTreeElement
 import com.intellij.navigation.{ItemPresentation, NavigationItem}
 import com.intellij.psi.{PsiElement, PsiNamedElement}
-import org.argus.cit.intellij.core.lang.psi.impl.JawaFileImpl
-import org.sireum.util._
 
 /**
-  * @author <a href="mailto:fgwei521@gmail.com">FenggWei</a>
+  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
-class JawaStructureViewElement(element: PsiElement) extends StructureViewTreeElement with SortableTreeElement {
-  override def getValue: AnyRef = element
+abstract class JawaStructureViewElement(protected val element: PsiElement, val inherited: Boolean) extends StructureViewTreeElement with SortableTreeElement {
+  override def getValue: Object = element
 
   override def getAlphaSortKey: String = element match {
     case named: PsiNamedElement => named.getName
     case _ => null
   }
-
-  override def getChildren: Array[TreeElement] = {
-    val children: MSet[TreeElement] = msetEmpty
-    element match {
-      case file: JawaFileImpl =>
-
-      case _ =>
-    }
-    children.toArray
-  }
-
-  override def getPresentation: ItemPresentation = ???
 
   override def canNavigateToSource: Boolean = element match {
     case ni: NavigationItem => ni.canNavigateToSource

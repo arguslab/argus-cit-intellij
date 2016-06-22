@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface JawaSignatureAnnotation extends PsiElement {
 
   @NotNull
-  PsiElement getApostropheId();
+  JawaSignatureSymbol getSignatureSymbol();
 
 }

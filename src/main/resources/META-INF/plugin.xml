@@ -29,6 +29,7 @@
     <annotator language="Jawa" implementationClass="org.argus.cit.intellij.core.annotator.JawaHighlightingAnnotator"/>
     <lang.commenter language="Jawa" implementationClass="org.argus.cit.intellij.core.commenter.JawaCommenter"/>
     <lang.foldingBuilder language="Jawa" implementationClass="org.argus.cit.intellij.core.folding.JawaFoldingBuilder"/>
+    <lang.psiStructureViewFactory language="Jawa" implementationClass="org.argus.cit.intellij.core.lang.structureview.JawaStructureViewFactory"/>
   </extensions>
 
   <actions>

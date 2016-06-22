@@ -170,6 +170,9 @@ public class JawaParser implements PsiParser, LightPsiParser {
     else if (t == SIGNATURE_ANNOTATION) {
       r = SignatureAnnotation(b, 0);
     }
+    else if (t == SIGNATURE_SYMBOL) {
+      r = SignatureSymbol(b, 0);
+    }
     else if (t == STATEMENT) {
       r = Statement(b, 0);
     }
@@ -1300,15 +1303,27 @@ public class JawaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // '@signature' APOSTROPHE_ID
+  // '@signature' SignatureSymbol
   public static boolean SignatureAnnotation(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "SignatureAnnotation")) return false;
     if (!nextTokenIs(b, SIGNATURE_KEY)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, SIGNATURE_KEY);
-    r = r && consumeToken(b, APOSTROPHE_ID);
+    r = r && SignatureSymbol(b, l + 1);
     exit_section_(b, m, SIGNATURE_ANNOTATION, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // APOSTROPHE_ID
+  public static boolean SignatureSymbol(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "SignatureSymbol")) return false;
+    if (!nextTokenIs(b, APOSTROPHE_ID)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, APOSTROPHE_ID);
+    exit_section_(b, m, SIGNATURE_SYMBOL, r);
     return r;
   }
 

@@ -15,7 +15,7 @@ import org.argus.cit.intellij.core.highlighter.AnnotatorHighlighter
 import org.argus.cit.intellij.core.lang.psi._
 
 /**
-  * @author <a href="mailto:fgwei521@gmail.com">FenggWei</a>
+  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
 class JawaHighlightingAnnotator extends JawaAnnotator {
   override def annotate(psiElement: PsiElement, annotationHolder: AnnotationHolder): Unit = psiElement.accept(new JawaVisitor{
@@ -78,6 +78,10 @@ class JawaHighlightingAnnotator extends JawaAnnotator {
     override def visitParam(o: JawaParam) = {
       AnnotatorHighlighter.highlightElement(o, annotationHolder)
       super.visitParam(o)
+    }
+    override def visitSignatureSymbol(o: JawaSignatureSymbol) = {
+      AnnotatorHighlighter.highlightElement(o, annotationHolder)
+      super.visitSignatureSymbol(o)
     }
   })
 }
