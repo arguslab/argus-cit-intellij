@@ -1,12 +1,13 @@
 // This is a generated file. Not intended for manual editing.
 package org.argus.cit.intellij.jawa.lang.psi.impl;
 
+import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-
-import static org.argus.cit.intellij.jawa.lang.psi.JawaTypes.*;
+import com.intellij.psi.util.PsiTreeUtil;
+import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.argus.cit.intellij.jawa.lang.psi.*;
 import org.argus.jawa.core.Signature;
@@ -29,7 +30,7 @@ public class JawaSignatureSymbolImpl extends ASTWrapperPsiElement implements Jaw
   @Override
   @NotNull
   public PsiElement getApostropheId() {
-    return findNotNullChildByType(APOSTROPHE_ID);
+    return notNullChild(findChildByType(APOSTROPHE_ID));
   }
 
   public Signature getSignature() {

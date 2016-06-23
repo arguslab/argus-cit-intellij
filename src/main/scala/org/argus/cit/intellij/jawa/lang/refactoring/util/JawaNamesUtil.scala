@@ -13,7 +13,7 @@ package org.argus.cit.intellij.jawa.lang.refactoring.util
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi._
 import org.argus.cit.intellij.jawa.lang.lexer.{JawaLexerAdapter, JawaTokenTypes}
-import org.argus.cit.intellij.jawa.lang.psi.{JawaPsiUtil, JawaTypes}
+import org.argus.cit.intellij.jawa.lang.psi.{JawaPsiUtil, JawaElementTypes}
 import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.JawaNamedElement
 
 /**
@@ -46,7 +46,7 @@ object JawaNamesUtil {
   }
 
   def isIdentifier(text: String): Boolean = {
-    checkGeneric(text, lexer => lexer.getTokenType == JawaTypes.ID)
+    checkGeneric(text, lexer => lexer.getTokenType == JawaElementTypes.ID)
   }
 
   def isQualifiedName(text: String): Boolean = {

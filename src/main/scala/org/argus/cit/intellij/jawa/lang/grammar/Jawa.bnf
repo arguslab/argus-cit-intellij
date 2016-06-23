@@ -8,7 +8,7 @@
   psiPackage="org.argus.cit.intellij.jawa.lang.psi"
   psiImplPackage="org.argus.cit.intellij.jawa.lang.psi.impl"
 
-  elementTypeHolderClass="org.argus.cit.intellij.jawa.lang.psi.JawaTypes"
+  elementTypeHolderClass="org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes"
   elementTypeClass="org.argus.cit.intellij.jawa.lang.psi.JawaElementType"
   tokenTypeClass="org.argus.cit.intellij.jawa.lang.psi.JawaTokenType"
 
@@ -88,6 +88,9 @@
     STRING_LITERAL="regexp:('([^'\\]|\\.)*'|\"([^\"\\]|\\.)*\")"
   ]
 
+  implements("AccessFlagAnnotation")="org.argus.cit.intellij.jawa.lang.psi.api.base.JawaModifierList"
+  mixin("AccessFlagAnnotation")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaAccessFlagAnnotationImplMixin"
+  stubClass("AccessFlagAnnotation")="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaAccessFlagStub"
 }
 
 CompilationUnit ::= ClassOrInterfaceDeclaration*

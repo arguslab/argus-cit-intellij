@@ -18,7 +18,7 @@ import com.intellij.psi.tree.{IFileElementType, TokenSet}
 import com.intellij.psi.{FileViewProvider, PsiElement, PsiFile}
 import org.argus.cit.intellij.jawa.lang.JawaLanguage
 import org.argus.cit.intellij.jawa.lang.lexer.{JawaLexerAdapter, JawaTokenTypes}
-import org.argus.cit.intellij.jawa.lang.psi.JawaTypes
+import org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes
 import org.argus.cit.intellij.jawa.lang.psi.impl.JawaFileImpl
 
 /**
@@ -35,7 +35,7 @@ class JawaParserDefinition extends ParserDefinition {
 
   override def getCommentTokens: TokenSet = JawaTokenTypes.COMMENTS
 
-  override def createElement(astNode: ASTNode): PsiElement = JawaTypes.Factory.createElement(astNode)
+  override def createElement(astNode: ASTNode): PsiElement = JawaElementTypes.Factory.createElement(astNode)
 
   override def getStringLiteralElements: TokenSet = JawaTokenTypes.STRINGS
 

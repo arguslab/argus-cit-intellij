@@ -1,12 +1,13 @@
 // This is a generated file. Not intended for manual editing.
 package org.argus.cit.intellij.jawa.lang.psi.impl;
 
+import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-
-import static org.argus.cit.intellij.jawa.lang.psi.JawaTypes.*;
+import com.intellij.psi.util.PsiTreeUtil;
+import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.argus.cit.intellij.jawa.lang.psi.*;
 
@@ -28,31 +29,31 @@ public class JawaAnnotationImpl extends ASTWrapperPsiElement implements JawaAnno
   @Override
   @Nullable
   public JawaAccessFlagAnnotation getAccessFlagAnnotation() {
-    return findChildByClass(JawaAccessFlagAnnotation.class);
+    return PsiTreeUtil.getChildOfType(this, JawaAccessFlagAnnotation.class);
   }
 
   @Override
   @Nullable
   public JawaAnnotationKey getAnnotationKey() {
-    return findChildByClass(JawaAnnotationKey.class);
+    return PsiTreeUtil.getChildOfType(this, JawaAnnotationKey.class);
   }
 
   @Override
   @Nullable
   public JawaKindAnnotation getKindAnnotation() {
-    return findChildByClass(JawaKindAnnotation.class);
+    return PsiTreeUtil.getChildOfType(this, JawaKindAnnotation.class);
   }
 
   @Override
   @Nullable
   public JawaSignatureAnnotation getSignatureAnnotation() {
-    return findChildByClass(JawaSignatureAnnotation.class);
+    return PsiTreeUtil.getChildOfType(this, JawaSignatureAnnotation.class);
   }
 
   @Override
   @Nullable
   public JawaTypeAnnotation getTypeAnnotation() {
-    return findChildByClass(JawaTypeAnnotation.class);
+    return PsiTreeUtil.getChildOfType(this, JawaTypeAnnotation.class);
   }
 
   @Override

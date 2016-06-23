@@ -1,9 +1,13 @@
 // This is a generated file. Not intended for manual editing.
 package org.argus.cit.intellij.jawa.lang.psi.impl;
 
+import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.util.PsiTreeUtil;
+import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.argus.cit.intellij.jawa.lang.psi.*;
 
@@ -25,25 +29,25 @@ public class JawaAssignmentStatementImpl extends ASTWrapperPsiElement implements
   @Override
   @NotNull
   public JawaExpressionLhs getExpressionLhs() {
-    return findNotNullChildByClass(JawaExpressionLhs.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, JawaExpressionLhs.class));
   }
 
   @Override
   @NotNull
   public JawaExpressionRhs getExpressionRhs() {
-    return findNotNullChildByClass(JawaExpressionRhs.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, JawaExpressionRhs.class));
   }
 
   @Override
   @Nullable
   public JawaKindAnnotation getKindAnnotation() {
-    return findChildByClass(JawaKindAnnotation.class);
+    return PsiTreeUtil.getChildOfType(this, JawaKindAnnotation.class);
   }
 
   @Override
   @Nullable
   public JawaTypeAnnotation getTypeAnnotation() {
-    return findChildByClass(JawaTypeAnnotation.class);
+    return PsiTreeUtil.getChildOfType(this, JawaTypeAnnotation.class);
   }
 
 }

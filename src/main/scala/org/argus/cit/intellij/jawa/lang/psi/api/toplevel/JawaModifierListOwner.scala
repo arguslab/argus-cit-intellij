@@ -16,7 +16,7 @@ import com.intellij.psi.stubs.StubElement
 import com.intellij.psi.util.PsiUtilCore
 import com.intellij.util.indexing.FileBasedIndex
 import org.argus.cit.intellij.jawa.JavaArrayFactoryUtil
-import org.argus.cit.intellij.jawa.lang.psi.{JawaPsiElement, JawaTypes}
+import org.argus.cit.intellij.jawa.lang.psi.{JawaPsiElement, JawaStubBasedElementImpl, JawaElementTypes}
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaModifierList
 
 /**
@@ -28,7 +28,7 @@ trait JawaModifierListOwner extends JawaPsiElement with PsiModifierListOwner {
       case st: JawaStubBasedElementImpl[_] =>
         val stub: StubElement[_ <: PsiElement] = st.getStub
         if (stub != null) {
-          val array = stub.getChildrenByType(JawaTypes.ACCESS_FLAG_ANNOTATION, JavaArrayFactoryUtil.JawaModifierListFactory)
+          val array = stub.getChildrenByType(JawaElementTypes.ACCESS_FLAG_ANNOTATION, JavaArrayFactoryUtil.JawaModifierListFactory)
           if (array.isEmpty) {
             val faultyContainer: VirtualFile = PsiUtilCore.getVirtualFile(this)
             if (faultyContainer != null && faultyContainer.isValid) {
@@ -60,10 +60,10 @@ trait JawaModifierListOwner extends JawaPsiElement with PsiModifierListOwner {
 
   private def hasModifierPropertyInner(name: String): Boolean = {
     this match {
-      case st: ScalaStubBasedElementImpl[_] =>
+      case st: JawaStubBasedElementImpl[_] =>
         val stub: StubElement[_ <: PsiElement] = st.getStub
         if (stub != null) {
-          val mod = stub.findChildStubByType(ScalaElementTypes.MODIFIERS)
+          val mod = stub.findChildStubByType(JawaElementTypes.ACCESS_FLAG_ANNOTATION)
           if (mod != null) {
             return mod.getPsi.hasModifierProperty(name: String)
           }

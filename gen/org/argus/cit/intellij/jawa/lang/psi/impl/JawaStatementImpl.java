@@ -4,8 +4,10 @@ package org.argus.cit.intellij.jawa.lang.psi.impl;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
+import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.argus.cit.intellij.jawa.lang.psi.*;
 
@@ -33,49 +35,49 @@ public class JawaStatementImpl extends ASTWrapperPsiElement implements JawaState
   @Override
   @Nullable
   public JawaAssignmentStatement getAssignmentStatement() {
-    return findChildByClass(JawaAssignmentStatement.class);
+    return PsiTreeUtil.getChildOfType(this, JawaAssignmentStatement.class);
   }
 
   @Override
   @Nullable
   public JawaCallStatement getCallStatement() {
-    return findChildByClass(JawaCallStatement.class);
+    return PsiTreeUtil.getChildOfType(this, JawaCallStatement.class);
   }
 
   @Override
   @Nullable
   public JawaGotoStatement getGotoStatement() {
-    return findChildByClass(JawaGotoStatement.class);
+    return PsiTreeUtil.getChildOfType(this, JawaGotoStatement.class);
   }
 
   @Override
   @Nullable
   public JawaIfStatement getIfStatement() {
-    return findChildByClass(JawaIfStatement.class);
+    return PsiTreeUtil.getChildOfType(this, JawaIfStatement.class);
   }
 
   @Override
   @Nullable
   public JawaMonitorStatement getMonitorStatement() {
-    return findChildByClass(JawaMonitorStatement.class);
+    return PsiTreeUtil.getChildOfType(this, JawaMonitorStatement.class);
   }
 
   @Override
   @Nullable
   public JawaReturnStatement getReturnStatement() {
-    return findChildByClass(JawaReturnStatement.class);
+    return PsiTreeUtil.getChildOfType(this, JawaReturnStatement.class);
   }
 
   @Override
   @Nullable
   public JawaSwitchStatement getSwitchStatement() {
-    return findChildByClass(JawaSwitchStatement.class);
+    return PsiTreeUtil.getChildOfType(this, JawaSwitchStatement.class);
   }
 
   @Override
   @Nullable
   public JawaThrowStatement getThrowStatement() {
-    return findChildByClass(JawaThrowStatement.class);
+    return PsiTreeUtil.getChildOfType(this, JawaThrowStatement.class);
   }
 
 }

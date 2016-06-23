@@ -12,8 +12,8 @@ package org.argus.cit.intellij.jawa.lang.lexer
 
 import com.intellij.psi.TokenType
 import com.intellij.psi.tree.TokenSet
-import org.argus.cit.intellij.jawa.lang.psi.{JawaClassOrInterfaceDeclaration, JawaTokenType, JawaTypes}
-import org.argus.cit.intellij.jawa.lang.psi.JawaTypes._
+import org.argus.cit.intellij.jawa.lang.psi.{JawaClassOrInterfaceDeclaration, JawaTokenType, JawaElementTypes}
+import JawaElementTypes._
 import org.argus.cit.intellij.jawa.lang.psi.impl.JawaClassOrInterfaceDeclarationImpl
 
 /**
@@ -44,21 +44,21 @@ object JawaTokenTypes {
 
   val STRINGS = TokenSet.create(STRING_LITERAL)
 
-  val SEMICOLON = TokenSet.create(JawaTypes.SEMI)
+  val SEMICOLON = TokenSet.create(JawaElementTypes.SEMI)
 
-  val DOT = TokenSet.create(JawaTypes.DOT)
+  val DOT = TokenSet.create(JawaElementTypes.DOT)
 
-  val COMMA = TokenSet.create(JawaTypes.COMMA)
+  val COMMA = TokenSet.create(JawaElementTypes.COMMA)
 
-  val ASSIGN_OP = TokenSet.create(JawaTypes.ASSIGN_OP)
+  val ASSIGN_OP = TokenSet.create(JawaElementTypes.ASSIGN_OP)
 
-  val PARENTESES = TokenSet.create(JawaTypes.LPAREN, JawaTypes.RPAREN)
+  val PARENTESES = TokenSet.create(JawaElementTypes.LPAREN, JawaElementTypes.RPAREN)
 
-  val BRACKETS = TokenSet.create(JawaTypes.LBRACKET, JawaTypes.RBRACKET)
+  val BRACKETS = TokenSet.create(JawaElementTypes.LBRACKET, JawaElementTypes.RBRACKET)
 
-  val BRACES = TokenSet.create(JawaTypes.LBRACE, JawaTypes.RBRACE)
+  val BRACES = TokenSet.create(JawaElementTypes.LBRACE, JawaElementTypes.RBRACE)
 
-  val NUMBERS = TokenSet.create(JawaTypes.NUMBER_LITERAL)
+  val NUMBERS = TokenSet.create(JawaElementTypes.NUMBER_LITERAL)
 
   val LINE_COMMENTS = TokenSet.create(LINE_COMMENT)
 
@@ -68,5 +68,5 @@ object JawaTokenTypes {
 
   val BAD_CHARACTER = TokenSet.create(TokenType.BAD_CHARACTER)
 
-  val ANNOTATION = TokenSet.create(JawaTypes.OWNER_KEY, JawaTypes.TYPE_KEY, JawaTypes.CLASS_DESCRIPTOR_KEY, JawaTypes.SIGNATURE_KEY, JawaTypes.KIND_KEY, JawaTypes.ACCESS_FLAG_KEY)
+  val ANNOTATION = TokenSet.create(JawaElementTypes.OWNER_KEY, JawaElementTypes.TYPE_KEY, JawaElementTypes.CLASS_DESCRIPTOR_KEY, JawaElementTypes.SIGNATURE_KEY, JawaElementTypes.KIND_KEY, JawaElementTypes.ACCESS_FLAG_KEY)
 }

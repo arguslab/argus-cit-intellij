@@ -1,19 +1,30 @@
 // This is a generated file. Not intended for manual editing.
 package org.argus.cit.intellij.jawa.lang.psi.impl;
 
+import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-
-import static org.argus.cit.intellij.jawa.lang.psi.JawaTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import com.intellij.psi.util.PsiTreeUtil;
+import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
+import org.argus.cit.intellij.jawa.lang.psi.mixins.JawaAccessFlagAnnotationImplMixin;
 import org.argus.cit.intellij.jawa.lang.psi.*;
+import com.intellij.psi.stubs.IStubElementType;
+import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaAccessFlagStub;
 
-public class JawaAccessFlagAnnotationImpl extends ASTWrapperPsiElement implements JawaAccessFlagAnnotation {
+public class JawaAccessFlagAnnotationImpl extends JawaAccessFlagAnnotationImplMixin implements JawaAccessFlagAnnotation {
 
   public JawaAccessFlagAnnotationImpl(ASTNode node) {
     super(node);
+  }
+
+  public JawaAccessFlagAnnotationImpl(JawaAccessFlagStub stub, IStubElementType nodeType) {
+    super(stub, nodeType);
+  }
+
+  public JawaAccessFlagAnnotationImpl(JawaAccessFlagStub stub, IStubElementType<StubT, PsiT> nodeType, ASTNode node) {
+    super(stub, nodeType, node);
   }
 
   public void accept(@NotNull JawaVisitor visitor) {
@@ -29,6 +40,10 @@ public class JawaAccessFlagAnnotationImpl extends ASTWrapperPsiElement implement
   @Nullable
   public PsiElement getId() {
     return findChildByType(ID);
+  }
+
+  public int getModifier() {
+    return JawaPsiImplUtil.getModifier(this);
   }
 
 }

@@ -4,8 +4,10 @@ package org.argus.cit.intellij.jawa.lang.psi.impl;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
+import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.argus.cit.intellij.jawa.lang.psi.*;
 
@@ -27,7 +29,7 @@ public class JawaIndexingExpressionImpl extends ASTWrapperPsiElement implements 
   @Override
   @Nullable
   public JawaNumberLiteral getNumberLiteral() {
-    return findChildByClass(JawaNumberLiteral.class);
+    return PsiTreeUtil.getChildOfType(this, JawaNumberLiteral.class);
   }
 
   @Override

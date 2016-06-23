@@ -1,9 +1,13 @@
 // This is a generated file. Not intended for manual editing.
 package org.argus.cit.intellij.jawa.lang.psi.impl;
 
+import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.util.PsiTreeUtil;
+import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.argus.cit.intellij.jawa.lang.psi.*;
 
@@ -25,13 +29,13 @@ public class JawaExtendAndImplementImpl extends ASTWrapperPsiElement implements 
   @Override
   @NotNull
   public JawaKindAnnotation getKindAnnotation() {
-    return findNotNullChildByClass(JawaKindAnnotation.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, JawaKindAnnotation.class));
   }
 
   @Override
   @NotNull
   public JawaTypeSymbol getTypeSymbol() {
-    return findNotNullChildByClass(JawaTypeSymbol.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, JawaTypeSymbol.class));
   }
 
 }

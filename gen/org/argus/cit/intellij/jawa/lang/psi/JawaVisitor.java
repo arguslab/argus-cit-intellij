@@ -4,6 +4,7 @@ package org.argus.cit.intellij.jawa.lang.psi;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
+import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaModifierList;
 
 public class JawaVisitor extends PsiElementVisitor {
 
@@ -12,7 +13,7 @@ public class JawaVisitor extends PsiElementVisitor {
   }
 
   public void visitAccessFlagAnnotation(@NotNull JawaAccessFlagAnnotation o) {
-    visitPsiElement(o);
+    visitModifierList(o);
   }
 
   public void visitAnnotation(@NotNull JawaAnnotation o) {
@@ -280,6 +281,10 @@ public class JawaVisitor extends PsiElementVisitor {
   }
 
   public void visitVarSymbol(@NotNull JawaVarSymbol o) {
+    visitPsiElement(o);
+  }
+
+  public void visitModifierList(@NotNull JawaModifierList o) {
     visitPsiElement(o);
   }
 

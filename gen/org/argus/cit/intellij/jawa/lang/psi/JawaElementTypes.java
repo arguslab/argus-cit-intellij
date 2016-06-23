@@ -6,7 +6,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.lang.ASTNode;
 import org.argus.cit.intellij.jawa.lang.psi.impl.*;
 
-public interface JawaTypes {
+public interface JawaElementTypes {
 
   IElementType ACCESS_EXPRESSION = new JawaElementType("ACCESS_EXPRESSION");
   IElementType ACCESS_FLAG_ANNOTATION = new JawaElementType("ACCESS_FLAG_ANNOTATION");

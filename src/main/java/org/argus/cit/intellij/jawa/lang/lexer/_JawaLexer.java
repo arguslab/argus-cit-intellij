@@ -3,7 +3,7 @@
 package org.argus.cit.intellij.jawa.lang.lexer;
 import com.intellij.lexer.*;
 import com.intellij.psi.tree.IElementType;
-import static org.argus.cit.intellij.jawa.lang.psi.JawaTypes.*;
+import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
 
 
 /**

@@ -10,9 +10,14 @@
 
 package org.argus.cit.intellij.jawa
 
+import com.intellij.openapi.application.{ApplicationManager, Result}
+import com.intellij.openapi.command.{CommandProcessor, WriteCommandAction}
+import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.Computable
 import com.intellij.psi.{PsiClass, PsiMethod, PsiModifier, PsiNamedElement}
 import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.JawaTypeDefinition
 import org.argus.jawa.core.JawaClass
+import org.jetbrains.annotations.NotNull
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
@@ -118,6 +123,56 @@ package object extensions {
         case nd: ScNamedElement => nd.name
         case nd => nd.getName
       }
+    }
+  }
+
+
+
+
+  def startCommand(project: Project, commandName: String)(body: => Unit): Unit = {
+    CommandProcessor.getInstance.executeCommand(project, new Runnable {
+      def run() {
+        inWriteAction {
+          body
+        }
+      }
+    }, commandName, null)
+  }
+
+  def inWriteAction[T](body: => T): T = {
+    val application = ApplicationManager.getApplication
+
+    if (application.isWriteAccessAllowed) body
+    else {
+      application.runWriteAction(
+        new Computable[T] {
+          def compute: T = body
+        }
+      )
+    }
+  }
+
+  def inWriteCommandAction[T](project: Project, commandName: String = "Undefined")(body: => T): T = {
+    val computable = new Computable[T] {
+      override def compute(): T = body
+    }
+    new WriteCommandAction[T](project, commandName) {
+      protected def run(@NotNull result: Result[T]) {
+        result.setResult(computable.compute())
+      }
+    }.execute.getResultObject
+  }
+
+  def inReadAction[T](body: => T): T = {
+    val application = ApplicationManager.getApplication
+
+    if (application.isReadAccessAllowed) body
+    else {
+      application.runReadAction(
+        new Computable[T] {
+          override def compute(): T = body
+        }
+      )
     }
   }
 }

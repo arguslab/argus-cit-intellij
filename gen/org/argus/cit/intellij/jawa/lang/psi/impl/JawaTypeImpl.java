@@ -4,8 +4,10 @@ package org.argus.cit.intellij.jawa.lang.psi.impl;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
+import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.argus.cit.intellij.jawa.lang.psi.*;
 
@@ -33,7 +35,7 @@ public class JawaTypeImpl extends ASTWrapperPsiElement implements JawaType {
   @Override
   @NotNull
   public JawaTypeSymbol getTypeSymbol() {
-    return findNotNullChildByClass(JawaTypeSymbol.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, JawaTypeSymbol.class));
   }
 
   public org.argus.jawa.core.JawaType getType() {
