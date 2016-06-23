@@ -1,0 +1,236 @@
+{
+  parserClass="org.argus.cit.intellij.jawa.lang.parser.JawaParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Jawa"
+  psiImplClassSuffix="Impl"
+  psiPackage="org.argus.cit.intellij.jawa.lang.psi"
+  psiImplPackage="org.argus.cit.intellij.jawa.lang.psi.impl"
+
+  elementTypeHolderClass="org.argus.cit.intellij.jawa.lang.psi.JawaTypes"
+  elementTypeClass="org.argus.cit.intellij.jawa.lang.psi.JawaElementType"
+  tokenTypeClass="org.argus.cit.intellij.jawa.lang.psi.JawaTokenType"
+
+  psiImplUtilClass="org.argus.cit.intellij.jawa.lang.psi.impl.JawaPsiImplUtil"
+
+  tokens = [
+    SEMI=';'
+    COMMA=','
+    AT='@'
+    STATIC_PREFIX='@@'
+    HAT='^'
+    BAR='|'
+    ASSIGN_OP=':='
+    ARROW='=>'
+    DOT='.'
+    RANGE='..'
+    POUND='#'
+
+    LBRACE='{'
+    RBRACE='}'
+    LBRACKET='['
+    RBRACKET=']'
+    LPAREN='('
+    RPAREN=')'
+
+    CLASS_OR_INTERFACE='record'
+    EXTENDS_AND_IMPLEMENTS='extends'
+    STATIC_FIELD='global'
+    METHOD='procedure'
+    CALL='call'
+    THROW='throw'
+    IF='if'
+    THEN='then'
+    GOTO='goto'
+    SWITCH='switch'
+    ELSE='else'
+    RETURN='return'
+    MONITOR_ENTER='monitorenter'
+    MONITOR_EXIT='monitorexit'
+    NEW='new'
+    EXCEPTION='Exception'
+    CONST_CLASS='constclass'
+    LENGTH='length'
+    INSTANCEOF='instanceof'
+    NULL_LITERAL='null'
+    CATCH='catch'
+    OWNER_KEY='@owner'
+    TYPE_KEY='@type'
+    CLASS_DESCRIPTOR_KEY='@classDescriptor'
+    SIGNATURE_KEY='@signature'
+    KIND_KEY='@kind'
+    ACCESS_FLAG_KEY='@AccessFlag'
+
+    fcmpl='fcmpl'
+    fcmpg='fcmpg'
+    dcmpl='dcmpl'
+    dcmpg='dcmpg'
+    lcmp='lcmp'
+
+    ADD='+'
+    SUB='-'
+    MUL='*'
+    DIV='/'
+    REM='%%'
+    AND='^&'
+    OR='^|'
+    XOR='^~'
+    SHL='^<'
+    SHR='^>'
+    USHR='^>>'
+
+    ID='regexp:(\p{Alpha}([\w]|[$])*)'
+    APOSTROPHE_ID="regexp:(`[^`]+`)"
+    STATIC_ID="regexp:(`@@([^`]|[^@])+`)"
+    LOCATION_ID="regexp:(#[\w]*\.)"
+    number='regexp:\d+(\.\d*)?'
+    STRING_LITERAL="regexp:('([^'\\]|\\.)*'|\"([^\"\\]|\\.)*\")"
+  ]
+
+}
+
+CompilationUnit ::= ClassOrInterfaceDeclaration*
+
+ClassOrInterfaceDeclaration ::= 'record' TypeDefSymbol KindAnnotation AccessFlagAnnotation ExtendsAndImplementsClauses? InstanceFieldDeclarationBlock StaticFieldDeclaration* MethodDeclaration*
+
+Annotation ::= TypeAnnotation | SignatureAnnotation | KindAnnotation | AccessFlagAnnotation | AnnotationKey ID?
+TypeAnnotation ::= ('@owner'|'@type'|'@classDescriptor') TypeExpression
+SignatureAnnotation ::= '@signature' SignatureSymbol
+KindAnnotation ::= '@kind' ID
+AccessFlagAnnotation ::= '@AccessFlag' ID? {methods=[getModifier]}
+AnnotationKey ::= '@' ID
+
+ExtendsAndImplementsClauses ::= 'extends' ExtendAndImplement (',' ExtendAndImplement)* {pin=2}
+ExtendAndImplement ::= TypeSymbol KindAnnotation
+
+InstanceFieldDeclarationBlock ::= '{' InstanceFieldDeclaration* '}'
+InstanceFieldDeclaration ::= Type FieldDefSymbol AccessFlagAnnotation ';'
+
+StaticFieldDeclaration ::= 'global' Type StaticFieldDefSymbol AccessFlagAnnotation ';'
+
+Type ::= TypeSymbol TypeFragment* {methods=[getType]}
+TypeFragment ::= '[' ']'
+TypeFragmentWithInit ::= '[' VarSymbol (',' VarSymbol)* ']'
+
+MethodDeclaration ::= 'procedure' Type MethodDefSymbol ParamClause TypeAnnotation SignatureAnnotation AccessFlagAnnotation Body
+
+ParamClause ::= '(' (Param (',' Param)*)? ')'
+Param ::= Type VarDefSymbol KindAnnotation?
+
+Body ::= '{' LocalVarDeclaration* Location* CatchClause* '}'
+
+LocalVarDeclaration ::= Type VarDefSymbol ';'
+
+Location ::= LocationDefSymbol Statement? ';'?
+
+Statement ::= CallStatement
+              |ThrowStatement
+              |IfStatement
+              |SwitchStatement
+              |ReturnStatement
+              |GotoStatement
+              |MonitorStatement
+              |AssignmentStatement
+              |Annotation*
+
+CallStatement ::= 'call' CallLhs? MethodNameSymbol ArgClause SignatureAnnotation TypeAnnotation KindAnnotation
+CallLhs ::= VarSymbol ':=' {pin=2}
+ArgClause ::= '(' (VarSymbol (',' VarSymbol)*)? ')' {pin=3}
+
+ThrowStatement ::= 'throw' VarSymbol
+
+IfStatement ::= 'if' BinaryExpression 'then' 'goto' LocationSymbol
+
+SwitchStatement ::= 'switch' VarSymbol SwitchCase* SwitchDefaultCase?
+SwitchCase ::= '|' NUMBER_LITERAL '=>' 'goto' LocationSymbol {pin=2}
+SwitchDefaultCase ::= '|' 'else' '=>' 'goto' LocationSymbol {pin=2}
+
+ReturnStatement ::= 'return' VarSymbol? KindAnnotation?
+
+GotoStatement ::= 'goto' LocationSymbol
+
+MonitorStatement ::= '@' ('monitorenter'|'monitorexit') VarSymbol {pin=2}
+
+AssignmentStatement ::= Expression_LHS ':=' Expression_RHS KindAnnotation? TypeAnnotation?
+
+Expression_LHS ::= AccessExpression
+                   |IndexingExpression
+                   |NameExpression
+
+Expression_RHS ::= NewExpression
+                   |CmpExpression
+                   |ExceptionExpression
+                   |ConstClassExpression
+                   |LengthExpression
+                   |InstanceofExpression
+                   |NullExpression
+                   |TupleExpression
+                   |CastExpression
+                   |LiteralExpression
+                   |UnaryExpression
+                   |AccessExpression
+                   |IndexingExpression
+                   |BinaryExpression
+                   |NameExpression
+
+NameExpression ::= VarSymbol|StaticFieldNameSymbol
+
+NewExpression ::= 'new' TypeSymbol TypeFragmentWithInit*
+
+CMP ::= 'fcmpl' | 'fcmpg' | 'dcmpl' | 'dcmpg' | 'lcmp'
+
+CmpExpression ::= CMP '(' VarSymbol ',' VarSymbol ')'
+
+ExceptionExpression ::= 'Exception'
+
+ConstClassExpression ::= 'constclass' TypeAnnotation
+
+TypeExpression ::= '^' Type
+
+LengthExpression ::= 'length' '@' ID VarSymbol
+
+InstanceofExpression ::= 'instanceof' '@' ID VarSymbol TypeAnnotation
+
+NullExpression ::= 'null' TypeAnnotation
+
+TupleExpression ::= '(' (NUMBER_LITERAL (',' NUMBER_LITERAL)*)? ')'
+
+CastExpression ::= '(' Type ')' VarSymbol
+
+LiteralExpression ::= (NUMBER_LITERAL|STRING_LITERAL|'null')
+
+private unary_op ::= '-' | '~'
+
+UnaryExpression ::= unary_op VarSymbol
+
+AccessExpression ::= VarSymbol '.' FieldNameSymbol
+
+IndexingExpression ::= VarSymbol '[' (VarSymbol|NUMBER_LITERAL) ']' {pin=2}
+
+private binary_op ::= '+' | '-' | '*' | '/' | '%%' | '^&' | '^|' | '^~' | '^<' | '^>' | '^>>'
+
+BinaryExpression ::= VarSymbol binary_op (VarSymbol|NUMBER_LITERAL|'null')
+
+CatchClause ::= 'catch' Type CatchRange 'goto' LocationSymbol ';'
+CatchRange ::= '@' '[' LocationSymbol '..' LocationSymbol ']' {pin=2}
+
+TypeDefSymbol ::= APOSTROPHE_ID {methods=[getType]}
+TypeSymbol ::= APOSTROPHE_ID
+
+VarDefSymbol ::= ID
+VarSymbol ::= ID
+
+FieldDefSymbol ::= APOSTROPHE_ID
+FieldNameSymbol ::= APOSTROPHE_ID
+StaticFieldDefSymbol ::= STATIC_ID
+StaticFieldNameSymbol ::= STATIC_ID
+
+MethodDefSymbol ::= APOSTROPHE_ID
+MethodNameSymbol ::= APOSTROPHE_ID
+SignatureSymbol ::= APOSTROPHE_ID {methods=[getSignature]}
+
+LocationDefSymbol ::= LOCATION_ID
+LocationSymbol ::= ID
+
+NUMBER_LITERAL ::= number ['i'|'I'|'l'|'L'|'f'|'F'|'d'|'D']
