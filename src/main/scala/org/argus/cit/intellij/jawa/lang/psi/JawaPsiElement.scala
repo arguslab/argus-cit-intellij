@@ -37,7 +37,7 @@ trait JawaPsiElement extends PsiElement {
 
   def findFirstChildByType(t: IElementType): PsiElement
 
-  def findChildrenByType(t: IElementType): List[PsiElement]
+//  def findChildrenByType(t: IElementType): List[PsiElement]
 
   def findLastChildByType(set: TokenSet): PsiElement
 

@@ -20,9 +20,9 @@ import com.intellij.psi.tree.IElementType
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
-abstract class JawaStubBaseElementImplJavaRawTypeHack[T <: PsiElement](stub: StubElement[T], nodeType: IElementType, node: ASTNode)
-  extends StubBasedPsiElementBase[StubElement[T]](stub, nodeType, node)
-  with StubBasedPsiElement[StubElement[T]] {
+abstract class JawaStubBaseElementImplJavaRawTypeHack[T <: StubElement](stub: T, nodeType: IElementType, node: ASTNode)
+  extends StubBasedPsiElementBase[T](stub, nodeType, node)
+  with StubBasedPsiElement[T] {
   private val LOG: Logger = Logger.getInstance(classOf[JawaStubBaseElementImplJavaRawTypeHack[_ <: PsiElement]])
   override def getElementType: IStubElementType[_ <: StubElement[_ <: PsiElement], _ <: PsiElement]  = {
     if (getStub != null) getStub.getStubType

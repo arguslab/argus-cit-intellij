@@ -76,15 +76,15 @@ abstract class JawaPsiElementImpl(node: ASTNode) extends ASTWrapperPsiElement(no
     }
   }
 
-  def findChildrenByType(t: IElementType): List[PsiElement] = {
-    val buffer = new collection.mutable.ArrayBuffer[PsiElement]
-    var node = getNode.getFirstChildNode
-    while (node != null) {
-      if (node.getElementType == t) buffer += node.getPsi
-      node = node.getTreeNext
-    }
-    buffer.toList
-  }
+//  def findChildrenByType(t: IElementType): List[PsiElement] = {
+//    val buffer = new collection.mutable.ArrayBuffer[PsiElement]
+//    var node = getNode.getFirstChildNode
+//    while (node != null) {
+//      if (node.getElementType == t) buffer += node.getPsi
+//      node = node.getTreeNext
+//    }
+//    buffer.toList
+//  }
 
   protected def findLastChild[T >: Null <: JawaPsiElement](clazz: Class[T]): Option[T] = {
     var child = getLastChild
@@ -174,7 +174,7 @@ abstract class JawaPsiElementImpl(node: ASTNode) extends ASTWrapperPsiElement(no
   }
 }
 
-abstract class JawaStubBasedElementImpl[T <: PsiElement](stub: StubElement[T], nodeType: IElementType, node: ASTNode)
+abstract class JawaStubBasedElementImpl[T <: StubElement](stub: T, nodeType: IElementType, node: ASTNode)
   extends JawaStubBaseElementImplJavaRawTypeHack[T](stub, nodeType, node) with JawaPsiElement {
 
   protected var context: PsiElement = null
@@ -229,15 +229,15 @@ abstract class JawaStubBasedElementImpl[T <: PsiElement](stub: StubElement[T], n
     }
   }
 
-  def findChildrenByType(t: IElementType): List[PsiElement] = {
-    val buffer = new collection.mutable.ArrayBuffer[PsiElement]
-    var node = getNode.getFirstChildNode
-    while (node != null) {
-      if (node.getElementType == t) buffer += node.getPsi
-      node = node.getTreeNext
-    }
-    buffer.toList
-  }
+//  def findChildrenByType(t: IElementType): List[PsiElement] = {
+//    val buffer = new collection.mutable.ArrayBuffer[PsiElement]
+//    var node = getNode.getFirstChildNode
+//    while (node != null) {
+//      if (node.getElementType == t) buffer += node.getPsi
+//      node = node.getTreeNext
+//    }
+//    buffer.toList
+//  }
 
   protected def findChild[T >: Null <: JawaPsiElement](clazz: Class[T]): Option[T] = findChildByClassJawa(clazz) match {
     case null => None

@@ -11,7 +11,6 @@ import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
 import org.argus.cit.intellij.jawa.lang.psi.mixins.JawaAccessFlagAnnotationImplMixin;
 import org.argus.cit.intellij.jawa.lang.psi.*;
 import com.intellij.psi.stubs.IStubElementType;
-import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaAccessFlagStub;
 
 public class JawaAccessFlagAnnotationImpl extends JawaAccessFlagAnnotationImplMixin implements JawaAccessFlagAnnotation {
 
@@ -19,12 +18,8 @@ public class JawaAccessFlagAnnotationImpl extends JawaAccessFlagAnnotationImplMi
     super(node);
   }
 
-  public JawaAccessFlagAnnotationImpl(JawaAccessFlagStub stub, IStubElementType nodeType) {
+  public JawaAccessFlagAnnotationImpl(org.argus.cit.intellij.jawa.lang.psi.stubs.JawaAccessFlagStub stub, IStubElementType nodeType) {
     super(stub, nodeType);
-  }
-
-  public JawaAccessFlagAnnotationImpl(JawaAccessFlagStub stub, IStubElementType nodeType, ASTNode node) {
-    super(stub, nodeType, node);
   }
 
   public void accept(@NotNull JawaVisitor visitor) {
@@ -42,8 +37,8 @@ public class JawaAccessFlagAnnotationImpl extends JawaAccessFlagAnnotationImplMi
     return findChildByType(ID);
   }
 
-  public int getModifier() {
-    return JawaPsiImplUtil.getModifier(this);
+  public String[] getModifiers() {
+    return JawaPsiImplUtil.getModifiers(this);
   }
 
 }

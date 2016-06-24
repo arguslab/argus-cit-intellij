@@ -18,10 +18,8 @@ import org.argus.cit.intellij.jawa.lang.psi.{JawaAccessFlagAnnotation, JawaPsiEl
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
 trait JawaModifierList extends JawaPsiElement with PsiModifierList {
-  def has(prop: IElementType): Boolean
-
   //only one access modifier can occur in a particular modifier list
-  def accessModifier: JawaAccessFlagAnnotation
+  def accessModifier: Option[JawaAccessFlagAnnotation]
 
   def getModifiersStrings: Array[String]
 

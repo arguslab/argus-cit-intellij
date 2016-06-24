@@ -103,7 +103,7 @@ Annotation ::= TypeAnnotation | SignatureAnnotation | KindAnnotation | AccessFla
 TypeAnnotation ::= ('@owner'|'@type'|'@classDescriptor') TypeExpression
 SignatureAnnotation ::= '@signature' SignatureSymbol
 KindAnnotation ::= '@kind' ID
-AccessFlagAnnotation ::= '@AccessFlag' ID? {methods=[getModifier]}
+AccessFlagAnnotation ::= '@AccessFlag' ID? {methods=[getModifiers]}
 AnnotationKey ::= '@' ID
 
 ExtendsAndImplementsClauses ::= 'extends' ExtendAndImplement (',' ExtendAndImplement)* {pin=2}

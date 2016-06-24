@@ -13,6 +13,6 @@ public interface JawaAccessFlagAnnotation extends JawaModifierList, StubBasedPsi
   @Nullable
   PsiElement getId();
 
-  int getModifier();
+  String[] getModifiers();
 
 }
