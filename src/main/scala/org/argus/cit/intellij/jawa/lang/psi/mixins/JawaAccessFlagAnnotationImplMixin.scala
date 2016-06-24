@@ -11,8 +11,10 @@
 package org.argus.cit.intellij.jawa.lang.psi.mixins
 
 import com.intellij.lang.ASTNode
+import com.intellij.psi.{JavaPsiFacade, PsiAnnotation, PsiElement}
 import com.intellij.psi.stubs.IStubElementType
-import org.argus.cit.intellij.jawa.lang.psi.{JawaAccessFlagAnnotation, JawaStubBasedElementImpl}
+import com.intellij.psi.tree.IElementType
+import org.argus.cit.intellij.jawa.lang.psi.{JawaAccessFlagAnnotation, JawaElementTypes, JawaStubBasedElementImpl}
 import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaAccessFlagStub
 
 /**
@@ -21,4 +23,11 @@ import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaAccessFlagStub
 abstract class JawaAccessFlagAnnotationImplMixin(stub: JawaAccessFlagStub, nodeType: IStubElementType, node: ASTNode)
   extends JawaStubBasedElementImpl[JawaAccessFlagAnnotation](stub, nodeType, node) with JawaAccessFlagAnnotation {
 
+  def this(node: ASTNode) = this(null, null, node)
+  def this(stub: JawaAccessFlagStub, nodeType: IStubElementType) = this(stub, nodeType, null)
+
+  def getAnnotations: Array[PsiAnnotation] = PsiAnnotation.EMPTY_ARRAY
+  def findAnnotation(name: String): PsiAnnotation = null
+  override def addAnnotation(s: String): PsiAnnotation = null
+  override def getApplicableAnnotations: Array[PsiAnnotation] = PsiAnnotation.EMPTY_ARRAY
 }

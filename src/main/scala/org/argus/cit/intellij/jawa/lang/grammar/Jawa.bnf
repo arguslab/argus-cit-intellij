@@ -12,6 +12,8 @@
   elementTypeClass="org.argus.cit.intellij.jawa.lang.psi.JawaElementType"
   tokenTypeClass="org.argus.cit.intellij.jawa.lang.psi.JawaTokenType"
 
+  elementTypeFactory="org.argus.cit.intellij.jawa.lang.parser.JawaElementTypeFactory.getElementType"
+
   psiImplUtilClass="org.argus.cit.intellij.jawa.lang.psi.impl.JawaPsiImplUtil"
 
   tokens = [

@@ -15,9 +15,10 @@ import com.intellij.lang.ASTNode
 import com.intellij.psi.impl.CheckUtil
 import com.intellij.psi.impl.source.tree.{LazyParseablePsiElement, SharedImplUtil}
 import com.intellij.psi.stubs.StubElement
-import com.intellij.psi.tree.IElementType
+import com.intellij.psi.tree.{IElementType, TokenSet}
 import com.intellij.psi.{PsiElement, PsiElementVisitor}
 import org.argus.cit.intellij.jawa.extensions.inReadAction
+import org.argus.cit.intellij.jawa.lang.psi.api.JawaFile
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
@@ -26,11 +27,79 @@ abstract class JawaPsiElementImpl(node: ASTNode) extends ASTWrapperPsiElement(no
   protected var context: PsiElement = null
   protected var child: PsiElement = null
 
+  def isInCompiledFile = getContainingFile match {
+    case file: JawaFile => file.isCompiled
+    case _ => false
+  }
+
+  def setContext(element: PsiElement, child: PsiElement) {
+    context = element
+    this.child = child
+  }
+
+  def getSameElementInContext: PsiElement = {
+    child match {
+      case null => this
+      case _ => child
+    }
+  }
+
+  def getDeepSameElementInContext: PsiElement = {
+    child match {
+      case null => this
+      case _ if child == context => this
+      case child: JawaPsiElement => child.getDeepSameElementInContext
+      case _ => child
+    }
+  }
+
+  def startOffsetInParent: Int = {
+    child match {
+      case s: JawaPsiElement => s.startOffsetInParent
+      case _ => getStartOffsetInParent
+    }
+  }
+
   override def accept(visitor: PsiElementVisitor) {
     visitor match {
       case visitor: JawaVisitor => super.accept(visitor)
       case _ => super.accept(visitor)
     }
+  }
+
+  /**
+    * Override in inheritors
+    */
+  def acceptChildren(visitor: JawaVisitor) {
+    for (c <- getChildren; if c.isInstanceOf[JawaPsiElement]) {
+      c.asInstanceOf[JawaPsiElement].accept(visitor)
+    }
+  }
+
+  def findChildrenByType(t: IElementType): List[PsiElement] = {
+    val buffer = new collection.mutable.ArrayBuffer[PsiElement]
+    var node = getNode.getFirstChildNode
+    while (node != null) {
+      if (node.getElementType == t) buffer += node.getPsi
+      node = node.getTreeNext
+    }
+    buffer.toList
+  }
+
+  protected def findLastChild[T >: Null <: JawaPsiElement](clazz: Class[T]): Option[T] = {
+    var child = getLastChild
+    while (child != null && !clazz.isInstance(child)) {
+      child = child.getPrevSibling
+    }
+    if (child == null) None else Some(child.asInstanceOf[T])
+  }
+
+  def findLastChildByType(set: TokenSet) = {
+    var node = getNode.getLastChildNode
+    while (node != null && !set.contains(node.getElementType)) {
+      node = node.getTreePrev
+    }
+    if (node == null) null else node.getPsi
   }
 
   override def getContext: PsiElement = {
@@ -78,6 +147,11 @@ abstract class JawaPsiElementImpl(node: ASTNode) extends ASTWrapperPsiElement(no
     if (node == null) null else node.getPsi
   }
 
+  protected def findChild[T >: Null <: JawaPsiElement](clazz: Class[T]): Option[T] = findChildByClassJawa(clazz) match {
+    case null => None
+    case e => Some(e)
+  }
+
   protected def findChildrenByClassJawa[T >: Null <: JawaPsiElement](clazz: Class[T]): Array[T] =
     findChildrenByClass[T](clazz)
 
@@ -106,11 +180,76 @@ abstract class JawaStubBasedElementImpl[T <: PsiElement](stub: StubElement[T], n
   protected var context: PsiElement = null
   protected var child: PsiElement = null
 
+  def isInCompiledFile = getContainingFile match {
+    case file: JawaFile => file.isCompiled
+    case _ => false
+  }
+
+  def setContext(element: PsiElement, child: PsiElement) {
+    context = element
+    this.child = child
+  }
+
+  def getSameElementInContext: PsiElement = {
+    child match {
+      case null => this
+      case _ => child
+    }
+  }
+
+  def getDeepSameElementInContext: PsiElement = {
+    child match {
+      case null => this
+      case _ if child == context => this
+      case child: JawaPsiElement => child.getDeepSameElementInContext
+      case _ => child
+    }
+  }
+
+  def startOffsetInParent: Int = {
+    child match {
+      case s: JawaPsiElement => s.startOffsetInParent
+      case _ => getStartOffsetInParent
+    }
+  }
+
   override def accept(visitor: PsiElementVisitor) {
     visitor match {
       case visitor: JawaVisitor => super.accept(visitor)
       case _ => super.accept(visitor)
     }
+  }
+
+  /**
+    * Override in inheritors
+    */
+  def acceptChildren(visitor: JawaVisitor) {
+    for (c <- getChildren; if c.isInstanceOf[JawaPsiElement]) {
+      c.asInstanceOf[JawaPsiElement].accept(visitor)
+    }
+  }
+
+  def findChildrenByType(t: IElementType): List[PsiElement] = {
+    val buffer = new collection.mutable.ArrayBuffer[PsiElement]
+    var node = getNode.getFirstChildNode
+    while (node != null) {
+      if (node.getElementType == t) buffer += node.getPsi
+      node = node.getTreeNext
+    }
+    buffer.toList
+  }
+
+  protected def findChild[T >: Null <: JawaPsiElement](clazz: Class[T]): Option[T] = findChildByClassJawa(clazz) match {
+    case null => None
+    case e => Some(e)
+  }
+
+  protected def findLastChild[T >: Null <: JawaPsiElement](clazz: Class[T]): Option[T] = {
+    var child = getLastChild
+    while (child != null && !clazz.isInstance(child)) {
+      child = child.getPrevSibling
+    }
+    if (child == null) None else Some(child.asInstanceOf[T])
   }
 
   override def getContext: PsiElement = {
@@ -169,6 +308,14 @@ abstract class JawaStubBasedElementImpl[T <: PsiElement](stub: StubElement[T], n
     }
     if (node == null) null.asInstanceOf[T]
     else node.getPsi.asInstanceOf[T]
+  }
+
+  def findLastChildByType(set: TokenSet) = {
+    var node = getNode.getLastChildNode
+    while (node != null && !set.contains(node.getElementType)) {
+      node = node.getTreePrev
+    }
+    if (node == null) null else node.getPsi
   }
 
   override def findFirstChildByType(t: IElementType) = {

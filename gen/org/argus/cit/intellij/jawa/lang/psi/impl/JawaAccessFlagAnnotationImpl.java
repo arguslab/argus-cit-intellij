@@ -23,7 +23,7 @@ public class JawaAccessFlagAnnotationImpl extends JawaAccessFlagAnnotationImplMi
     super(stub, nodeType);
   }
 
-  public JawaAccessFlagAnnotationImpl(JawaAccessFlagStub stub, IStubElementType<StubT, PsiT> nodeType, ASTNode node) {
+  public JawaAccessFlagAnnotationImpl(JawaAccessFlagStub stub, IStubElementType nodeType, ASTNode node) {
     super(stub, nodeType, node);
   }
 
