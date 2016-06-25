@@ -29,7 +29,7 @@ class JawaAccessFlagElementType(debugName: String) extends JawaStubElementType[J
   }
 
   def createPsi(stub: JawaAccessFlagStub): JawaAccessFlagAnnotation = {
-    new JawaAccessFlagAnnotationImpl(stub)
+    new JawaAccessFlagAnnotationImpl(stub, this)
   }
 
   def createStubImpl[ParentPsi <: PsiElement](psi: JawaAccessFlagAnnotation, parentStub: StubElement[ParentPsi]): JawaAccessFlagStub = {
