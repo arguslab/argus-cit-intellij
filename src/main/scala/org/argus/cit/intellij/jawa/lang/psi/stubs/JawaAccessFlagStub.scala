@@ -16,8 +16,8 @@ import org.argus.cit.intellij.jawa.lang.psi.JawaAccessFlagAnnotation
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
-trait JawaAccessFlagStub extends StubElement[JawaAccessFlagAnnotation] {
-  def hasExplicitModifiers: Boolean
-
-  def getModifiers: Array[String]
-}
+//trait JawaAccessFlagStub extends StubElement[JawaAccessFlagAnnotation] {
+//  def hasExplicitModifiers: Boolean
+//
+//  def getModifiers: Array[String]
+//}

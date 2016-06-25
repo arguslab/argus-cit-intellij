@@ -11,68 +11,97 @@
 package org.argus.cit.intellij.jawa.lang.psi.mixins;
 
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.JavaPsiFacade;
+import com.intellij.psi.PsiAnnotation;
+import com.intellij.psi.PsiModifier;
 import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.stubs.Stub;
+import com.intellij.util.IncorrectOperationException;
 import org.argus.cit.intellij.jawa.lang.psi.JawaAccessFlagAnnotation;
-import org.argus.cit.intellij.jawa.lang.psi.JawaStubBasedElementImpl;
+import org.argus.cit.intellij.jawa.lang.psi.JawaStubBasedPsiElementBase;
 import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaAccessFlagStub;
+import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaStubElementTypes;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 
 /**
  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
  */
 public abstract class JawaAccessFlagAnnotationImplMixin
-        extends JawaStubBasedElementImpl<JawaAccessFlagStub>
+        extends JawaStubBasedPsiElementBase<JawaAccessFlagStub>
         implements JawaAccessFlagAnnotation {
 
     public JawaAccessFlagAnnotationImplMixin(@NotNull ASTNode node) {
-        super(null, null, node);
+        super(node);
     }
 
     public JawaAccessFlagAnnotationImplMixin(@NotNull JawaAccessFlagStub stub, @NotNull IStubElementType nodeType) {
-        super(stub, nodeType, null);
+        super(stub, nodeType);
     }
 
-//        def this(node: ASTNode) = this(null, null, node)
-//        def this(stub: JawaAccessFlagStub, nodeType: IStubElementType) = this(stub, nodeType, null)
-//
-//        def getAnnotations: Array[PsiAnnotation] = PsiAnnotation.EMPTY_ARRAY
-//        def findAnnotation(name: String): PsiAnnotation = null
-//        override def addAnnotation(s: String): PsiAnnotation = null
-//        override def getApplicableAnnotations: Array[PsiAnnotation] = PsiAnnotation.EMPTY_ARRAY
-//
-//        override def checkSetModifierProperty(s: String, b: Boolean): Unit = {}
-//
-//        override def setModifierProperty(s: String, b: Boolean): Unit = {}
-//
-//        def hasModifierProperty(name: String): Boolean = {
-//        val stub = getStub
+
+    @NotNull
+    public PsiAnnotation[] getAnnotations() {
+        return PsiAnnotation.EMPTY_ARRAY;
+    }
+    public PsiAnnotation findAnnotation(@NotNull String name) {
+        return null;
+    }
+    @NotNull
+    public PsiAnnotation addAnnotation(@NotNull String qualifiedName) {
+        return (PsiAnnotation)this.addAfter(JavaPsiFacade.getInstance(this.getProject()).getElementFactory().createAnnotationFromText("@" + qualifiedName, this), null);
+    }
+    @NotNull
+    public PsiAnnotation[] getApplicableAnnotations() {
+        return PsiAnnotation.EMPTY_ARRAY;
+    }
+
+    public boolean hasModifierProperty(@NotNull String name) {
+    Stub stub = getStub();
+    if (stub != null) {
+        return Arrays.asList(((JawaAccessFlagStub) stub).getModifiers()).contains(name);
+    }
+        return has(name);
+    }
+
+    public boolean hasExplicitModifier(@NotNull String s) {
+        return false;
+    }
+
+    @Override
+    public void setModifierProperty(@PsiModifier.ModifierConstant @NotNull @NonNls String s, boolean b) throws IncorrectOperationException {
+
+    }
+
+    @Override
+    public void checkSetModifierProperty(@PsiModifier.ModifierConstant @NotNull @NonNls String s, boolean b) throws IncorrectOperationException {
+
+    }
+
+    public boolean has(String name) {
+        return Arrays.asList(getModifiersStrings()).contains(name);
+    }
+
+//    @Nullable
+//    public JawaAccessFlagAnnotation accessModifier() {
+//        Stub stub = getStub();
 //        if (stub != null) {
-//        return stub.asInstanceOf[JawaAccessFlagStub].getModifiers.contains(name)
+//            val am = stub.findChildStubByType(JawaStubElementTypes.ACCESS_FLAG());
+//            if (am != null) {
+//                return am.getPsi();
+//            } else return null;
 //        }
-//        has(name)
-//        }
-//
-//        override def hasExplicitModifier(s: String): Boolean = false
-//
-//        def has(name: String) : Boolean = {
-//        getModifiersStrings.contains(name)
-//        }
-//
-//        def accessModifier: Option[JawaAccessFlagAnnotation] = {
-//        val stub = getStub
-//        if (stub != null) {
-//        val am = stub.findChildStubByType(JawaStubElementTypes.ACCESS_FLAG)
-//        if (am != null) {
-//        return Some(am.getPsi)
-//        } else return None
-//        }
-//        findChild(classOf[JawaAccessFlagAnnotation])
-//        }
-//
-//        def getModifiersStrings: Array[String] = {
-//        val modifier = getStubOrPsiChild(JawaStubElementTypes.ACCESS_FLAG)
-//        modifier.getModifiers
-//        }
-//
-//        def hasExplicitModifiers: Boolean = !getModifiersStrings.isEmpty
-        }
+//        return findChild(classOf[JawaAccessFlagAnnotation]);
+//    }
+
+    public String[] getModifiersStrings() {
+        JawaAccessFlagAnnotation modifier = getStubOrPsiChild(JawaStubElementTypes.ACCESS_FLAG());
+        return modifier != null ? modifier.getModifiers() : new String[0];
+    }
+
+    public boolean hasExplicitModifiers() {
+        return getModifiersStrings().length > 0;
+    }
+}

@@ -8,16 +8,18 @@
  * Detailed contributors are listed in the CONTRIBUTOR.md
  */
 
-package org.argus.cit.intellij.jawa.lang.psi.api.base
+package org.argus.cit.intellij.jawa.lang.psi.stubs;
 
-import com.intellij.psi.PsiModifierList
-import org.argus.cit.intellij.jawa.lang.psi.JawaPsiElement
+import com.intellij.psi.stubs.StubElement;
+import org.argus.cit.intellij.jawa.lang.psi.JawaAccessFlagAnnotation;
+import org.jetbrains.annotations.NotNull;
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
-trait JawaModifierList extends JawaPsiElement with PsiModifierList {
-  def getModifiersStrings: Array[String]
+public interface JawaAccessFlagStub extends StubElement<JawaAccessFlagAnnotation> {
+    Boolean hasExplicitModifiers();
 
-  def hasExplicitModifiers: Boolean
+    @NotNull
+    String[] getModifiers();
 }
