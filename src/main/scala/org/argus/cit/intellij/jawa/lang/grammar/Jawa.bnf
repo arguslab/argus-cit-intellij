@@ -90,6 +90,10 @@
     STRING_LITERAL="regexp:('([^'\\]|\\.)*'|\"([^\"\\]|\\.)*\")"
   ]
 
+  implements("ClassOrInterfaceDeclaration")="org.argus.cit.intellij.jawa.lang.psi.api.toplevel.JawaTypeDefinition"
+  mixin("ClassOrInterfaceDeclaration")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaClassOrInterfaceDeclarationImplMixin"
+  stubClass("ClassOrInterfaceDeclaration")="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaClassOrInterfaceStub"
+
   implements("AccessFlagAnnotation")="org.argus.cit.intellij.jawa.lang.psi.api.base.JawaModifierList"
   mixin("AccessFlagAnnotation")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaAccessFlagAnnotationImplMixin"
   stubClass("AccessFlagAnnotation")="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaAccessFlagStub"

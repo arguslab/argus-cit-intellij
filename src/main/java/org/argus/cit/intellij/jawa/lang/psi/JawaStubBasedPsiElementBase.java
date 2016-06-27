@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
  */
-public class JawaStubBasedPsiElementBase<T extends StubElement> extends StubBasedPsiElementBase<T> {
+public class JawaStubBasedPsiElementBase<T extends StubElement> extends StubBasedPsiElementBase<T> implements JawaPsiElement {
     public JawaStubBasedPsiElementBase(@NotNull T stub, @NotNull IStubElementType nodeType) {
         super(stub, nodeType);
     }
@@ -33,6 +33,16 @@ public class JawaStubBasedPsiElementBase<T extends StubElement> extends StubBase
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" + getElementType().toString() + ")";
+    }
+
+    @Override
+    public <T extends JawaPsiElement> T findChildByClassJawa(Class<T> clazz) {
+        return findChildByClass(clazz);
+    }
+
+    @Override
+    public <T extends JawaPsiElement> T[] findChildrenByClassJawa(Class<T> clazz) {
+        return findChildrenByClass(clazz);
     }
 
 //    @Override

@@ -15,7 +15,7 @@ import com.intellij.openapi.command.{CommandProcessor, WriteCommandAction}
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Computable
 import com.intellij.psi.{PsiClass, PsiMethod, PsiModifier, PsiNamedElement}
-import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.JawaTypeDefinition
+import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.{JawaNamedElement, JawaTypeDefinition}
 import org.argus.jawa.core.JawaClass
 import org.jetbrains.annotations.NotNull
 
@@ -41,77 +41,77 @@ package object extensions {
       }
     }
 
-    def isEffectivelyFinal: Boolean = clazz match {
-      case jawaClass: JawaClass => jawaClass.hasFinalModifier
-      case _ => clazz.hasModifierProperty(PsiModifier.FINAL)
-    }
-
-
-    def processPsiMethodsForNode(node: SignatureNodes.Node, isStatic: Boolean, isInterface: Boolean)
-                                (processMethod: PsiMethod => Unit, processName: String => Unit = _ => ()): Unit = {
-
-      def concreteClassFor(typedDef: ScTypedDefinition): Option[PsiClass] = {
-        if (typedDef.isAbstractMember) return None
-        clazz match {
-          case wrapper: PsiClassWrapper if wrapper.definition.isInstanceOf[ScObject] =>
-            return Some(wrapper) //this is static case, when containing class should be wrapper
-          case _ =>
-        }
-
-        ScalaPsiUtil.nameContext(typedDef) match {
-          case m: ScMember =>
-            m.containingClass match {
-              case t: ScTrait =>
-                val linearization = MixinNodes.linearization(clazz)
-                  .flatMap(_.extractClass(clazz.getProject)(clazz.typeSystem))
-                var index = linearization.indexWhere(_ == t)
-                while (index >= 0) {
-                  val cl = linearization(index)
-                  if (!cl.isInterface) return Some(cl)
-                  index -= 1
-                }
-                Some(clazz)
-              case _ => None
-            }
-          case _ => None
-        }
-      }
-
-      node.info.namedElement match {
-        case fun: ScFunction if !fun.isConstructor =>
-          val wrappers = fun.getFunctionWrappers(isStatic, isInterface = fun.isAbstractMember, concreteClassFor(fun))
-          wrappers.foreach(processMethod)
-          wrappers.foreach(w => processName(w.name))
-        case method: PsiMethod if !method.isConstructor =>
-          if (isStatic) {
-            if (method.containingClass != null && method.containingClass.qualifiedName != "java.lang.Object") {
-              processMethod(StaticPsiMethodWrapper.getWrapper(method, clazz))
-              processName(method.getName)
-            }
-          }
-          else {
-            processMethod(method)
-            processName(method.getName)
-          }
-        case t: ScTypedDefinition if t.isVal || t.isVar ||
-          (t.isInstanceOf[ScClassParameter] && t.asInstanceOf[ScClassParameter].isCaseClassVal) =>
-
-          PsiTypedDefinitionWrapper.processWrappersFor(t, concreteClassFor(t), node.info.name, isStatic, isInterface, processMethod, processName)
-        case _ =>
-      }
-    }
-
-    def namedElements: Seq[PsiNamedElement] = {
-      clazz match {
-        case td: ScTemplateDefinition =>
-          td.members.flatMap {
-            case holder: ScDeclaredElementsHolder => holder.declaredElements
-            case named: ScNamedElement => Seq(named)
-            case _ => Seq.empty
-          }
-        case _ => clazz.getFields ++ clazz.getMethods
-      }
-    }
+//    def isEffectivelyFinal: Boolean = clazz match {
+//      case jawaClass: JawaClass => jawaClass.hasFinalModifier
+//      case _ => clazz.hasModifierProperty(PsiModifier.FINAL)
+//    }
+//
+//
+//    def processPsiMethodsForNode(node: SignatureNodes.Node, isStatic: Boolean, isInterface: Boolean)
+//                                (processMethod: PsiMethod => Unit, processName: String => Unit = _ => ()): Unit = {
+//
+//      def concreteClassFor(typedDef: ScTypedDefinition): Option[PsiClass] = {
+//        if (typedDef.isAbstractMember) return None
+//        clazz match {
+//          case wrapper: PsiClassWrapper if wrapper.definition.isInstanceOf[ScObject] =>
+//            return Some(wrapper) //this is static case, when containing class should be wrapper
+//          case _ =>
+//        }
+//
+//        ScalaPsiUtil.nameContext(typedDef) match {
+//          case m: ScMember =>
+//            m.containingClass match {
+//              case t: ScTrait =>
+//                val linearization = MixinNodes.linearization(clazz)
+//                  .flatMap(_.extractClass(clazz.getProject)(clazz.typeSystem))
+//                var index = linearization.indexWhere(_ == t)
+//                while (index >= 0) {
+//                  val cl = linearization(index)
+//                  if (!cl.isInterface) return Some(cl)
+//                  index -= 1
+//                }
+//                Some(clazz)
+//              case _ => None
+//            }
+//          case _ => None
+//        }
+//      }
+//
+//      node.info.namedElement match {
+//        case fun: ScFunction if !fun.isConstructor =>
+//          val wrappers = fun.getFunctionWrappers(isStatic, isInterface = fun.isAbstractMember, concreteClassFor(fun))
+//          wrappers.foreach(processMethod)
+//          wrappers.foreach(w => processName(w.name))
+//        case method: PsiMethod if !method.isConstructor =>
+//          if (isStatic) {
+//            if (method.containingClass != null && method.containingClass.qualifiedName != "java.lang.Object") {
+//              processMethod(StaticPsiMethodWrapper.getWrapper(method, clazz))
+//              processName(method.getName)
+//            }
+//          }
+//          else {
+//            processMethod(method)
+//            processName(method.getName)
+//          }
+//        case t: ScTypedDefinition if t.isVal || t.isVar ||
+//          (t.isInstanceOf[ScClassParameter] && t.asInstanceOf[ScClassParameter].isCaseClassVal) =>
+//
+//          PsiTypedDefinitionWrapper.processWrappersFor(t, concreteClassFor(t), node.info.name, isStatic, isInterface, processMethod, processName)
+//        case _ =>
+//      }
+//    }
+//
+//    def namedElements: Seq[PsiNamedElement] = {
+//      clazz match {
+//        case td: ScTemplateDefinition =>
+//          td.members.flatMap {
+//            case holder: ScDeclaredElementsHolder => holder.declaredElements
+//            case named: ScNamedElement => Seq(named)
+//            case _ => Seq.empty
+//          }
+//        case _ => clazz.getFields ++ clazz.getMethods
+//      }
+//    }
   }
 
   implicit class PsiNamedElementExt(val named: PsiNamedElement) extends AnyVal {
@@ -120,7 +120,7 @@ package object extensions {
       */
     def name: String = {
       named match {
-        case nd: ScNamedElement => nd.name
+        case nd: JawaNamedElement => nd.name
         case nd => nd.getName
       }
     }

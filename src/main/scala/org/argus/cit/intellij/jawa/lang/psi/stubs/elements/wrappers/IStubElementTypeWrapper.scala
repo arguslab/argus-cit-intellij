@@ -19,7 +19,7 @@ import org.argus.cit.intellij.jawa.lang.JawaFileType
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
-abstract class IStubElementTypeWrapper[StubT <: StubElement, PsiT <: PsiElement](debugName: String)
+abstract class IStubElementTypeWrapper[StubT <: StubElement[PsiT], PsiT <: PsiElement](debugName: String)
   extends IStubElementType[StubT, PsiT](debugName, JawaFileType.JAWA_LANGUAGE) {
 
   def createStub(psi: PsiT, parentStub: StubElement[_ <: PsiElement] ): StubT = createStubImpl (psi, parentStub)

@@ -8,13 +8,18 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import org.argus.cit.intellij.jawa.lang.psi.mixins.JawaClassOrInterfaceDeclarationImplMixin;
 import org.argus.cit.intellij.jawa.lang.psi.*;
+import com.intellij.psi.stubs.IStubElementType;
 
-public class JawaClassOrInterfaceDeclarationImpl extends ASTWrapperPsiElement implements JawaClassOrInterfaceDeclaration {
+public class JawaClassOrInterfaceDeclarationImpl extends JawaClassOrInterfaceDeclarationImplMixin implements JawaClassOrInterfaceDeclaration {
 
   public JawaClassOrInterfaceDeclarationImpl(ASTNode node) {
     super(node);
+  }
+
+  public JawaClassOrInterfaceDeclarationImpl(org.argus.cit.intellij.jawa.lang.psi.stubs.JawaClassOrInterfaceStub stub, IStubElementType nodeType) {
+    super(stub, nodeType);
   }
 
   public void accept(@NotNull JawaVisitor visitor) {
@@ -29,7 +34,7 @@ public class JawaClassOrInterfaceDeclarationImpl extends ASTWrapperPsiElement im
   @Override
   @NotNull
   public JawaAccessFlagAnnotation getAccessFlagAnnotation() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, JawaAccessFlagAnnotation.class));
+    return notNullChild(PsiTreeUtil.getStubChildOfType(this, JawaAccessFlagAnnotation.class));
   }
 
   @Override

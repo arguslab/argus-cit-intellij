@@ -5,6 +5,7 @@ import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaModifierList;
+import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.JawaTypeDefinition;
 
 public class JawaVisitor extends PsiElementVisitor {
 
@@ -65,7 +66,7 @@ public class JawaVisitor extends PsiElementVisitor {
   }
 
   public void visitClassOrInterfaceDeclaration(@NotNull JawaClassOrInterfaceDeclaration o) {
-    visitPsiElement(o);
+    visitTypeDefinition(o);
   }
 
   public void visitCmpExpression(@NotNull JawaCmpExpression o) {
@@ -285,6 +286,10 @@ public class JawaVisitor extends PsiElementVisitor {
   }
 
   public void visitModifierList(@NotNull JawaModifierList o) {
+    visitPsiElement(o);
+  }
+
+  public void visitTypeDefinition(@NotNull JawaTypeDefinition o) {
     visitPsiElement(o);
   }
 

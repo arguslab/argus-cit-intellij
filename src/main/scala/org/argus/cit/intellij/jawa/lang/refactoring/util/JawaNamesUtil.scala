@@ -58,29 +58,29 @@ object JawaNamesUtil {
 
   def isOperatorName(text: String): Boolean = isIdentifier(text) && isOpCharacter(text(0))
 
-  def jawaName(element: PsiElement) = element match {
-    case jawaNamed: JawaNamedElement => jawaNamed.name
-    case psiNamed: PsiNamedElement => psiNamed.getName
-  }
+//  def jawaName(element: PsiElement) = element match {
+//    case jawaNamed: JawaNamedElement => jawaNamed.name
+//    case psiNamed: PsiNamedElement => psiNamed.getName
+//  }
+//
+//  def qualifiedName(named: PsiNamedElement): Option[String] = {
+//    JawaPsiUtil.nameContext(named) match {
+//      case clazz: PsiClass => Some(clazz.qualifiedName)
+//      case memb: PsiMember =>
+//        val containingClass = memb.containingClass
+//        if (containingClass != null && containingClass.qualifiedName != null && memb.hasModifierProperty(PsiModifier.STATIC)) {
+//          Some(Seq(containingClass.qualifiedName, named.name).filter(_ != "").mkString("."))
+//        } else None
+//      case _ => None
+//    }
+//  }
 
-  def qualifiedName(named: PsiNamedElement): Option[String] = {
-    JawaPsiUtil.nameContext(named) match {
-      case clazz: PsiClass => Some(clazz.qualifiedName)
-      case memb: PsiMember =>
-        val containingClass = memb.containingClass
-        if (containingClass != null && containingClass.qualifiedName != null && memb.hasModifierProperty(PsiModifier.STATIC)) {
-          Some(Seq(containingClass.qualifiedName, named.name).filter(_ != "").mkString("."))
-        } else None
-      case _ => None
-    }
-  }
-
-  object isBackticked {
-    def unapply(named: JawaNamedElement): Option[String] = {
-      val name = named.name
-      isBacktickedName.unapply(name)
-    }
-  }
+//  object isBackticked {
+//    def unapply(named: JawaNamedElement): Option[String] = {
+//      val name = named.name
+//      isBacktickedName.unapply(name)
+//    }
+//  }
 
   object isBacktickedName {
     def unapply(name: String): Option[String] = {

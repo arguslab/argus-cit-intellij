@@ -14,7 +14,7 @@ import com.intellij.lang.ASTNode
 import com.intellij.psi.{JavaPsiFacade, PsiAnnotation, PsiElement}
 import com.intellij.psi.stubs.{IStubElementType, StubElement}
 import com.intellij.psi.tree.IElementType
-import org.argus.cit.intellij.jawa.lang.psi.{JawaAccessFlagAnnotation, JawaElementTypes, JawaStubBasedElementImpl}
+import org.argus.cit.intellij.jawa.lang.psi.{JawaAccessFlagAnnotation, JawaElementTypes}
 import org.argus.cit.intellij.jawa.lang.psi.stubs.{JawaAccessFlagStub, JawaStubElementTypes}
 
 ///**

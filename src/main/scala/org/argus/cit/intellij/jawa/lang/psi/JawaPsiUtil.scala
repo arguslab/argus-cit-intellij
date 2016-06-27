@@ -39,7 +39,7 @@ object JawaPsiUtil {
 
   def getFirstStubOrPsiElement(elem: PsiElement): PsiElement = {
     elem match {
-      case st: JawaStubBasedElementImpl[_] if st.getStub != null =>
+      case st: JawaStubBasedPsiElementBase[_] if st.getStub != null =>
         val stub = st.getStub
         val childrenStubs = stub.getChildrenStubs
         if (childrenStubs.size() > 0) childrenStubs.get(0).getPsi
@@ -53,50 +53,50 @@ object JawaPsiUtil {
     }
   }
 
-  def getPrevStubOrPsiElement(elem: PsiElement): PsiElement = {
-    def workWithStub(stub: StubElement[_ <: PsiElement]): PsiElement = {
-      val parent = stub.getParentStub
-      if (parent == null) return null
-
-      val children = parent.getChildrenStubs
-      val index = children.indexOf(stub)
-      if (index == -1) {
-        elem.getPrevSibling
-      } else if (index == 0) {
-        null
-      } else {
-        children.get(index - 1).getPsi
-      }
-    }
-    elem match {
-      case st: JawaStubBasedElementImpl[_] =>
-        val stub = st.getStub
-        if (stub != null) return workWithStub(stub)
-      case file: PsiFileImpl =>
-        val stub = file.getStub
-        if (stub != null) return workWithStub(stub)
-      case _ =>
-    }
-    elem.getPrevSibling
-  }
-
-  def getNextStubOrPsiElement(elem: PsiElement): PsiElement = {
-    elem match {
-      case st: JawaStubBasedElementImpl[_] if st.getStub != null =>
-        val stub = st.getStub
-        val parent = stub.getParentStub
-        if (parent == null) return null
-
-        val children = parent.getChildrenStubs
-        val index = children.indexOf(stub)
-        if (index == -1) {
-          elem.getNextSibling
-        } else if (index >= children.size - 1) {
-          null
-        } else {
-          children.get(index + 1).getPsi
-        }
-      case _ => elem.getNextSibling
-    }
-  }
+//  def getPrevStubOrPsiElement(elem: PsiElement): PsiElement = {
+//    def workWithStub(stub: StubElement[_ <: PsiElement]): PsiElement = {
+//      val parent = stub.getParentStub
+//      if (parent == null) return null
+//
+//      val children = parent.getChildrenStubs
+//      val index = children.indexOf(stub)
+//      if (index == -1) {
+//        elem.getPrevSibling
+//      } else if (index == 0) {
+//        null
+//      } else {
+//        children.get(index - 1).getPsi
+//      }
+//    }
+//    elem match {
+//      case st: JawaStubBasedPsiElementBase[_] =>
+//        val stub = st.getStub
+//        if (stub != null) return workWithStub(stub)
+//      case file: PsiFileImpl =>
+//        val stub = file.getStub
+//        if (stub != null) return workWithStub(stub)
+//      case _ =>
+//    }
+//    elem.getPrevSibling
+//  }
+//
+//  def getNextStubOrPsiElement(elem: PsiElement): PsiElement = {
+//    elem match {
+//      case st: JawaStubBasedPsiElementBase[_] if st.getStub != null =>
+//        val stub = st.getStub
+//        val parent = stub.getParentStub
+//        if (parent == null) return null
+//
+//        val children = parent.getChildrenStubs
+//        val index = children.indexOf(stub)
+//        if (index == -1) {
+//          elem.getNextSibling
+//        } else if (index >= children.size - 1) {
+//          null
+//        } else {
+//          children.get(index + 1).getPsi
+//        }
+//      case _ => elem.getNextSibling
+//    }
+//  }
 }

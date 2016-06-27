@@ -10,19 +10,17 @@
 
 package org.argus.cit.intellij.jawa.lang.structureview
 
-import com.intellij.ide.structureView.{StructureViewBuilder, StructureViewModel, TreeBasedStructureViewBuilder}
-import com.intellij.lang.PsiStructureViewFactory
+import com.intellij.ide.structureView.{StructureViewModel, TreeBasedStructureViewBuilder}
 import com.intellij.openapi.editor.Editor
-import com.intellij.psi.PsiFile
 import org.argus.cit.intellij.jawa.lang.psi.api.JawaFile
 
 /**
-  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
+  * Created by fgwei on 6/26/16.
   */
-class JawaStructureViewFactory extends PsiStructureViewFactory {
-  def getStructureViewBuilder(psiFile: PsiFile): StructureViewBuilder = psiFile match {
-    case sf: JawaFile =>
-      new JawaStructureViewBuilder(sf)
-    case _ => null
+class JawaStructureViewBuilder(private val myPsiFile: JawaFile) extends TreeBasedStructureViewBuilder {
+  override def createStructureViewModel(editor: Editor): StructureViewModel = {
+    new JawaStructureViewModel(myPsiFile)
   }
+
+  override def isRootNodeShown: Boolean = false
 }

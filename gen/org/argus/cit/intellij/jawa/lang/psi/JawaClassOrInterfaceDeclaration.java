@@ -4,8 +4,11 @@ package org.argus.cit.intellij.jawa.lang.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.JawaTypeDefinition;
+import com.intellij.psi.StubBasedPsiElement;
+import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaClassOrInterfaceStub;
 
-public interface JawaClassOrInterfaceDeclaration extends PsiElement {
+public interface JawaClassOrInterfaceDeclaration extends JawaTypeDefinition, StubBasedPsiElement<JawaClassOrInterfaceStub> {
 
   @NotNull
   JawaAccessFlagAnnotation getAccessFlagAnnotation();

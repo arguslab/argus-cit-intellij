@@ -27,9 +27,9 @@ trait JawaPsiElement extends PsiElement {
 //
 //  def startOffsetInParent: Int
 //
-//  protected def findChildByClassJawa[T >: Null <: JawaPsiElement](clazz: Class[T]): T
-//
-//  protected def findChildrenByClassJawa[T >: Null <: JawaPsiElement](clazz: Class[T]): Array[T]
+  protected def findChildByClassJawa[T >: Null <: JawaPsiElement](clazz: Class[T]): T
+
+  protected def findChildrenByClassJawa[T >: Null <: JawaPsiElement](clazz: Class[T]): Array[T]
 //
 //  protected def findChild[T >: Null <: JawaPsiElement](clazz: Class[T]): Option[T]
 //

@@ -10,15 +10,15 @@
 
 package org.argus.cit.intellij.jawa.lang.structureview
 
-import com.intellij.ide.structureView.{StructureViewModel, StructureViewModelBase, StructureViewTreeElement, TextEditorBasedStructureViewModel}
+import com.intellij.ide.structureView.{StructureViewModel, StructureViewTreeElement, TextEditorBasedStructureViewModel}
 import com.intellij.ide.util.treeView.smartTree.Sorter
-import com.intellij.psi.PsiFile
+import org.argus.cit.intellij.jawa.lang.psi.api.JawaFile
 import org.argus.cit.intellij.jawa.lang.psi.impl.JawaFileImpl
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
-class JawaStructureViewModel(psiFile: JawaFileImpl) extends TextEditorBasedStructureViewModel(psiFile) with StructureViewModel.ElementInfoProvider {
+class JawaStructureViewModel(psiFile: JawaFile) extends TextEditorBasedStructureViewModel(psiFile) with StructureViewModel.ElementInfoProvider {
 
   override def getSorters: Array[Sorter] = List(Sorter.ALPHA_SORTER).toArray
 
