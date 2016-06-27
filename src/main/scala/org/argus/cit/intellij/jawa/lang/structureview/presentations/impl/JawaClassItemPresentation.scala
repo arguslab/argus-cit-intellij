@@ -16,7 +16,7 @@ import org.argus.cit.intellij.jawa.lang.structureview.presentations.JawaItemPres
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
-class JawaClassItemPresentation(private val element: JawaClassOrInterfaceDeclaration) extends JawaItemPresentation(element) {
+class JawaClassItemPresentation(element: JawaClassOrInterfaceDeclaration) extends JawaItemPresentation(element) {
   def getPresentableText: String = {
     val typ = element.getTypeDefSymbol.getType
     typ.simpleName

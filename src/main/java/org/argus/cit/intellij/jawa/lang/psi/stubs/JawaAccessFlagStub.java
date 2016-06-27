@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
 public interface JawaAccessFlagStub extends StubElement<JawaAccessFlagAnnotation> {
-    Boolean hasExplicitModifiers();
+    boolean hasExplicitModifiers();
 
     @NotNull
     String[] getModifiers();

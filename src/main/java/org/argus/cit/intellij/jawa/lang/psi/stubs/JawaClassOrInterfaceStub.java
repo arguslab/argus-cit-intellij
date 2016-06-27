@@ -10,11 +10,24 @@
 
 package org.argus.cit.intellij.jawa.lang.psi.stubs;
 
-import com.intellij.psi.stubs.StubElement;
+import com.intellij.psi.impl.java.stubs.PsiClassStub;
 import org.argus.cit.intellij.jawa.lang.psi.JawaClassOrInterfaceDeclaration;
 
 /**
  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
  */
-public interface JawaClassOrInterfaceStub extends StubElement<JawaClassOrInterfaceDeclaration> {
+public interface JawaClassOrInterfaceStub extends PsiClassStub<JawaClassOrInterfaceDeclaration> {
+    String qualName();
+
+    String javaQualName();
+
+    String sourceFileName();
+
+    /**
+     * Only method names without values and variables.
+     * @return method names
+     */
+    String[] methodNames();
+
+    String javaName();
 }

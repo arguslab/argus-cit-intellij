@@ -16,7 +16,7 @@ import org.argus.cit.intellij.jawa.lang.structureview.presentations.JawaItemPres
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
-class JawaMethodItemPresentation(private val element: JawaMethodDeclaration) extends JawaItemPresentation(element) {
+class JawaMethodItemPresentation(element: JawaMethodDeclaration) extends JawaItemPresentation(element) {
   def getPresentableText: String = {
     val sig = element.getSignatureAnnotation.getSignatureSymbol.getSignature
     val methodName = sig.methodName

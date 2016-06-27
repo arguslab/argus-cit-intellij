@@ -22,7 +22,7 @@ import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaAccessFlagStub
 class JawaAccessFlagStubImpl[ParentPsi <: PsiElement](parent: StubElement[ParentPsi],
                                                       elemType: IStubElementType[_ <: StubElement[_ <: PsiElement], _ <: PsiElement],
                                                       modifiers: Array[String] = ArrayUtil.EMPTY_STRING_ARRAY, explicitModifiers: Boolean = false)
-        extends StubBaseWrapper[JawaAccessFlagAnnotation](parent, elemType) with JawaAccessFlagStub {
+  extends StubBaseWrapper[JawaAccessFlagAnnotation](parent, elemType) with JawaAccessFlagStub {
   def getModifiers: Array[String] = modifiers
 
   def hasExplicitModifiers: Boolean = explicitModifiers

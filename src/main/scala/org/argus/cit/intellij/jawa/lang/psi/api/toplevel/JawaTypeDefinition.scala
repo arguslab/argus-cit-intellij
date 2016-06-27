@@ -19,8 +19,5 @@ import org.argus.cit.intellij.jawa.lang.psi.JawaPsiElement
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
 trait JawaTypeDefinition extends JawaPsiElement with PsiClass with NavigationItem {
-//  override def isEquivalentTo(another: PsiElement): Boolean = {
-//    PsiClassImplUtil.isClassEquivalentTo(this, another)
-//  }
 
 }

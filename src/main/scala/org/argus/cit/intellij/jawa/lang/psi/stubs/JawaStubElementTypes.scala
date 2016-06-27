@@ -10,11 +10,12 @@
 
 package org.argus.cit.intellij.jawa.lang.psi.stubs
 
-import org.argus.cit.intellij.jawa.lang.psi.stubs.elements.JawaAccessFlagElementType
+import org.argus.cit.intellij.jawa.lang.psi.stubs.elements.{JawaAccessFlagElementType, JawaClassDefinitionElementType}
 
 /**
   * Created by fgwei on 6/24/16.
   */
 object JawaStubElementTypes {
+  val CLASS = new JawaClassDefinitionElementType("CLASS")
   val ACCESS_FLAG = new JawaAccessFlagElementType("ACCESS_FLAG")
 }
