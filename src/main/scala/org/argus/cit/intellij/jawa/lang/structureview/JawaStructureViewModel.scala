@@ -14,6 +14,7 @@ import com.intellij.ide.structureView.{StructureViewModel, StructureViewTreeElem
 import com.intellij.ide.util.treeView.smartTree.Sorter
 import org.argus.cit.intellij.jawa.lang.psi.api.JawaFile
 import org.argus.cit.intellij.jawa.lang.psi.impl.JawaFileImpl
+import org.argus.cit.intellij.jawa.lang.structureview.elements.impl.JawaFileStructureViewElement
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
@@ -26,5 +27,5 @@ class JawaStructureViewModel(psiFile: JawaFile) extends TextEditorBasedStructure
 
   override def isAlwaysShowsPlus(structureViewTreeElement: StructureViewTreeElement): Boolean = false
 
-  override def getRoot: StructureViewTreeElement = ???
+  override def getRoot: StructureViewTreeElement = new JawaFileStructureViewElement(psiFile)
 }
