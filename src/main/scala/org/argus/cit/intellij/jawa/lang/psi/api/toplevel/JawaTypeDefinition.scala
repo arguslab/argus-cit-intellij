@@ -18,6 +18,6 @@ import org.argus.cit.intellij.jawa.lang.psi.JawaPsiElement
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
-trait JawaTypeDefinition extends JawaPsiElement with PsiClass with NavigationItem {
+trait JawaTypeDefinition extends JawaNamedElement with PsiClass with NavigationItem {
 
 }

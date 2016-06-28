@@ -25,7 +25,6 @@ class JawaClassOrInterfaceStubImpl[ParentPsi <: PsiElement](parent: StubElement[
   extends StubBaseWrapper[JawaClassOrInterfaceDeclaration](parent, elemType) with JawaClassOrInterfaceStub {
 
   var myName: String = _
-  var myQualName: String = _
   var myJavaQualName: String = _
   var mySourceFileName: String = _
   var myMethodNames: Array[String] = Array[String]()
@@ -34,7 +33,6 @@ class JawaClassOrInterfaceStubImpl[ParentPsi <: PsiElement](parent: StubElement[
   def this(parent: StubElement[ParentPsi],
            elemType: IStubElementType[_ <: StubElement[_ <: PsiElement], _ <: PsiElement],
            name: String,
-           qualName: String,
            javaQualName: String,
            sourceFileName: String,
            methodNames: Array[String],
@@ -42,7 +40,6 @@ class JawaClassOrInterfaceStubImpl[ParentPsi <: PsiElement](parent: StubElement[
     this(parent, elemType.asInstanceOf[IStubElementType[StubElement[PsiElement], PsiElement]])
     mySourceFileName = sourceFileName
     myName = name
-    myQualName = qualName
     myJavaQualName = javaQualName
     myMethodNames = methodNames
     myJavaName = javaName
@@ -51,7 +48,6 @@ class JawaClassOrInterfaceStubImpl[ParentPsi <: PsiElement](parent: StubElement[
   def this(parent: StubElement[ParentPsi],
            elemType: IStubElementType[_ <: StubElement[_ <: PsiElement], _ <: PsiElement],
            name: StringRef,
-           qualName: StringRef,
            javaQualName: StringRef,
            sourceFileName: StringRef,
            methodNames: Array[StringRef],
@@ -59,7 +55,6 @@ class JawaClassOrInterfaceStubImpl[ParentPsi <: PsiElement](parent: StubElement[
     this(parent, elemType.asInstanceOf[IStubElementType[StubElement[PsiElement], PsiElement]])
     mySourceFileName = StringRef.toString(sourceFileName)
     myName = StringRef.toString(name)
-    myQualName = StringRef.toString(qualName)
     myJavaQualName = StringRef.toString(javaQualName)
     myMethodNames = methodNames.map(StringRef.toString)
     myJavaName = StringRef.toString(javaName)
@@ -67,8 +62,6 @@ class JawaClassOrInterfaceStubImpl[ParentPsi <: PsiElement](parent: StubElement[
 
 
   def sourceFileName = mySourceFileName
-
-  def qualName = myQualName
 
   def javaQualName = myJavaQualName
 
@@ -88,7 +81,7 @@ class JawaClassOrInterfaceStubImpl[ParentPsi <: PsiElement](parent: StubElement[
   def getBaseClassReferenceText: String = null
   def javaName: String = myJavaName
 
-  override def getQualifiedName: String = qualName
+  override def getQualifiedName: String = javaQualName
 
   override def getSourceFileName: String = sourceFileName
 

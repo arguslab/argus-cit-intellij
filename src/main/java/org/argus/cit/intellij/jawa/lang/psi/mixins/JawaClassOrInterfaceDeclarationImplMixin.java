@@ -15,6 +15,7 @@ import com.intellij.openapi.util.Pair;
 import com.intellij.psi.*;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.stubs.IStubElementType;
+import org.argus.cit.intellij.jawa.lang.lexer.JawaTokenTypes;
 import org.argus.cit.intellij.jawa.lang.psi.*;
 import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaClassOrInterfaceStub;
 import org.argus.jawa.core.AccessFlag;
@@ -43,7 +44,13 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
     @Nullable
     @Override
     public String getQualifiedName() {
-        return null;
+        JawaClassOrInterfaceStub stub = getStub();
+        if(stub != null) return stub.javaQualName();
+        else return javaQualName();
+    }
+
+    private String javaQualName() {
+        return getTypeDefSymbol().getType().name();
     }
 
     @Override
@@ -285,5 +292,17 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
     @Override
     public boolean hasModifierProperty(@PsiModifier.ModifierConstant @NonNls @NotNull String s) {
         return false;
+    }
+
+    @Override
+    public String name() {
+        JawaClassOrInterfaceStub stub = getStub();
+        if(stub != null) return stub.getName();
+        else return getTypeDefSymbol().getType().simpleName();
+    }
+
+    @Override
+    public PsiElement nameId() {
+        return getTypeDefSymbol().getApostropheId();
     }
 }
