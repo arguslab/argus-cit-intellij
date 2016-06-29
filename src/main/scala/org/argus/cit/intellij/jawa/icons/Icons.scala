@@ -17,4 +17,9 @@ import com.intellij.openapi.util.IconLoader
   */
 object Icons {
   final val FILE = IconLoader.getIcon("/org/argus/cit/intellij/images/pilar.png")
+  final val AbstractClass = IconLoader.getIcon("/nodes/abstractClass.png")
+  final val Class = IconLoader.getIcon("/nodes/class.png")
+  final val Interface = IconLoader.getIcon("/nodes/interface.png")
+  final val Method = IconLoader.getIcon("/nodes/method.png")
+  final val AbstractMethod = IconLoader.getIcon("/nodes/abstractMethod.png")
 }

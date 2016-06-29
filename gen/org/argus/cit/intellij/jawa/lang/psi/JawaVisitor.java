@@ -6,6 +6,7 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaModifierList;
 import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.JawaTypeDefinition;
+import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaMethodDefinition;
 
 public class JawaVisitor extends PsiElementVisitor {
 
@@ -34,10 +35,6 @@ public class JawaVisitor extends PsiElementVisitor {
   }
 
   public void visitBinaryExpression(@NotNull JawaBinaryExpression o) {
-    visitPsiElement(o);
-  }
-
-  public void visitBody(@NotNull JawaBody o) {
     visitPsiElement(o);
   }
 
@@ -129,6 +126,10 @@ public class JawaVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitJwBody(@NotNull JawaJwBody o) {
+    visitPsiElement(o);
+  }
+
   public void visitKindAnnotation(@NotNull JawaKindAnnotation o) {
     visitPsiElement(o);
   }
@@ -158,7 +159,7 @@ public class JawaVisitor extends PsiElementVisitor {
   }
 
   public void visitMethodDeclaration(@NotNull JawaMethodDeclaration o) {
-    visitPsiElement(o);
+    visitMethodDefinition(o);
   }
 
   public void visitMethodDefSymbol(@NotNull JawaMethodDefSymbol o) {
@@ -282,6 +283,10 @@ public class JawaVisitor extends PsiElementVisitor {
   }
 
   public void visitVarSymbol(@NotNull JawaVarSymbol o) {
+    visitPsiElement(o);
+  }
+
+  public void visitMethodDefinition(@NotNull JawaMethodDefinition o) {
     visitPsiElement(o);
   }
 

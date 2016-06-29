@@ -16,7 +16,6 @@ public interface JawaElementTypes {
   IElementType ARG_CLAUSE = JawaElementTypeFactory.getElementType("ARG_CLAUSE");
   IElementType ASSIGNMENT_STATEMENT = JawaElementTypeFactory.getElementType("ASSIGNMENT_STATEMENT");
   IElementType BINARY_EXPRESSION = JawaElementTypeFactory.getElementType("BINARY_EXPRESSION");
-  IElementType BODY = JawaElementTypeFactory.getElementType("BODY");
   IElementType CALL_LHS = JawaElementTypeFactory.getElementType("CALL_LHS");
   IElementType CALL_STATEMENT = JawaElementTypeFactory.getElementType("CALL_STATEMENT");
   IElementType CAST_EXPRESSION = JawaElementTypeFactory.getElementType("CAST_EXPRESSION");
@@ -39,6 +38,7 @@ public interface JawaElementTypes {
   IElementType INSTANCEOF_EXPRESSION = JawaElementTypeFactory.getElementType("INSTANCEOF_EXPRESSION");
   IElementType INSTANCE_FIELD_DECLARATION = JawaElementTypeFactory.getElementType("INSTANCE_FIELD_DECLARATION");
   IElementType INSTANCE_FIELD_DECLARATION_BLOCK = JawaElementTypeFactory.getElementType("INSTANCE_FIELD_DECLARATION_BLOCK");
+  IElementType JW_BODY = JawaElementTypeFactory.getElementType("JW_BODY");
   IElementType KIND_ANNOTATION = JawaElementTypeFactory.getElementType("KIND_ANNOTATION");
   IElementType LENGTH_EXPRESSION = JawaElementTypeFactory.getElementType("LENGTH_EXPRESSION");
   IElementType LITERAL_EXPRESSION = JawaElementTypeFactory.getElementType("LITERAL_EXPRESSION");
@@ -170,9 +170,6 @@ public interface JawaElementTypes {
       else if (type == BINARY_EXPRESSION) {
         return new JawaBinaryExpressionImpl(node);
       }
-      else if (type == BODY) {
-        return new JawaBodyImpl(node);
-      }
       else if (type == CALL_LHS) {
         return new JawaCallLhsImpl(node);
       }
@@ -238,6 +235,9 @@ public interface JawaElementTypes {
       }
       else if (type == INSTANCE_FIELD_DECLARATION_BLOCK) {
         return new JawaInstanceFieldDeclarationBlockImpl(node);
+      }
+      else if (type == JW_BODY) {
+        return new JawaJwBodyImpl(node);
       }
       else if (type == KIND_ANNOTATION) {
         return new JawaKindAnnotationImpl(node);

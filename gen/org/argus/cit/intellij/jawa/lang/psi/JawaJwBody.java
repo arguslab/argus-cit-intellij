@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface JawaBody extends PsiElement {
+public interface JawaJwBody extends PsiElement {
 
   @NotNull
   List<JawaCatchClause> getCatchClauseList();

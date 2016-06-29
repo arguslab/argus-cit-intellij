@@ -8,13 +8,18 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import org.argus.cit.intellij.jawa.lang.psi.mixins.JawaMethodDeclarationImplMixin;
 import org.argus.cit.intellij.jawa.lang.psi.*;
+import com.intellij.psi.stubs.IStubElementType;
 
-public class JawaMethodDeclarationImpl extends ASTWrapperPsiElement implements JawaMethodDeclaration {
+public class JawaMethodDeclarationImpl extends JawaMethodDeclarationImplMixin implements JawaMethodDeclaration {
 
   public JawaMethodDeclarationImpl(ASTNode node) {
     super(node);
+  }
+
+  public JawaMethodDeclarationImpl(org.argus.cit.intellij.jawa.lang.psi.stubs.JawaMethodStub stub, IStubElementType nodeType) {
+    super(stub, nodeType);
   }
 
   public void accept(@NotNull JawaVisitor visitor) {
@@ -29,13 +34,13 @@ public class JawaMethodDeclarationImpl extends ASTWrapperPsiElement implements J
   @Override
   @NotNull
   public JawaAccessFlagAnnotation getAccessFlagAnnotation() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, JawaAccessFlagAnnotation.class));
+    return notNullChild(PsiTreeUtil.getStubChildOfType(this, JawaAccessFlagAnnotation.class));
   }
 
   @Override
   @NotNull
-  public JawaBody getBody() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, JawaBody.class));
+  public JawaJwBody getJwBody() {
+    return notNullChild(PsiTreeUtil.getChildOfType(this, JawaJwBody.class));
   }
 
   @Override

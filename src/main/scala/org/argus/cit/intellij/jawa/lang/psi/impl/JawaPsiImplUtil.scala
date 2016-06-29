@@ -29,12 +29,11 @@ object JawaPsiImplUtil {
   def getSignature(element: JawaSignatureSymbol): Signature = {
     new Signature(element.getApostropheId.getText.replaceAll("`", ""))
   }
-  def getModifiers(element: JawaAccessFlagAnnotation): Array[String] = {
+  def getModifiers(element: JawaAccessFlagAnnotation): Int = {
     val mod = element.getId match {
       case null => ""
       case a => a.getText
     }
-    val flags = AccessFlag.getAccessFlags(mod)
-    AccessFlag.toString(flags).split(" ")
+    AccessFlag.getAccessFlags(mod)
   }
 }

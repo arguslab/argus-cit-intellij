@@ -11,14 +11,14 @@ import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.argus.cit.intellij.jawa.lang.psi.*;
 
-public class JawaBodyImpl extends ASTWrapperPsiElement implements JawaBody {
+public class JawaJwBodyImpl extends ASTWrapperPsiElement implements JawaJwBody {
 
-  public JawaBodyImpl(ASTNode node) {
+  public JawaJwBodyImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull JawaVisitor visitor) {
-    visitor.visitBody(this);
+    visitor.visitJwBody(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

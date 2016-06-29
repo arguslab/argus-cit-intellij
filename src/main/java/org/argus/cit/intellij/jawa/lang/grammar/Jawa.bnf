@@ -94,6 +94,10 @@
   mixin("ClassOrInterfaceDeclaration")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaClassOrInterfaceDeclarationImplMixin"
   stubClass("ClassOrInterfaceDeclaration")="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaClassOrInterfaceStub"
 
+  implements("MethodDeclaration")="org.argus.cit.intellij.jawa.lang.psi.api.base.JawaMethodDefinition"
+  mixin("MethodDeclaration")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaMethodDeclarationImplMixin"
+  stubClass("MethodDeclaration")="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaMethodStub"
+
   implements("AccessFlagAnnotation")="org.argus.cit.intellij.jawa.lang.psi.api.base.JawaModifierList"
   mixin("AccessFlagAnnotation")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaAccessFlagAnnotationImplMixin"
   stubClass("AccessFlagAnnotation")="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaAccessFlagStub"
@@ -122,12 +126,12 @@ Type ::= TypeSymbol TypeFragment* {methods=[getType]}
 TypeFragment ::= '[' ']'
 TypeFragmentWithInit ::= '[' VarSymbol (',' VarSymbol)* ']'
 
-MethodDeclaration ::= 'procedure' Type MethodDefSymbol ParamClause TypeAnnotation SignatureAnnotation AccessFlagAnnotation Body
+MethodDeclaration ::= 'procedure' Type MethodDefSymbol ParamClause TypeAnnotation SignatureAnnotation AccessFlagAnnotation JwBody
 
 ParamClause ::= '(' (Param (',' Param)*)? ')'
 Param ::= Type VarDefSymbol KindAnnotation?
 
-Body ::= '{' LocalVarDeclaration* Location* CatchClause* '}'
+JwBody ::= '{' LocalVarDeclaration* Location* CatchClause* '}'
 
 LocalVarDeclaration ::= Type VarDefSymbol ';'
 

@@ -25,7 +25,7 @@ import collection.JavaConversions._
 /**
   *  @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
-class JawaClassDefinitionElementType(debugName: String) extends JawaStubElementType[JawaClassOrInterfaceStub, JawaClassOrInterfaceDeclaration](debugName) {
+class JawaClassDeclarationElementType(debugName: String) extends JawaStubElementType[JawaClassOrInterfaceStub, JawaClassOrInterfaceDeclaration](debugName) {
   override def createStubImpl[ParentPsi <: PsiElement](psi: JawaClassOrInterfaceDeclaration, parent: StubElement[ParentPsi]): JawaClassOrInterfaceStub = {
     val file = psi.getContainingFile
     val methodNames = psi.getMethodDeclarationList.map {
@@ -49,13 +49,13 @@ class JawaClassDefinitionElementType(debugName: String) extends JawaStubElementT
 
   override def deserializeImpl(dataStream: StubInputStream, parentStub: Any): JawaClassOrInterfaceStub = {
     val name = dataStream.readName
-    val javaQualName = dataStream.readName()
+    val javaQualName = dataStream.readName
     val fileName = dataStream.readName
     val length = dataStream.readInt
     val methodNames = new Array[StringRef](length)
     for (i <- 0 until length) methodNames(i) = dataStream.readName
     val parent = parentStub.asInstanceOf[StubElement[PsiElement]]
-    val javaName = dataStream.readName()
+    val javaName = dataStream.readName
     new JawaClassOrInterfaceStubImpl(parent, this, name, javaQualName, fileName, methodNames,
       javaName)
   }
@@ -67,10 +67,6 @@ class JawaClassDefinitionElementType(debugName: String) extends JawaStubElementT
     val javaFqn = stub.javaQualName
     if (javaFqn != null) {
       sink.occurrence[PsiClass, java.lang.Integer](JavaStubIndexKeys.CLASS_FQN, javaFqn.hashCode)
-      val i = javaFqn.lastIndexOf(".")
-      val pack =
-        if (i == -1) ""
-        else javaFqn.substring(0, i)
     }
   }
 

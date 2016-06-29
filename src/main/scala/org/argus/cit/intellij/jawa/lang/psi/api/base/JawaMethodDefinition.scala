@@ -8,16 +8,14 @@
  * Detailed contributors are listed in the CONTRIBUTOR.md
  */
 
-package org.argus.cit.intellij.jawa.lang.psi.stubs
+package org.argus.cit.intellij.jawa.lang.psi.api.base
 
-import com.intellij.psi.stubs.StubElement
-import org.argus.cit.intellij.jawa.lang.psi.JawaAccessFlagAnnotation
+import com.intellij.psi.PsiMethod
+import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.JawaNamedElement
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
-//trait JawaAccessFlagStub extends StubElement[JawaAccessFlagAnnotation] {
-//  def hasExplicitModifiers: Boolean
-//
-//  def getModifiers: Array[String]
-//}
+trait JawaMethodDefinition extends JawaNamedElement with PsiMethod {
+
+}

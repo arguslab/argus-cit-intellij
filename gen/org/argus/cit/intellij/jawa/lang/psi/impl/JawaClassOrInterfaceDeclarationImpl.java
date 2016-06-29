@@ -58,7 +58,7 @@ public class JawaClassOrInterfaceDeclarationImpl extends JawaClassOrInterfaceDec
   @Override
   @NotNull
   public List<JawaMethodDeclaration> getMethodDeclarationList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, JawaMethodDeclaration.class);
+    return PsiTreeUtil.getStubChildrenOfTypeAsList(this, JawaMethodDeclaration.class);
   }
 
   @Override

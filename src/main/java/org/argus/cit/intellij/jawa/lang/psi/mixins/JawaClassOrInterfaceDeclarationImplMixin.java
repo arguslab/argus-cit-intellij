@@ -15,7 +15,7 @@ import com.intellij.openapi.util.Pair;
 import com.intellij.psi.*;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.stubs.IStubElementType;
-import org.argus.cit.intellij.jawa.lang.lexer.JawaTokenTypes;
+import org.argus.cit.intellij.jawa.icons.Icons;
 import org.argus.cit.intellij.jawa.lang.psi.*;
 import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaClassOrInterfaceStub;
 import org.argus.jawa.core.AccessFlag;
@@ -23,6 +23,7 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.swing.*;
 import java.util.Collection;
 import java.util.List;
 
@@ -304,5 +305,13 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
     @Override
     public PsiElement nameId() {
         return getTypeDefSymbol().getApostropheId();
+    }
+
+    @Override
+    public Icon getIcon(int flags) {
+        int mods = getAccessFlagAnnotation().getModifiers();
+        if(AccessFlag.isInterface(mods)) return Icons.Interface();
+        else if(AccessFlag.isAbstract(mods)) return Icons.AbstractClass();
+        else return Icons.Class();
     }
 }

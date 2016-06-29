@@ -44,9 +44,6 @@ public class JawaParser implements PsiParser, LightPsiParser {
     else if (t == BINARY_EXPRESSION) {
       r = BinaryExpression(b, 0);
     }
-    else if (t == BODY) {
-      r = Body(b, 0);
-    }
     else if (t == CMP) {
       r = CMP(b, 0);
     }
@@ -112,6 +109,9 @@ public class JawaParser implements PsiParser, LightPsiParser {
     }
     else if (t == INSTANCEOF_EXPRESSION) {
       r = InstanceofExpression(b, 0);
+    }
+    else if (t == JW_BODY) {
+      r = JwBody(b, 0);
     }
     else if (t == KIND_ANNOTATION) {
       r = KindAnnotation(b, 0);
@@ -429,58 +429,6 @@ public class JawaParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, NULL_LITERAL);
     exit_section_(b, m, null, r);
     return r;
-  }
-
-  /* ********************************************************** */
-  // '{' LocalVarDeclaration* Location* CatchClause* '}'
-  public static boolean Body(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "Body")) return false;
-    if (!nextTokenIs(b, LBRACE)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, LBRACE);
-    r = r && Body_1(b, l + 1);
-    r = r && Body_2(b, l + 1);
-    r = r && Body_3(b, l + 1);
-    r = r && consumeToken(b, RBRACE);
-    exit_section_(b, m, BODY, r);
-    return r;
-  }
-
-  // LocalVarDeclaration*
-  private static boolean Body_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "Body_1")) return false;
-    int c = current_position_(b);
-    while (true) {
-      if (!LocalVarDeclaration(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "Body_1", c)) break;
-      c = current_position_(b);
-    }
-    return true;
-  }
-
-  // Location*
-  private static boolean Body_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "Body_2")) return false;
-    int c = current_position_(b);
-    while (true) {
-      if (!Location(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "Body_2", c)) break;
-      c = current_position_(b);
-    }
-    return true;
-  }
-
-  // CatchClause*
-  private static boolean Body_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "Body_3")) return false;
-    int c = current_position_(b);
-    while (true) {
-      if (!CatchClause(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "Body_3", c)) break;
-      c = current_position_(b);
-    }
-    return true;
   }
 
   /* ********************************************************** */
@@ -934,6 +882,58 @@ public class JawaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // '{' LocalVarDeclaration* Location* CatchClause* '}'
+  public static boolean JwBody(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "JwBody")) return false;
+    if (!nextTokenIs(b, LBRACE)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LBRACE);
+    r = r && JwBody_1(b, l + 1);
+    r = r && JwBody_2(b, l + 1);
+    r = r && JwBody_3(b, l + 1);
+    r = r && consumeToken(b, RBRACE);
+    exit_section_(b, m, JW_BODY, r);
+    return r;
+  }
+
+  // LocalVarDeclaration*
+  private static boolean JwBody_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "JwBody_1")) return false;
+    int c = current_position_(b);
+    while (true) {
+      if (!LocalVarDeclaration(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "JwBody_1", c)) break;
+      c = current_position_(b);
+    }
+    return true;
+  }
+
+  // Location*
+  private static boolean JwBody_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "JwBody_2")) return false;
+    int c = current_position_(b);
+    while (true) {
+      if (!Location(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "JwBody_2", c)) break;
+      c = current_position_(b);
+    }
+    return true;
+  }
+
+  // CatchClause*
+  private static boolean JwBody_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "JwBody_3")) return false;
+    int c = current_position_(b);
+    while (true) {
+      if (!CatchClause(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "JwBody_3", c)) break;
+      c = current_position_(b);
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
   // '@kind' ID
   public static boolean KindAnnotation(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "KindAnnotation")) return false;
@@ -1041,7 +1041,7 @@ public class JawaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // 'procedure' Type MethodDefSymbol ParamClause TypeAnnotation SignatureAnnotation AccessFlagAnnotation Body
+  // 'procedure' Type MethodDefSymbol ParamClause TypeAnnotation SignatureAnnotation AccessFlagAnnotation JwBody
   public static boolean MethodDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "MethodDeclaration")) return false;
     if (!nextTokenIs(b, METHOD)) return false;
@@ -1054,7 +1054,7 @@ public class JawaParser implements PsiParser, LightPsiParser {
     r = r && TypeAnnotation(b, l + 1);
     r = r && SignatureAnnotation(b, l + 1);
     r = r && AccessFlagAnnotation(b, l + 1);
-    r = r && Body(b, l + 1);
+    r = r && JwBody(b, l + 1);
     exit_section_(b, m, METHOD_DECLARATION, r);
     return r;
   }

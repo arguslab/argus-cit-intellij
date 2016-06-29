@@ -20,6 +20,7 @@ import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaStubElementTypes
 object JawaElementTypeFactory {
   def getElementType(name: String): IElementType = name match {
     case "CLASS_OR_INTERFACE_DECLARATION" => JawaStubElementTypes.CLASS
+    case "METHOD_DECLARATION" => JawaStubElementTypes.METHOD
     case "ACCESS_FLAG_ANNOTATION" => JawaStubElementTypes.ACCESS_FLAG
     case _ => JawaElementType(name)
   }

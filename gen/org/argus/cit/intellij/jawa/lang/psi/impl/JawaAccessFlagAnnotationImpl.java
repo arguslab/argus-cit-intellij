@@ -37,7 +37,7 @@ public class JawaAccessFlagAnnotationImpl extends JawaAccessFlagAnnotationImplMi
     return findChildByType(ID);
   }
 
-  public String[] getModifiers() {
+  public int getModifiers() {
     return JawaPsiImplUtil.getModifiers(this);
   }
 
