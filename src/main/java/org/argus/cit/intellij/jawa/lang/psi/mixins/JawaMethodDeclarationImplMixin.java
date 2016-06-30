@@ -18,7 +18,9 @@ import com.intellij.psi.util.MethodSignature;
 import com.intellij.psi.util.MethodSignatureBackedByPsiMethod;
 import org.argus.cit.intellij.jawa.icons.Icons;
 import org.argus.cit.intellij.jawa.lang.psi.*;
+import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.synthetic.JavaIdentifier;
 import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaMethodStub;
+import org.argus.cit.intellij.jawa.lang.psi.types.JawaTypeSystem;
 import org.argus.jawa.core.AccessFlag;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -45,13 +47,13 @@ public abstract class JawaMethodDeclarationImplMixin
     @Nullable
     @Override
     public PsiType getReturnType() {
-        return null;
+        return JawaTypeSystem.toPsiType(getJwType().getType(), getProject(), getResolveScope());
     }
 
     @Nullable
     @Override
     public PsiTypeElement getReturnTypeElement() {
-        return null;
+        return getJwType();
     }
 
     @NotNull
@@ -74,7 +76,7 @@ public abstract class JawaMethodDeclarationImplMixin
 
     @Override
     public boolean isConstructor() {
-        return false;
+        return AccessFlag.isConstructor(getAccessFlagAnnotation().getModifiers());
     }
 
     @Override
@@ -85,13 +87,13 @@ public abstract class JawaMethodDeclarationImplMixin
     @NotNull
     @Override
     public MethodSignature getSignature(@NotNull PsiSubstitutor psiSubstitutor) {
-        return null;
+        return MethodSignatureBackedByPsiMethod.create(this, psiSubstitutor);
     }
 
     @Nullable
     @Override
     public PsiIdentifier getNameIdentifier() {
-        return null;
+        return new JavaIdentifier(nameId());
     }
 
     @NotNull
@@ -183,8 +185,9 @@ public abstract class JawaMethodDeclarationImplMixin
     }
 
     @Override
-    public PsiElement setName(@NonNls @NotNull String s) {
-        return null;
+    public PsiElement setName(@NonNls @NotNull String name) {
+        if (isConstructor()) return this;
+        else super.setName(name);
     }
 
     @Override

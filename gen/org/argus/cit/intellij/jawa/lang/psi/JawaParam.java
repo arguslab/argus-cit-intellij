@@ -7,11 +7,11 @@ import com.intellij.psi.PsiElement;
 
 public interface JawaParam extends PsiElement {
 
+  @NotNull
+  JawaJwType getJwType();
+
   @Nullable
   JawaKindAnnotation getKindAnnotation();
-
-  @NotNull
-  JawaType getType();
 
   @NotNull
   JawaVarDefSymbol getVarDefSymbol();

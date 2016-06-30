@@ -17,6 +17,9 @@ public interface JawaMethodDeclaration extends JawaMethodDefinition, StubBasedPs
   JawaJwBody getJwBody();
 
   @NotNull
+  JawaJwType getJwType();
+
+  @NotNull
   JawaMethodDefSymbol getMethodDefSymbol();
 
   @NotNull
@@ -24,9 +27,6 @@ public interface JawaMethodDeclaration extends JawaMethodDefinition, StubBasedPs
 
   @NotNull
   JawaSignatureAnnotation getSignatureAnnotation();
-
-  @NotNull
-  JawaType getType();
 
   @NotNull
   JawaTypeAnnotation getTypeAnnotation();

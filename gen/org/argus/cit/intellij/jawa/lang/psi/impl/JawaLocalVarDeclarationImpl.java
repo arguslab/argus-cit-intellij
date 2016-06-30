@@ -28,8 +28,8 @@ public class JawaLocalVarDeclarationImpl extends ASTWrapperPsiElement implements
 
   @Override
   @NotNull
-  public JawaType getType() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, JawaType.class));
+  public JawaJwType getJwType() {
+    return notNullChild(PsiTreeUtil.getChildOfType(this, JawaJwType.class));
   }
 
   @Override

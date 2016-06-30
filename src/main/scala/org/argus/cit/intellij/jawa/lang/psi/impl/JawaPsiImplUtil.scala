@@ -10,21 +10,21 @@
 
 package org.argus.cit.intellij.jawa.lang.psi.impl
 
-import org.argus.cit.intellij.jawa.lang.psi.{JawaAccessFlagAnnotation, JawaSignatureSymbol, JawaType, JawaTypeDefSymbol}
-import org.argus.jawa.core.{AccessFlag, Signature, JawaType => Type}
+import org.argus.cit.intellij.jawa.lang.psi.{JawaAccessFlagAnnotation, JawaSignatureSymbol, JawaJwType, JawaTypeDefSymbol}
+import org.argus.jawa.core.{AccessFlag, Signature, JawaType}
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
 object JawaPsiImplUtil {
-  def getType(element: JawaType): Type = {
+  def getType(element: JawaJwType): JawaType = {
     val baseTyp = element.getTypeSymbol.getApostropheId.getText.replaceAll("`", "")
     val dimension = element.getTypeFragmentList.size()
-    new Type(baseTyp, dimension)
+    new JawaType(baseTyp, dimension)
   }
-  def getType(element: JawaTypeDefSymbol): Type = {
+  def getType(element: JawaTypeDefSymbol): JawaType = {
     val baseTyp = element.getApostropheId.getText.replaceAll("`", "")
-    new Type(baseTyp)
+    new JawaType(baseTyp)
   }
   def getSignature(element: JawaSignatureSymbol): Signature = {
     new Signature(element.getApostropheId.getText.replaceAll("`", ""))

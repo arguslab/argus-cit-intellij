@@ -4,8 +4,9 @@ package org.argus.cit.intellij.jawa.lang.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.argus.jawa.core.JawaType;
 
-public interface JawaType extends PsiElement {
+public interface JawaJwType extends PsiElement {
 
   @NotNull
   List<JawaTypeFragment> getTypeFragmentList();
@@ -13,6 +14,6 @@ public interface JawaType extends PsiElement {
   @NotNull
   JawaTypeSymbol getTypeSymbol();
 
-  org.argus.jawa.core.JawaType getType();
+  JawaType getType();
 
 }

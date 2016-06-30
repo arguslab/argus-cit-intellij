@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface JawaTypeExpression extends PsiElement {
 
   @NotNull
-  JawaType getType();
+  JawaJwType getJwType();
 
 }

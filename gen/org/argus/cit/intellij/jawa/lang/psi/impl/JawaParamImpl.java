@@ -27,15 +27,15 @@ public class JawaParamImpl extends ASTWrapperPsiElement implements JawaParam {
   }
 
   @Override
-  @Nullable
-  public JawaKindAnnotation getKindAnnotation() {
-    return PsiTreeUtil.getChildOfType(this, JawaKindAnnotation.class);
+  @NotNull
+  public JawaJwType getJwType() {
+    return notNullChild(PsiTreeUtil.getChildOfType(this, JawaJwType.class));
   }
 
   @Override
-  @NotNull
-  public JawaType getType() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, JawaType.class));
+  @Nullable
+  public JawaKindAnnotation getKindAnnotation() {
+    return PsiTreeUtil.getChildOfType(this, JawaKindAnnotation.class);
   }
 
   @Override

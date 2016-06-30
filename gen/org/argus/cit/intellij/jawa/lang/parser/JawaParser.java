@@ -113,6 +113,9 @@ public class JawaParser implements PsiParser, LightPsiParser {
     else if (t == JW_BODY) {
       r = JwBody(b, 0);
     }
+    else if (t == JW_TYPE) {
+      r = JwType(b, 0);
+    }
     else if (t == KIND_ANNOTATION) {
       r = KindAnnotation(b, 0);
     }
@@ -199,9 +202,6 @@ public class JawaParser implements PsiParser, LightPsiParser {
     }
     else if (t == TUPLE_EXPRESSION) {
       r = TupleExpression(b, 0);
-    }
-    else if (t == TYPE) {
-      r = Type(b, 0);
     }
     else if (t == TYPE_ANNOTATION) {
       r = TypeAnnotation(b, 0);
@@ -485,14 +485,14 @@ public class JawaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // '(' Type ')' VarSymbol
+  // '(' JwType ')' VarSymbol
   public static boolean CastExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "CastExpression")) return false;
     if (!nextTokenIs(b, LPAREN)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, LPAREN);
-    r = r && Type(b, l + 1);
+    r = r && JwType(b, l + 1);
     r = r && consumeToken(b, RPAREN);
     r = r && VarSymbol(b, l + 1);
     exit_section_(b, m, CAST_EXPRESSION, r);
@@ -500,14 +500,14 @@ public class JawaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // 'catch' Type CatchRange 'goto' LocationSymbol ';'
+  // 'catch' JwType CatchRange 'goto' LocationSymbol ';'
   public static boolean CatchClause(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "CatchClause")) return false;
     if (!nextTokenIs(b, CATCH)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, CATCH);
-    r = r && Type(b, l + 1);
+    r = r && JwType(b, l + 1);
     r = r && CatchRange(b, l + 1);
     r = r && consumeToken(b, GOTO);
     r = r && LocationSymbol(b, l + 1);
@@ -825,13 +825,13 @@ public class JawaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // Type FieldDefSymbol AccessFlagAnnotation ';'
+  // JwType FieldDefSymbol AccessFlagAnnotation ';'
   public static boolean InstanceFieldDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "InstanceFieldDeclaration")) return false;
     if (!nextTokenIs(b, APOSTROPHE_ID)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = Type(b, l + 1);
+    r = JwType(b, l + 1);
     r = r && FieldDefSymbol(b, l + 1);
     r = r && AccessFlagAnnotation(b, l + 1);
     r = r && consumeToken(b, SEMI);
@@ -934,6 +934,31 @@ public class JawaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // TypeSymbol TypeFragment*
+  public static boolean JwType(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "JwType")) return false;
+    if (!nextTokenIs(b, APOSTROPHE_ID)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = TypeSymbol(b, l + 1);
+    r = r && JwType_1(b, l + 1);
+    exit_section_(b, m, JW_TYPE, r);
+    return r;
+  }
+
+  // TypeFragment*
+  private static boolean JwType_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "JwType_1")) return false;
+    int c = current_position_(b);
+    while (true) {
+      if (!TypeFragment(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "JwType_1", c)) break;
+      c = current_position_(b);
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
   // '@kind' ID
   public static boolean KindAnnotation(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "KindAnnotation")) return false;
@@ -975,13 +1000,13 @@ public class JawaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // Type VarDefSymbol ';'
+  // JwType VarDefSymbol ';'
   public static boolean LocalVarDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "LocalVarDeclaration")) return false;
     if (!nextTokenIs(b, APOSTROPHE_ID)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = Type(b, l + 1);
+    r = JwType(b, l + 1);
     r = r && VarDefSymbol(b, l + 1);
     r = r && consumeToken(b, SEMI);
     exit_section_(b, m, LOCAL_VAR_DECLARATION, r);
@@ -1041,14 +1066,14 @@ public class JawaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // 'procedure' Type MethodDefSymbol ParamClause TypeAnnotation SignatureAnnotation AccessFlagAnnotation JwBody
+  // 'procedure' JwType MethodDefSymbol ParamClause TypeAnnotation SignatureAnnotation AccessFlagAnnotation JwBody
   public static boolean MethodDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "MethodDeclaration")) return false;
     if (!nextTokenIs(b, METHOD)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, METHOD);
-    r = r && Type(b, l + 1);
+    r = r && JwType(b, l + 1);
     r = r && MethodDefSymbol(b, l + 1);
     r = r && ParamClause(b, l + 1);
     r = r && TypeAnnotation(b, l + 1);
@@ -1199,13 +1224,13 @@ public class JawaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // Type VarDefSymbol KindAnnotation?
+  // JwType VarDefSymbol KindAnnotation?
   public static boolean Param(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Param")) return false;
     if (!nextTokenIs(b, APOSTROPHE_ID)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = Type(b, l + 1);
+    r = JwType(b, l + 1);
     r = r && VarDefSymbol(b, l + 1);
     r = r && Param_2(b, l + 1);
     exit_section_(b, m, PARAM, r);
@@ -1367,14 +1392,14 @@ public class JawaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // 'global' Type StaticFieldDefSymbol AccessFlagAnnotation ';'
+  // 'global' JwType StaticFieldDefSymbol AccessFlagAnnotation ';'
   public static boolean StaticFieldDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "StaticFieldDeclaration")) return false;
     if (!nextTokenIs(b, STATIC_FIELD)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, STATIC_FIELD);
-    r = r && Type(b, l + 1);
+    r = r && JwType(b, l + 1);
     r = r && StaticFieldDefSymbol(b, l + 1);
     r = r && AccessFlagAnnotation(b, l + 1);
     r = r && consumeToken(b, SEMI);
@@ -1543,31 +1568,6 @@ public class JawaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // TypeSymbol TypeFragment*
-  public static boolean Type(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "Type")) return false;
-    if (!nextTokenIs(b, APOSTROPHE_ID)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = TypeSymbol(b, l + 1);
-    r = r && Type_1(b, l + 1);
-    exit_section_(b, m, TYPE, r);
-    return r;
-  }
-
-  // TypeFragment*
-  private static boolean Type_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "Type_1")) return false;
-    int c = current_position_(b);
-    while (true) {
-      if (!TypeFragment(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "Type_1", c)) break;
-      c = current_position_(b);
-    }
-    return true;
-  }
-
-  /* ********************************************************** */
   // ('@owner'|'@type'|'@classDescriptor') TypeExpression
   public static boolean TypeAnnotation(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "TypeAnnotation")) return false;
@@ -1604,14 +1604,14 @@ public class JawaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // '^' Type
+  // '^' JwType
   public static boolean TypeExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "TypeExpression")) return false;
     if (!nextTokenIs(b, HAT)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, HAT);
-    r = r && Type(b, l + 1);
+    r = r && JwType(b, l + 1);
     exit_section_(b, m, TYPE_EXPRESSION, r);
     return r;
   }

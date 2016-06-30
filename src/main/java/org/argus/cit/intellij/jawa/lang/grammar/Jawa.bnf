@@ -118,22 +118,22 @@ ExtendsAndImplementsClauses ::= 'extends' ExtendAndImplement (',' ExtendAndImple
 ExtendAndImplement ::= TypeSymbol KindAnnotation
 
 InstanceFieldDeclarationBlock ::= '{' InstanceFieldDeclaration* '}'
-InstanceFieldDeclaration ::= Type FieldDefSymbol AccessFlagAnnotation ';'
+InstanceFieldDeclaration ::= JwType FieldDefSymbol AccessFlagAnnotation ';'
 
-StaticFieldDeclaration ::= 'global' Type StaticFieldDefSymbol AccessFlagAnnotation ';'
+StaticFieldDeclaration ::= 'global' JwType StaticFieldDefSymbol AccessFlagAnnotation ';'
 
-Type ::= TypeSymbol TypeFragment* {methods=[getType]}
+JwType ::= TypeSymbol TypeFragment* {methods=[getType]}
 TypeFragment ::= '[' ']'
 TypeFragmentWithInit ::= '[' VarSymbol (',' VarSymbol)* ']'
 
-MethodDeclaration ::= 'procedure' Type MethodDefSymbol ParamClause TypeAnnotation SignatureAnnotation AccessFlagAnnotation JwBody
+MethodDeclaration ::= 'procedure' JwType MethodDefSymbol ParamClause TypeAnnotation SignatureAnnotation AccessFlagAnnotation JwBody
 
 ParamClause ::= '(' (Param (',' Param)*)? ')'
-Param ::= Type VarDefSymbol KindAnnotation?
+Param ::= JwType VarDefSymbol KindAnnotation?
 
 JwBody ::= '{' LocalVarDeclaration* Location* CatchClause* '}'
 
-LocalVarDeclaration ::= Type VarDefSymbol ';'
+LocalVarDeclaration ::= JwType VarDefSymbol ';'
 
 Location ::= LocationDefSymbol Statement? ';'?
 
@@ -199,7 +199,7 @@ ExceptionExpression ::= 'Exception'
 
 ConstClassExpression ::= 'constclass' TypeAnnotation
 
-TypeExpression ::= '^' Type
+TypeExpression ::= '^' JwType
 
 LengthExpression ::= 'length' '@' ID VarSymbol
 
@@ -209,7 +209,7 @@ NullExpression ::= 'null' TypeAnnotation
 
 TupleExpression ::= '(' (NUMBER_LITERAL (',' NUMBER_LITERAL)*)? ')'
 
-CastExpression ::= '(' Type ')' VarSymbol
+CastExpression ::= '(' JwType ')' VarSymbol
 
 LiteralExpression ::= (NUMBER_LITERAL|STRING_LITERAL|'null')
 
@@ -225,7 +225,7 @@ private binary_op ::= '+' | '-' | '*' | '/' | '%%' | '^&' | '^|' | '^~' | '^<' |
 
 BinaryExpression ::= VarSymbol binary_op (VarSymbol|NUMBER_LITERAL|'null')
 
-CatchClause ::= 'catch' Type CatchRange 'goto' LocationSymbol ';'
+CatchClause ::= 'catch' JwType CatchRange 'goto' LocationSymbol ';'
 CatchRange ::= '@' '[' LocationSymbol '..' LocationSymbol ']' {pin=2}
 
 TypeDefSymbol ::= APOSTROPHE_ID {methods=[getType]}

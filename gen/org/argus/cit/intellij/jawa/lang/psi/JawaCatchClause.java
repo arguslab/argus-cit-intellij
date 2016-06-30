@@ -11,9 +11,9 @@ public interface JawaCatchClause extends PsiElement {
   JawaCatchRange getCatchRange();
 
   @NotNull
-  JawaLocationSymbol getLocationSymbol();
+  JawaJwType getJwType();
 
   @NotNull
-  JawaType getType();
+  JawaLocationSymbol getLocationSymbol();
 
 }

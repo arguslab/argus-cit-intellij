@@ -34,14 +34,14 @@ public class JawaCatchClauseImpl extends ASTWrapperPsiElement implements JawaCat
 
   @Override
   @NotNull
-  public JawaLocationSymbol getLocationSymbol() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, JawaLocationSymbol.class));
+  public JawaJwType getJwType() {
+    return notNullChild(PsiTreeUtil.getChildOfType(this, JawaJwType.class));
   }
 
   @Override
   @NotNull
-  public JawaType getType() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, JawaType.class));
+  public JawaLocationSymbol getLocationSymbol() {
+    return notNullChild(PsiTreeUtil.getChildOfType(this, JawaLocationSymbol.class));
   }
 
 }

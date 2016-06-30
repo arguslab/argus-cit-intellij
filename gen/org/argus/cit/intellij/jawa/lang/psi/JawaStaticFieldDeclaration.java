@@ -11,9 +11,9 @@ public interface JawaStaticFieldDeclaration extends PsiElement {
   JawaAccessFlagAnnotation getAccessFlagAnnotation();
 
   @NotNull
-  JawaStaticFieldDefSymbol getStaticFieldDefSymbol();
+  JawaJwType getJwType();
 
   @NotNull
-  JawaType getType();
+  JawaStaticFieldDefSymbol getStaticFieldDefSymbol();
 
 }

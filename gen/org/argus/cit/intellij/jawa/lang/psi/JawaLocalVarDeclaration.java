@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface JawaLocalVarDeclaration extends PsiElement {
 
   @NotNull
-  JawaType getType();
+  JawaJwType getJwType();
 
   @NotNull
   JawaVarDefSymbol getVarDefSymbol();

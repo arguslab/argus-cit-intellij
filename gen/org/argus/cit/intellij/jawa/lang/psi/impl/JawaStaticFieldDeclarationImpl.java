@@ -34,14 +34,14 @@ public class JawaStaticFieldDeclarationImpl extends ASTWrapperPsiElement impleme
 
   @Override
   @NotNull
-  public JawaStaticFieldDefSymbol getStaticFieldDefSymbol() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, JawaStaticFieldDefSymbol.class));
+  public JawaJwType getJwType() {
+    return notNullChild(PsiTreeUtil.getChildOfType(this, JawaJwType.class));
   }
 
   @Override
   @NotNull
-  public JawaType getType() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, JawaType.class));
+  public JawaStaticFieldDefSymbol getStaticFieldDefSymbol() {
+    return notNullChild(PsiTreeUtil.getChildOfType(this, JawaStaticFieldDefSymbol.class));
   }
 
 }

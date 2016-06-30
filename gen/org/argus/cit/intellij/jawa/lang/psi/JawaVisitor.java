@@ -130,6 +130,10 @@ public class JawaVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitJwType(@NotNull JawaJwType o) {
+    visitPsiElement(o);
+  }
+
   public void visitKindAnnotation(@NotNull JawaKindAnnotation o) {
     visitPsiElement(o);
   }
@@ -243,10 +247,6 @@ public class JawaVisitor extends PsiElementVisitor {
   }
 
   public void visitTupleExpression(@NotNull JawaTupleExpression o) {
-    visitPsiElement(o);
-  }
-
-  public void visitType(@NotNull JawaType o) {
     visitPsiElement(o);
   }
 

@@ -39,6 +39,7 @@ public interface JawaElementTypes {
   IElementType INSTANCE_FIELD_DECLARATION = JawaElementTypeFactory.getElementType("INSTANCE_FIELD_DECLARATION");
   IElementType INSTANCE_FIELD_DECLARATION_BLOCK = JawaElementTypeFactory.getElementType("INSTANCE_FIELD_DECLARATION_BLOCK");
   IElementType JW_BODY = JawaElementTypeFactory.getElementType("JW_BODY");
+  IElementType JW_TYPE = JawaElementTypeFactory.getElementType("JW_TYPE");
   IElementType KIND_ANNOTATION = JawaElementTypeFactory.getElementType("KIND_ANNOTATION");
   IElementType LENGTH_EXPRESSION = JawaElementTypeFactory.getElementType("LENGTH_EXPRESSION");
   IElementType LITERAL_EXPRESSION = JawaElementTypeFactory.getElementType("LITERAL_EXPRESSION");
@@ -68,7 +69,6 @@ public interface JawaElementTypes {
   IElementType SWITCH_STATEMENT = JawaElementTypeFactory.getElementType("SWITCH_STATEMENT");
   IElementType THROW_STATEMENT = JawaElementTypeFactory.getElementType("THROW_STATEMENT");
   IElementType TUPLE_EXPRESSION = JawaElementTypeFactory.getElementType("TUPLE_EXPRESSION");
-  IElementType TYPE = JawaElementTypeFactory.getElementType("TYPE");
   IElementType TYPE_ANNOTATION = JawaElementTypeFactory.getElementType("TYPE_ANNOTATION");
   IElementType TYPE_DEF_SYMBOL = JawaElementTypeFactory.getElementType("TYPE_DEF_SYMBOL");
   IElementType TYPE_EXPRESSION = JawaElementTypeFactory.getElementType("TYPE_EXPRESSION");
@@ -239,6 +239,9 @@ public interface JawaElementTypes {
       else if (type == JW_BODY) {
         return new JawaJwBodyImpl(node);
       }
+      else if (type == JW_TYPE) {
+        return new JawaJwTypeImpl(node);
+      }
       else if (type == KIND_ANNOTATION) {
         return new JawaKindAnnotationImpl(node);
       }
@@ -325,9 +328,6 @@ public interface JawaElementTypes {
       }
       else if (type == TUPLE_EXPRESSION) {
         return new JawaTupleExpressionImpl(node);
-      }
-      else if (type == TYPE) {
-        return new JawaTypeImpl(node);
       }
       else if (type == TYPE_ANNOTATION) {
         return new JawaTypeAnnotationImpl(node);

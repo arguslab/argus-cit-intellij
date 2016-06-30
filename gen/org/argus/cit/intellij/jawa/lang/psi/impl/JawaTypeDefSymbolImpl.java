@@ -10,6 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.argus.cit.intellij.jawa.lang.psi.*;
+import org.argus.jawa.core.JawaType;
 
 public class JawaTypeDefSymbolImpl extends ASTWrapperPsiElement implements JawaTypeDefSymbol {
 
@@ -32,7 +33,7 @@ public class JawaTypeDefSymbolImpl extends ASTWrapperPsiElement implements JawaT
     return notNullChild(findChildByType(APOSTROPHE_ID));
   }
 
-  public org.argus.jawa.core.JawaType getType() {
+  public JawaType getType() {
     return JawaPsiImplUtil.getType(this);
   }
 

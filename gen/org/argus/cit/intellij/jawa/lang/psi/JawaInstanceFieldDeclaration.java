@@ -14,6 +14,6 @@ public interface JawaInstanceFieldDeclaration extends PsiElement {
   JawaFieldDefSymbol getFieldDefSymbol();
 
   @NotNull
-  JawaType getType();
+  JawaJwType getJwType();
 
 }
