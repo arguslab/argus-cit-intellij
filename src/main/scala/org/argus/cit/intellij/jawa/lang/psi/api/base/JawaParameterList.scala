@@ -10,12 +10,12 @@
 
 package org.argus.cit.intellij.jawa.lang.psi.api.base
 
-import com.intellij.psi.PsiMethod
-import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.JawaNamedElement
+import com.intellij.psi.PsiParameterList
+import org.argus.cit.intellij.jawa.lang.psi.JawaPsiElement
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
-trait JawaMethodDefinition extends JawaNamedElement with PsiMethod {
+trait JawaParameterList extends JawaPsiElement with PsiParameterList {
 
 }

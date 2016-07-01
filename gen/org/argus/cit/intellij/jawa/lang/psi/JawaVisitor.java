@@ -6,7 +6,10 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaModifierList;
 import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.JawaTypeDefinition;
-import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaMethodDefinition;
+import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaTypeElement;
+import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaPsiMethod;
+import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaParameter;
+import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaParameterList;
 
 public class JawaVisitor extends PsiElementVisitor {
 
@@ -131,7 +134,7 @@ public class JawaVisitor extends PsiElementVisitor {
   }
 
   public void visitJwType(@NotNull JawaJwType o) {
-    visitPsiElement(o);
+    visitTypeElement(o);
   }
 
   public void visitKindAnnotation(@NotNull JawaKindAnnotation o) {
@@ -163,7 +166,7 @@ public class JawaVisitor extends PsiElementVisitor {
   }
 
   public void visitMethodDeclaration(@NotNull JawaMethodDeclaration o) {
-    visitMethodDefinition(o);
+    visitPsiMethod(o);
   }
 
   public void visitMethodDefSymbol(@NotNull JawaMethodDefSymbol o) {
@@ -195,11 +198,11 @@ public class JawaVisitor extends PsiElementVisitor {
   }
 
   public void visitParam(@NotNull JawaParam o) {
-    visitPsiElement(o);
+    visitParameter(o);
   }
 
   public void visitParamClause(@NotNull JawaParamClause o) {
-    visitPsiElement(o);
+    visitParameterList(o);
   }
 
   public void visitReturnStatement(@NotNull JawaReturnStatement o) {
@@ -286,15 +289,27 @@ public class JawaVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitMethodDefinition(@NotNull JawaMethodDefinition o) {
-    visitPsiElement(o);
-  }
-
   public void visitModifierList(@NotNull JawaModifierList o) {
     visitPsiElement(o);
   }
 
+  public void visitParameter(@NotNull JawaParameter o) {
+    visitPsiElement(o);
+  }
+
+  public void visitParameterList(@NotNull JawaParameterList o) {
+    visitPsiElement(o);
+  }
+
+  public void visitPsiMethod(@NotNull JawaPsiMethod o) {
+    visitPsiElement(o);
+  }
+
   public void visitTypeDefinition(@NotNull JawaTypeDefinition o) {
+    visitPsiElement(o);
+  }
+
+  public void visitTypeElement(@NotNull JawaTypeElement o) {
     visitPsiElement(o);
   }
 

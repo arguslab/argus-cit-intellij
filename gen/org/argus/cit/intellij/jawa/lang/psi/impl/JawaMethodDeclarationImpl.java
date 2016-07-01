@@ -46,7 +46,7 @@ public class JawaMethodDeclarationImpl extends JawaMethodDeclarationImplMixin im
   @Override
   @NotNull
   public JawaJwType getJwType() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, JawaJwType.class));
+    return notNullChild(PsiTreeUtil.getStubChildOfType(this, JawaJwType.class));
   }
 
   @Override
@@ -58,7 +58,7 @@ public class JawaMethodDeclarationImpl extends JawaMethodDeclarationImplMixin im
   @Override
   @NotNull
   public JawaParamClause getParamClause() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, JawaParamClause.class));
+    return notNullChild(PsiTreeUtil.getStubChildOfType(this, JawaParamClause.class));
   }
 
   @Override

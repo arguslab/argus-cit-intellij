@@ -33,8 +33,8 @@ public class JawaTypeDefSymbolImpl extends ASTWrapperPsiElement implements JawaT
     return notNullChild(findChildByType(APOSTROPHE_ID));
   }
 
-  public JawaType getType() {
-    return JawaPsiImplUtil.getType(this);
+  public JawaType getJawaType() {
+    return JawaPsiImplUtil.getJawaType(this);
   }
 
 }

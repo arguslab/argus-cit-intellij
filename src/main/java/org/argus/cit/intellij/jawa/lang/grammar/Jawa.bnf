@@ -94,13 +94,25 @@
   mixin("ClassOrInterfaceDeclaration")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaClassOrInterfaceDeclarationImplMixin"
   stubClass("ClassOrInterfaceDeclaration")="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaClassOrInterfaceStub"
 
-  implements("MethodDeclaration")="org.argus.cit.intellij.jawa.lang.psi.api.base.JawaMethodDefinition"
+  implements("JwType")="org.argus.cit.intellij.jawa.lang.psi.api.base.JawaTypeElement"
+  mixin("JwType")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaJwTypeImplMixin"
+  stubClass("JwType")="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaJwTypeStub"
+
+  implements("MethodDeclaration")="org.argus.cit.intellij.jawa.lang.psi.api.base.JawaPsiMethod"
   mixin("MethodDeclaration")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaMethodDeclarationImplMixin"
   stubClass("MethodDeclaration")="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaMethodStub"
 
   implements("AccessFlagAnnotation")="org.argus.cit.intellij.jawa.lang.psi.api.base.JawaModifierList"
   mixin("AccessFlagAnnotation")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaAccessFlagAnnotationImplMixin"
   stubClass("AccessFlagAnnotation")="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaAccessFlagStub"
+
+  implements("ParamClause")="org.argus.cit.intellij.jawa.lang.psi.api.base.JawaParameterList"
+  mixin("ParamClause")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaParamClauseImplMixin"
+  stubClass("ParamClause")="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaParamClauseStub"
+
+  implements("Param")="org.argus.cit.intellij.jawa.lang.psi.api.base.JawaParameter"
+  mixin("Param")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaParamImplMixin"
+  stubClass("Param")="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaParamStub"
 }
 
 CompilationUnit ::= ClassOrInterfaceDeclaration*
@@ -122,7 +134,7 @@ InstanceFieldDeclaration ::= JwType FieldDefSymbol AccessFlagAnnotation ';'
 
 StaticFieldDeclaration ::= 'global' JwType StaticFieldDefSymbol AccessFlagAnnotation ';'
 
-JwType ::= TypeSymbol TypeFragment* {methods=[getType]}
+JwType ::= TypeSymbol TypeFragment* {methods=[getJawaType]}
 TypeFragment ::= '[' ']'
 TypeFragmentWithInit ::= '[' VarSymbol (',' VarSymbol)* ']'
 
@@ -228,7 +240,7 @@ BinaryExpression ::= VarSymbol binary_op (VarSymbol|NUMBER_LITERAL|'null')
 CatchClause ::= 'catch' JwType CatchRange 'goto' LocationSymbol ';'
 CatchRange ::= '@' '[' LocationSymbol '..' LocationSymbol ']' {pin=2}
 
-TypeDefSymbol ::= APOSTROPHE_ID {methods=[getType]}
+TypeDefSymbol ::= APOSTROPHE_ID {methods=[getJawaType]}
 TypeSymbol ::= APOSTROPHE_ID
 
 VarDefSymbol ::= ID

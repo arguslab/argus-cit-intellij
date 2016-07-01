@@ -16,8 +16,11 @@ import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.MethodSignature;
 import com.intellij.psi.util.MethodSignatureBackedByPsiMethod;
+import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.util.IncorrectOperationException;
 import org.argus.cit.intellij.jawa.icons.Icons;
 import org.argus.cit.intellij.jawa.lang.psi.*;
+import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.JawaTypeDefinition;
 import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.synthetic.JavaIdentifier;
 import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaMethodStub;
 import org.argus.cit.intellij.jawa.lang.psi.types.JawaTypeSystem;
@@ -47,7 +50,7 @@ public abstract class JawaMethodDeclarationImplMixin
     @Nullable
     @Override
     public PsiType getReturnType() {
-        return JawaTypeSystem.toPsiType(getJwType().getType(), getProject(), getResolveScope());
+        return JawaTypeSystem.toPsiType(getJwType().getJawaType(), getProject(), getResolveScope());
     }
 
     @Nullable
@@ -59,7 +62,7 @@ public abstract class JawaMethodDeclarationImplMixin
     @NotNull
     @Override
     public PsiParameterList getParameterList() {
-        return null;
+        return getParamClause();
     }
 
     @NotNull
@@ -136,12 +139,12 @@ public abstract class JawaMethodDeclarationImplMixin
     @NotNull
     @Override
     public PsiModifierList getModifierList() {
-        return null;
+        return getAccessFlagAnnotation();
     }
 
     @Override
     public boolean hasModifierProperty(@PsiModifier.ModifierConstant @NonNls @NotNull String s) {
-        return false;
+        return getAccessFlagAnnotation().hasModifierProperty(s);
     }
 
     @NotNull
@@ -175,19 +178,29 @@ public abstract class JawaMethodDeclarationImplMixin
     @NotNull
     @Override
     public PsiTypeParameter[] getTypeParameters() {
-        return new PsiTypeParameter[0];
+        return PsiTypeParameter.EMPTY_ARRAY;
     }
 
     @Nullable
     @Override
     public PsiClass getContainingClass() {
-        return null;
+        JawaMethodStub stub = getStub();
+        if(stub != null) {
+            return stub.getParentStubOfType(JawaTypeDefinition.class);
+        } else {
+            return PsiTreeUtil.getContextOfType(this, true, JawaTypeDefinition.class);
+        }
     }
 
     @Override
     public PsiElement setName(@NonNls @NotNull String name) {
-        if (isConstructor()) return this;
-        else super.setName(name);
+//        if (isConstructor()) return this;
+//        else {
+//            ASTNode id = nameId().getNode();
+//            ASTNode parent = id.getTreeParent();
+//            ASTNode newid = JawaPsiElementFactory.
+//        }
+        throw new IncorrectOperationException("cannot set name");
     }
 
     @Override

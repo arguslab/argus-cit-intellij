@@ -8,13 +8,18 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import org.argus.cit.intellij.jawa.lang.psi.mixins.JawaParamClauseImplMixin;
 import org.argus.cit.intellij.jawa.lang.psi.*;
+import com.intellij.psi.stubs.IStubElementType;
 
-public class JawaParamClauseImpl extends ASTWrapperPsiElement implements JawaParamClause {
+public class JawaParamClauseImpl extends JawaParamClauseImplMixin implements JawaParamClause {
 
   public JawaParamClauseImpl(ASTNode node) {
     super(node);
+  }
+
+  public JawaParamClauseImpl(org.argus.cit.intellij.jawa.lang.psi.stubs.JawaParamClauseStub stub, IStubElementType nodeType) {
+    super(stub, nodeType);
   }
 
   public void accept(@NotNull JawaVisitor visitor) {
@@ -29,7 +34,7 @@ public class JawaParamClauseImpl extends ASTWrapperPsiElement implements JawaPar
   @Override
   @NotNull
   public List<JawaParam> getParamList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, JawaParam.class);
+    return PsiTreeUtil.getStubChildrenOfTypeAsList(this, JawaParam.class);
   }
 
 }

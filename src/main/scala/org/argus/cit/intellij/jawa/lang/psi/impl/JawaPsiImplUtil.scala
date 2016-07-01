@@ -17,12 +17,12 @@ import org.argus.jawa.core.{AccessFlag, Signature, JawaType}
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
 object JawaPsiImplUtil {
-  def getType(element: JawaJwType): JawaType = {
+  def getJawaType(element: JawaJwType): JawaType = {
     val baseTyp = element.getTypeSymbol.getApostropheId.getText.replaceAll("`", "")
     val dimension = element.getTypeFragmentList.size()
     new JawaType(baseTyp, dimension)
   }
-  def getType(element: JawaTypeDefSymbol): JawaType = {
+  def getJawaType(element: JawaTypeDefSymbol): JawaType = {
     val baseTyp = element.getApostropheId.getText.replaceAll("`", "")
     new JawaType(baseTyp)
   }

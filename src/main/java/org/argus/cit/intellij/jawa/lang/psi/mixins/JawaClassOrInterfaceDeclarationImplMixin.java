@@ -28,7 +28,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
-  * Created by fgwei on 6/26/16.
+  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
 public abstract class JawaClassOrInterfaceDeclarationImplMixin
         extends JawaStubBasedPsiElementBase<JawaClassOrInterfaceStub>
@@ -51,7 +51,7 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
     }
 
     private String javaQualName() {
-        return getTypeDefSymbol().getType().name();
+        return getTypeDefSymbol().getJawaType().name();
     }
 
     @Override
@@ -299,7 +299,7 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
     public String name() {
         JawaClassOrInterfaceStub stub = getStub();
         if(stub != null) return stub.getName();
-        else return getTypeDefSymbol().getType().simpleName();
+        else return getTypeDefSymbol().getJawaType().simpleName();
     }
 
     @Override

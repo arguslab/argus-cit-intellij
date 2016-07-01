@@ -24,7 +24,7 @@ package object types {
                   scope: GlobalSearchScope,
                   noPrimitives: Boolean = false,
                   skolemToWildcard: Boolean = false) = {
-      project.typeSystem.bridge.toPsiType(scType, project, scope, noPrimitives, skolemToWildcard)
+      project.typeSystem.bridge.toPsiType(scType, project, scope)
     }
   }
 }

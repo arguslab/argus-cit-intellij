@@ -11,6 +11,6 @@ public interface JawaTypeDefSymbol extends PsiElement {
   @NotNull
   PsiElement getApostropheId();
 
-  JawaType getType();
+  JawaType getJawaType();
 
 }

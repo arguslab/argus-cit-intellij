@@ -8,14 +8,19 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import org.argus.cit.intellij.jawa.lang.psi.mixins.JawaJwTypeImplMixin;
 import org.argus.cit.intellij.jawa.lang.psi.*;
 import org.argus.jawa.core.JawaType;
+import com.intellij.psi.stubs.IStubElementType;
 
-public class JawaJwTypeImpl extends ASTWrapperPsiElement implements JawaJwType {
+public class JawaJwTypeImpl extends JawaJwTypeImplMixin implements JawaJwType {
 
   public JawaJwTypeImpl(ASTNode node) {
     super(node);
+  }
+
+  public JawaJwTypeImpl(org.argus.cit.intellij.jawa.lang.psi.stubs.JawaJwTypeStub stub, IStubElementType nodeType) {
+    super(stub, nodeType);
   }
 
   public void accept(@NotNull JawaVisitor visitor) {
@@ -39,8 +44,8 @@ public class JawaJwTypeImpl extends ASTWrapperPsiElement implements JawaJwType {
     return notNullChild(PsiTreeUtil.getChildOfType(this, JawaTypeSymbol.class));
   }
 
-  public JawaType getType() {
-    return JawaPsiImplUtil.getType(this);
+  public JawaType getJawaType() {
+    return JawaPsiImplUtil.getJawaType(this);
   }
 
 }
