@@ -22,6 +22,9 @@ object JawaElementTypeFactory {
     case "CLASS_OR_INTERFACE_DECLARATION" => JawaStubElementTypes.CLASS
     case "METHOD_DECLARATION" => JawaStubElementTypes.METHOD
     case "ACCESS_FLAG_ANNOTATION" => JawaStubElementTypes.ACCESS_FLAG
+    case "JW_TYPE" => JawaStubElementTypes.TYPE
+    case "PARAM_CLAUSE" => JawaStubElementTypes.PARAM_CLAUSE
+    case "PARAM" => JawaStubElementTypes.PARAM
     case _ => JawaElementType(name)
   }
 }

@@ -25,7 +25,7 @@ class JawaJVMNameMapper extends NameMapper {
     ApplicationManager.getApplication.runReadAction(new Computable[String] {
       def compute: String = {
         clazz match {
-          case jc: JawaClassOrInterfaceDeclaration => jc.getTypeDefSymbol.getType.name
+          case jc: JawaClassOrInterfaceDeclaration => jc.getTypeDefSymbol.getJawaType.name
           case psiClass => null
         }
       }

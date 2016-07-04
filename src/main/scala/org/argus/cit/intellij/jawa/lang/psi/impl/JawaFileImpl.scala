@@ -72,7 +72,7 @@ class JawaFileImpl(viewProvider: FileViewProvider, fileType: LanguageFileType = 
   override def packageName: String = {
     val defs = this.typeDefinitions
     if(defs.isEmpty) ""
-    else defs.head.getTypeDefSymbol.getType.getPackageName
+    else defs.head.getTypeDefSymbol.getJawaType.getPackageName
   }
 
   override def getFileResolveScope: GlobalSearchScope = {
@@ -94,7 +94,7 @@ class JawaFileImpl(viewProvider: FileViewProvider, fileType: LanguageFileType = 
   override def getClassNames: util.Set[String] = {
     val res = new util.HashSet[String]
     typeDefinitions.foreach{ cid =>
-      res.add(cid.getTypeDefSymbol.getType.simpleName)
+      res.add(cid.getTypeDefSymbol.getJawaType.simpleName)
     }
     res
   }

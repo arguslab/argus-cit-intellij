@@ -18,7 +18,7 @@ import org.argus.cit.intellij.jawa.lang.structureview.presentations.JawaItemPres
   */
 class JawaClassItemPresentation(element: JawaClassOrInterfaceDeclaration) extends JawaItemPresentation(element) {
   def getPresentableText: String = {
-    val typ = element.getTypeDefSymbol.getType
+    val typ = element.getTypeDefSymbol.getJawaType
     typ.simpleName
   }
 }

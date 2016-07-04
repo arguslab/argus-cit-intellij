@@ -108,6 +108,13 @@ public abstract class JawaParamImplMixin
     }
 
     @Override
+    public String name() {
+        JawaParamStub stub = getStub();
+        if(stub != null) return stub.getName();
+        else return getVarDefSymbol().getId().getText();
+    }
+
+    @Override
     public PsiElement nameId() {
         return getVarDefSymbol().getId();
     }

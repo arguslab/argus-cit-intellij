@@ -51,7 +51,7 @@ trait JawaTypePsiTypeBridge extends TypeSystemOwner {
     def javaObject = createJavaObject(project, scope)
 
     `type` match {
-      case JavaKnowledge.JAVA_TOPLEVEL_OBJECT_TYPE => javaObject
+      case t if t == JavaKnowledge.JAVA_TOPLEVEL_OBJECT_TYPE => javaObject
       case t if t.jawaName == "void" => PsiType.VOID
       case t if t.jawaName == "boolean" => PsiType.BOOLEAN
       case t if t.jawaName == "char" => PsiType.CHAR

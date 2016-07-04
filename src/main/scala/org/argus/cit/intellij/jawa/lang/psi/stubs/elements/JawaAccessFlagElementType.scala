@@ -22,12 +22,6 @@ import org.argus.cit.intellij.jawa.lang.psi.stubs.impl.JawaAccessFlagStubImpl
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
 class JawaAccessFlagElementType(debugName: String) extends JawaStubElementType[JawaAccessFlagStub, JawaAccessFlagAnnotation](debugName) {
-  def serialize(stub: JawaAccessFlagStub, dataStream: StubOutputStream) {
-    dataStream.writeBoolean(stub.hasExplicitModifiers)
-    dataStream.writeInt(stub.getModifiers.length)
-    for (modifier <- stub.getModifiers) dataStream.writeName(modifier)
-  }
-
   def createPsi(stub: JawaAccessFlagStub): JawaAccessFlagAnnotation = {
     new JawaAccessFlagAnnotationImpl(stub, this)
   }
@@ -35,6 +29,12 @@ class JawaAccessFlagElementType(debugName: String) extends JawaStubElementType[J
   def createStubImpl[ParentPsi <: PsiElement](psi: JawaAccessFlagAnnotation, parentStub: StubElement[ParentPsi]): JawaAccessFlagStub = {
     val modifiers: Array[String] = psi.getModifiersStrings
     new JawaAccessFlagStubImpl(parentStub, this, if (modifiers.isEmpty) ArrayUtil.EMPTY_STRING_ARRAY else modifiers, psi.hasExplicitModifiers)
+  }
+
+  def serialize(stub: JawaAccessFlagStub, dataStream: StubOutputStream) {
+    dataStream.writeBoolean(stub.hasExplicitModifiers)
+    dataStream.writeInt(stub.getModifiers.length)
+    for (modifier <- stub.getModifiers) dataStream.writeName(modifier)
   }
 
   def deserializeImpl(dataStream: StubInputStream, parentStub: Any): JawaAccessFlagStub = {

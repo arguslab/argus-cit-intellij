@@ -13,12 +13,14 @@ package org.argus.cit.intellij.jawa.lang.psi.mixins;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiParameter;
 import com.intellij.psi.stubs.IStubElementType;
+import org.argus.cit.intellij.jawa.lang.psi.JawaParam;
 import org.argus.cit.intellij.jawa.lang.psi.JawaParamClause;
 import org.argus.cit.intellij.jawa.lang.psi.JawaStubBasedPsiElementBase;
 import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaParamClauseStub;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
@@ -38,7 +40,8 @@ public abstract class JawaParamClauseImplMixin
     @NotNull
     @Override
     public PsiParameter[] getParameters() {
-        return (PsiParameter[]) getParamList().toArray();
+        List<JawaParam> list = getParamList();
+        return getParamList().toArray(new JawaParam[list.size()]);
     }
 
     @Override
