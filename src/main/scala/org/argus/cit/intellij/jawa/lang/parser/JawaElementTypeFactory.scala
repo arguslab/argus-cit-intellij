@@ -15,7 +15,7 @@ import org.argus.cit.intellij.jawa.lang.psi.JawaElementType
 import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaStubElementTypes
 
 /**
-  * Created by fgwei on 6/24/16.
+  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
 object JawaElementTypeFactory {
   def getElementType(name: String): IElementType = name match {

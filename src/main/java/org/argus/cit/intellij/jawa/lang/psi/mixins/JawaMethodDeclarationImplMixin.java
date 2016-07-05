@@ -12,9 +12,9 @@ package org.argus.cit.intellij.jawa.lang.psi.mixins;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.*;
+import com.intellij.psi.impl.source.HierarchicalMethodSignatureImpl;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.stubs.IStubElementType;
-import com.intellij.psi.util.MethodSignature;
 import com.intellij.psi.util.MethodSignatureBackedByPsiMethod;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
@@ -22,6 +22,7 @@ import org.argus.cit.intellij.jawa.icons.Icons;
 import org.argus.cit.intellij.jawa.lang.psi.*;
 import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.JawaTypeDefinition;
 import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.synthetic.JavaIdentifier;
+import org.argus.cit.intellij.jawa.lang.psi.fake.FakePsiReferenceList;
 import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaMethodStub;
 import org.argus.cit.intellij.jawa.lang.psi.types.JawaTypeSystem;
 import org.argus.jawa.core.AccessFlag;
@@ -30,6 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -68,7 +70,7 @@ public abstract class JawaMethodDeclarationImplMixin
     @NotNull
     @Override
     public PsiReferenceList getThrowsList() {
-        return null;
+        return new FakePsiReferenceList(getManager(), getLanguage(), PsiReferenceList.Role.THROWS_LIST);
     }
 
     @Nullable
@@ -89,7 +91,7 @@ public abstract class JawaMethodDeclarationImplMixin
 
     @NotNull
     @Override
-    public MethodSignature getSignature(@NotNull PsiSubstitutor psiSubstitutor) {
+    public MethodSignatureBackedByPsiMethod getSignature(@NotNull PsiSubstitutor psiSubstitutor) {
         return MethodSignatureBackedByPsiMethod.create(this, psiSubstitutor);
     }
 
@@ -120,7 +122,7 @@ public abstract class JawaMethodDeclarationImplMixin
     @NotNull
     @Override
     public List<MethodSignatureBackedByPsiMethod> findSuperMethodSignaturesIncludingStatic(boolean b) {
-        return null;
+        return new ArrayList<>();
     }
 
     @Nullable
@@ -150,7 +152,7 @@ public abstract class JawaMethodDeclarationImplMixin
     @NotNull
     @Override
     public HierarchicalMethodSignature getHierarchicalMethodSignature() {
-        return null;
+        return new HierarchicalMethodSignatureImpl(getSignature(PsiSubstitutor.EMPTY));
     }
 
     @Nullable

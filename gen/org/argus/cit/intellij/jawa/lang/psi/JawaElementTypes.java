@@ -30,6 +30,7 @@ public interface JawaElementTypes {
   IElementType EXPRESSION_RHS = JawaElementTypeFactory.getElementType("EXPRESSION_RHS");
   IElementType EXTENDS_AND_IMPLEMENTS_CLAUSES = JawaElementTypeFactory.getElementType("EXTENDS_AND_IMPLEMENTS_CLAUSES");
   IElementType EXTEND_AND_IMPLEMENT = JawaElementTypeFactory.getElementType("EXTEND_AND_IMPLEMENT");
+  IElementType FIELD_DECLARATION = JawaElementTypeFactory.getElementType("FIELD_DECLARATION");
   IElementType FIELD_DEF_SYMBOL = JawaElementTypeFactory.getElementType("FIELD_DEF_SYMBOL");
   IElementType FIELD_NAME_SYMBOL = JawaElementTypeFactory.getElementType("FIELD_NAME_SYMBOL");
   IElementType GOTO_STATEMENT = JawaElementTypeFactory.getElementType("GOTO_STATEMENT");
@@ -211,6 +212,9 @@ public interface JawaElementTypes {
       }
       else if (type == EXTEND_AND_IMPLEMENT) {
         return new JawaExtendAndImplementImpl(node);
+      }
+      else if (type == FIELD_DECLARATION) {
+        return new JawaFieldDeclarationImpl(node);
       }
       else if (type == FIELD_DEF_SYMBOL) {
         return new JawaFieldDefSymbolImpl(node);

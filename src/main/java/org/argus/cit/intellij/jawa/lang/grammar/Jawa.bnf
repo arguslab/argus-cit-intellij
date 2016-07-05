@@ -94,6 +94,10 @@
   mixin("ClassOrInterfaceDeclaration")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaClassOrInterfaceDeclarationImplMixin"
   stubClass("ClassOrInterfaceDeclaration")="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaClassOrInterfaceStub"
 
+  implements("FieldDeclaration")="org.argus.cit.intellij.jawa.lang.psi.api.base.JawaPsiField"
+  mixin("FieldDeclaration")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaFieldDeclarationImplMixin"
+  stubClass("FieldDeclaration")="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaFieldStub"
+
   implements("JwType")="org.argus.cit.intellij.jawa.lang.psi.api.base.JawaTypeElement"
   mixin("JwType")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaJwTypeImplMixin"
   stubClass("JwType")="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaJwTypeStub"
@@ -130,9 +134,11 @@ ExtendsAndImplementsClauses ::= 'extends' ExtendAndImplement (',' ExtendAndImple
 ExtendAndImplement ::= TypeSymbol KindAnnotation
 
 InstanceFieldDeclarationBlock ::= '{' InstanceFieldDeclaration* '}'
-InstanceFieldDeclaration ::= JwType FieldDefSymbol AccessFlagAnnotation ';'
+InstanceFieldDeclaration ::= FieldDeclaration ';'
 
-StaticFieldDeclaration ::= 'global' JwType StaticFieldDefSymbol AccessFlagAnnotation ';'
+StaticFieldDeclaration ::= 'global' FieldDeclaration ';'
+
+FieldDeclaration ::= JwType (FieldDefSymbol|StaticFieldDefSymbol) AccessFlagAnnotation
 
 JwType ::= TypeSymbol TypeFragment* {methods=[getJawaType]}
 TypeFragment ::= '[' ']'

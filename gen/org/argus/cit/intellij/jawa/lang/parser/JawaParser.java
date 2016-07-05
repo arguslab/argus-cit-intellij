@@ -86,6 +86,9 @@ public class JawaParser implements PsiParser, LightPsiParser {
     else if (t == EXTENDS_AND_IMPLEMENTS_CLAUSES) {
       r = ExtendsAndImplementsClauses(b, 0);
     }
+    else if (t == FIELD_DECLARATION) {
+      r = FieldDeclaration(b, 0);
+    }
     else if (t == FIELD_DEF_SYMBOL) {
       r = FieldDefSymbol(b, 0);
     }
@@ -745,6 +748,31 @@ public class JawaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // JwType (FieldDefSymbol|StaticFieldDefSymbol) AccessFlagAnnotation
+  public static boolean FieldDeclaration(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "FieldDeclaration")) return false;
+    if (!nextTokenIs(b, APOSTROPHE_ID)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = JwType(b, l + 1);
+    r = r && FieldDeclaration_1(b, l + 1);
+    r = r && AccessFlagAnnotation(b, l + 1);
+    exit_section_(b, m, FIELD_DECLARATION, r);
+    return r;
+  }
+
+  // FieldDefSymbol|StaticFieldDefSymbol
+  private static boolean FieldDeclaration_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "FieldDeclaration_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = FieldDefSymbol(b, l + 1);
+    if (!r) r = StaticFieldDefSymbol(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // APOSTROPHE_ID
   public static boolean FieldDefSymbol(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FieldDefSymbol")) return false;
@@ -825,15 +853,13 @@ public class JawaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // JwType FieldDefSymbol AccessFlagAnnotation ';'
+  // FieldDeclaration ';'
   public static boolean InstanceFieldDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "InstanceFieldDeclaration")) return false;
     if (!nextTokenIs(b, APOSTROPHE_ID)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = JwType(b, l + 1);
-    r = r && FieldDefSymbol(b, l + 1);
-    r = r && AccessFlagAnnotation(b, l + 1);
+    r = FieldDeclaration(b, l + 1);
     r = r && consumeToken(b, SEMI);
     exit_section_(b, m, INSTANCE_FIELD_DECLARATION, r);
     return r;
@@ -1392,16 +1418,14 @@ public class JawaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // 'global' JwType StaticFieldDefSymbol AccessFlagAnnotation ';'
+  // 'global' FieldDeclaration ';'
   public static boolean StaticFieldDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "StaticFieldDeclaration")) return false;
     if (!nextTokenIs(b, STATIC_FIELD)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, STATIC_FIELD);
-    r = r && JwType(b, l + 1);
-    r = r && StaticFieldDefSymbol(b, l + 1);
-    r = r && AccessFlagAnnotation(b, l + 1);
+    r = r && FieldDeclaration(b, l + 1);
     r = r && consumeToken(b, SEMI);
     exit_section_(b, m, STATIC_FIELD_DECLARATION, r);
     return r;

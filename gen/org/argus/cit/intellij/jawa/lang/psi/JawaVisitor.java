@@ -6,6 +6,7 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaModifierList;
 import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.JawaTypeDefinition;
+import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaPsiField;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaTypeElement;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaPsiMethod;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaParameter;
@@ -95,6 +96,10 @@ public class JawaVisitor extends PsiElementVisitor {
 
   public void visitExtendsAndImplementsClauses(@NotNull JawaExtendsAndImplementsClauses o) {
     visitPsiElement(o);
+  }
+
+  public void visitFieldDeclaration(@NotNull JawaFieldDeclaration o) {
+    visitPsiField(o);
   }
 
   public void visitFieldDefSymbol(@NotNull JawaFieldDefSymbol o) {
@@ -298,6 +303,10 @@ public class JawaVisitor extends PsiElementVisitor {
   }
 
   public void visitParameterList(@NotNull JawaParameterList o) {
+    visitPsiElement(o);
+  }
+
+  public void visitPsiField(@NotNull JawaPsiField o) {
     visitPsiElement(o);
   }
 

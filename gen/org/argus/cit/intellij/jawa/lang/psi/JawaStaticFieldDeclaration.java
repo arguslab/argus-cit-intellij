@@ -8,12 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface JawaStaticFieldDeclaration extends PsiElement {
 
   @NotNull
-  JawaAccessFlagAnnotation getAccessFlagAnnotation();
-
-  @NotNull
-  JawaJwType getJwType();
-
-  @NotNull
-  JawaStaticFieldDefSymbol getStaticFieldDefSymbol();
+  JawaFieldDeclaration getFieldDeclaration();
 
 }
