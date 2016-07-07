@@ -22,4 +22,5 @@ object Icons {
   final val Interface = IconLoader.getIcon("/nodes/interface.png")
   final val Method = IconLoader.getIcon("/nodes/method.png")
   final val AbstractMethod = IconLoader.getIcon("/nodes/abstractMethod.png")
+  final val Field = IconLoader.getIcon("/nodes/field.png")
 }

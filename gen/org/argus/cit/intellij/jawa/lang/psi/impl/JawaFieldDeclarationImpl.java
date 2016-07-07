@@ -55,4 +55,8 @@ public class JawaFieldDeclarationImpl extends JawaFieldDeclarationImplMixin impl
     return PsiTreeUtil.getChildOfType(this, JawaStaticFieldDefSymbol.class);
   }
 
+  public String getFQN() {
+    return JawaPsiImplUtil.getFQN(this);
+  }
+
 }

@@ -25,9 +25,14 @@ class JawaClassStructureViewElement(element: JawaClassOrInterfaceDeclaration) ex
   def getPresentation: ItemPresentation = new JawaClassItemPresentation(element)
   def getChildren: Array[TreeElement] = {
     val children: MSet[TreeElement] = msetEmpty
-    element.getMethodDeclarationList.foreach {
-      md =>
-        children += new JawaMethodStructureViewElement(md)
+    element.getMethodDeclarationList.foreach { md =>
+      children += new JawaMethodStructureViewElement(md)
+    }
+    element.getInstanceFieldDeclarationBlock.getInstanceFieldDeclarationList.foreach { fd =>
+      children += new JawaFieldStructureViewElement(fd.getFieldDeclaration)
+    }
+    element.getStaticFieldDeclarationList.foreach { fd =>
+      children += new JawaFieldStructureViewElement(fd.getFieldDeclaration)
     }
     children.toArray
   }

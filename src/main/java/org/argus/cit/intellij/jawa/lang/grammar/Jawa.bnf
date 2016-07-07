@@ -138,7 +138,7 @@ InstanceFieldDeclaration ::= FieldDeclaration ';'
 
 StaticFieldDeclaration ::= 'global' FieldDeclaration ';'
 
-FieldDeclaration ::= JwType (FieldDefSymbol|StaticFieldDefSymbol) AccessFlagAnnotation
+FieldDeclaration ::= JwType (FieldDefSymbol|StaticFieldDefSymbol) AccessFlagAnnotation {methods=[getFQN]}
 
 JwType ::= TypeSymbol TypeFragment* {methods=[getJawaType]}
 TypeFragment ::= '[' ']'

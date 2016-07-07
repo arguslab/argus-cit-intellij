@@ -15,8 +15,10 @@ import com.intellij.openapi.util.Pair;
 import com.intellij.psi.*;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.util.IncorrectOperationException;
 import org.argus.cit.intellij.jawa.icons.Icons;
 import org.argus.cit.intellij.jawa.lang.psi.*;
+import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.synthetic.JavaIdentifier;
 import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaClassOrInterfaceStub;
 import org.argus.jawa.core.AccessFlag;
 import org.jetbrains.annotations.NonNls;
@@ -221,7 +223,7 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
     @Nullable
     @Override
     public PsiIdentifier getNameIdentifier() {
-        return null;
+        return new JavaIdentifier(nameId());
     }
 
     @Override
@@ -253,7 +255,7 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
 
     @Override
     public PsiElement setName(@NonNls @NotNull String s) {
-        return null;
+        throw new IncorrectOperationException("cannot set name");
     }
 
     @Nullable
@@ -287,12 +289,12 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
     @Nullable
     @Override
     public PsiModifierList getModifierList() {
-        return null;
+        return getAccessFlagAnnotation();
     }
 
     @Override
     public boolean hasModifierProperty(@PsiModifier.ModifierConstant @NonNls @NotNull String s) {
-        return false;
+        return getAccessFlagAnnotation().hasModifierProperty(s);
     }
 
     @Override

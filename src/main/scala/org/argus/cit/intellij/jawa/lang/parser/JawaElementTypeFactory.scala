@@ -21,6 +21,7 @@ object JawaElementTypeFactory {
   def getElementType(name: String): IElementType = name match {
     case "CLASS_OR_INTERFACE_DECLARATION" => JawaStubElementTypes.CLASS
     case "METHOD_DECLARATION" => JawaStubElementTypes.METHOD
+    case "FIELD_DECLARATION" => JawaStubElementTypes.FIELD
     case "ACCESS_FLAG_ANNOTATION" => JawaStubElementTypes.ACCESS_FLAG
     case "JW_TYPE" => JawaStubElementTypes.TYPE
     case "PARAM_CLAUSE" => JawaStubElementTypes.PARAM_CLAUSE

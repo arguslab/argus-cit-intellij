@@ -14,15 +14,21 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.*;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
+import org.argus.cit.intellij.jawa.icons.Icons;
 import org.argus.cit.intellij.jawa.lang.psi.JawaFieldDeclaration;
 import org.argus.cit.intellij.jawa.lang.psi.JawaStubBasedPsiElementBase;
+import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.JawaTypeDefinition;
 import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.synthetic.JavaIdentifier;
 import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaFieldStub;
 import org.argus.cit.intellij.jawa.lang.psi.types.JawaTypeSystem;
+import org.argus.jawa.core.JavaKnowledge$;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import javax.swing.*;
 
 /**
  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
@@ -51,7 +57,7 @@ public abstract class JawaFieldDeclarationImplMixin extends JawaStubBasedPsiElem
     @Nullable
     @Override
     public PsiTypeElement getTypeElement() {
-        return null;
+        return getJwType();
     }
 
     @Nullable
@@ -96,32 +102,49 @@ public abstract class JawaFieldDeclarationImplMixin extends JawaStubBasedPsiElem
     @Nullable
     @Override
     public PsiClass getContainingClass() {
-        return null;
+        JawaFieldStub stub = getStub();
+        if(stub != null) {
+            return stub.getParentStubOfType(JawaTypeDefinition.class);
+        } else {
+            return PsiTreeUtil.getContextOfType(this, true, JawaTypeDefinition.class);
+        }
     }
 
     @Nullable
     @Override
     public PsiModifierList getModifierList() {
-        return null;
+        return getAccessFlagAnnotation();
     }
 
     @Override
     public boolean hasModifierProperty(@PsiModifier.ModifierConstant @NonNls @NotNull String s) {
-        return false;
+        return getAccessFlagAnnotation().hasModifierProperty(s);
     }
 
     @Override
     public String name() {
-        return null;
+        JawaFieldStub stub = getStub();
+        if(stub != null) return stub.getName();
+        else return JavaKnowledge$.MODULE$.getFieldNameFromFieldFQN(getFQN());
     }
 
     @Override
     public PsiElement nameId() {
-        return null;
+        PsiElement defsymbol = getFieldDefSymbol();
+        if(defsymbol != null) {
+            return defsymbol;
+        } else {
+            return getStaticFieldDefSymbol();
+        }
     }
 
     @Override
     public PsiElement setName(@NonNls @NotNull String s) {
-        return null;
+        throw new IncorrectOperationException("cannot set name");
+    }
+
+    @Override
+    public Icon getIcon(int flags) {
+        return Icons.Field();
     }
 }

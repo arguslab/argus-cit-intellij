@@ -22,4 +22,6 @@ public interface JawaFieldDeclaration extends JawaPsiField, StubBasedPsiElement<
   @Nullable
   JawaStaticFieldDefSymbol getStaticFieldDefSymbol();
 
+  String getFQN();
+
 }

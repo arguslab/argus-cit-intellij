@@ -12,10 +12,12 @@ package org.argus.cit.intellij.jawa.lang.psi.stubs;
 
 import com.intellij.psi.stubs.NamedStub;
 import org.argus.cit.intellij.jawa.lang.psi.JawaFieldDeclaration;
+import org.argus.jawa.core.JawaType;
 
 /**
  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
  */
 public interface JawaFieldStub extends NamedStub<JawaFieldDeclaration> {
     String getFQN();
+    JawaType getType();
 }

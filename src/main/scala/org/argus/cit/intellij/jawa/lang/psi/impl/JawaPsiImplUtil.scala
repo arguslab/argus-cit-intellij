@@ -10,8 +10,8 @@
 
 package org.argus.cit.intellij.jawa.lang.psi.impl
 
-import org.argus.cit.intellij.jawa.lang.psi.{JawaAccessFlagAnnotation, JawaSignatureSymbol, JawaJwType, JawaTypeDefSymbol}
-import org.argus.jawa.core.{AccessFlag, Signature, JawaType}
+import org.argus.cit.intellij.jawa.lang.psi._
+import org.argus.jawa.core.{AccessFlag, JawaType, Signature}
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
@@ -35,5 +35,12 @@ object JawaPsiImplUtil {
       case a => a.getText
     }
     AccessFlag.getAccessFlags(mod)
+  }
+  def getFQN(element: JawaFieldDeclaration): String = {
+    if(element.getFieldDefSymbol != null) {
+      element.getFieldDefSymbol.getApostropheId.getText.replaceAll("`", "")
+    } else if(element.getStaticFieldDefSymbol != null) {
+      element.getStaticFieldDefSymbol.getStaticId.getText.replaceAll("`", "").replaceAll("@@", "")
+    } else null
   }
 }

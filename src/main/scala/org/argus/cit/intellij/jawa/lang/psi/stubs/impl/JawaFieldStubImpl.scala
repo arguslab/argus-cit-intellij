@@ -15,6 +15,7 @@ import com.intellij.psi.stubs.{IStubElementType, StubElement}
 import com.intellij.util.io.StringRef
 import org.argus.cit.intellij.jawa.lang.psi.JawaFieldDeclaration
 import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaFieldStub
+import org.argus.jawa.core.{JavaKnowledge, JawaType}
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
@@ -25,23 +26,27 @@ class JawaFieldStubImpl[ParentPsi <: PsiElement](parent: StubElement[ParentPsi],
 
   private var name: StringRef = _
   private var FQN: StringRef = _
+  private var typ: StringRef = _
 
   def this(parent: StubElement[ParentPsi],
            elemType: IStubElementType[_ <: StubElement[_ <: PsiElement], _ <: PsiElement],
-           name: String, FQN: String) = {
+           name: String, FQN: String, typ: String) = {
     this(parent, elemType.asInstanceOf[IStubElementType[StubElement[PsiElement], PsiElement]])
     this.name = StringRef.fromString(name)
     this.FQN = StringRef.fromString(FQN)
+    this.typ = StringRef.fromString(typ)
   }
 
   def this(parent: StubElement[ParentPsi],
            elemType: IStubElementType[_ <: StubElement[_ <: PsiElement], _ <: PsiElement],
-           name: StringRef, FQN: StringRef) = {
+           name: StringRef, FQN: StringRef, typ: StringRef) = {
     this(parent, elemType.asInstanceOf[IStubElementType[StubElement[PsiElement], PsiElement]])
     this.name = name
     this.FQN = FQN
+    this.typ = typ
   }
 
   override def getName: String = StringRef.toString(name)
   override def getFQN: String = StringRef.toString(FQN)
+  override def getType: JawaType = JavaKnowledge.getTypeFromName(StringRef.toString(typ))
 }
