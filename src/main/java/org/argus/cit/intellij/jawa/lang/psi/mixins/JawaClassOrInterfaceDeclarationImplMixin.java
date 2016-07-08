@@ -13,6 +13,8 @@ package org.argus.cit.intellij.jawa.lang.psi.mixins;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.Pair;
 import com.intellij.psi.*;
+import com.intellij.psi.impl.PsiClassImplUtil;
+import com.intellij.psi.impl.PsiSuperMethodImplUtil;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.util.IncorrectOperationException;
@@ -26,6 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -58,7 +61,8 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
 
     @Override
     public boolean isInterface() {
-        return false;
+        boolean isinterface = getKindAnnotation().getId().getText().equals("interface");
+        return isinterface || hasModifierProperty("interface");
     }
 
     @Override
@@ -74,25 +78,29 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
     @Nullable
     @Override
     public PsiReferenceList getExtendsList() {
-        return null;
+        return getExtendsAndImplementsClauses();
     }
 
     @Nullable
     @Override
     public PsiReferenceList getImplementsList() {
-        return null;
+        return getExtendsAndImplementsClauses();
     }
 
     @NotNull
     @Override
     public PsiClassType[] getExtendsListTypes() {
-        return new PsiClassType[0];
+        JawaExtendsAndImplementsClauses eic = getExtendsAndImplementsClauses();
+        if(eic != null) return eic.getReferencedTypes();
+        else return PsiClassType.EMPTY_ARRAY;
     }
 
     @NotNull
     @Override
     public PsiClassType[] getImplementsListTypes() {
-        return new PsiClassType[0];
+        JawaExtendsAndImplementsClauses eic = getExtendsAndImplementsClauses();
+        if(eic != null) return eic.getReferencedTypes();
+        else return PsiClassType.EMPTY_ARRAY;
     }
 
     @Nullable
@@ -121,13 +129,21 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
     @NotNull
     @Override
     public PsiField[] getFields() {
-        return new PsiField[0];
+        List<JawaFieldDeclaration> jfds = new ArrayList<>();
+        List<JawaInstanceFieldDeclaration> ifl = getInstanceFieldDeclarationBlock().getInstanceFieldDeclarationList();
+        List<JawaStaticFieldDeclaration> sfl = getStaticFieldDeclarationList();
+        ifl.forEach(i -> jfds.add(i.getFieldDeclaration()));
+        sfl.forEach(i -> jfds.add(i.getFieldDeclaration()));
+        PsiField[] fields = new PsiField[jfds.size()];
+        return jfds.toArray(fields);
     }
 
     @NotNull
     @Override
     public PsiMethod[] getMethods() {
-        return new PsiMethod[0];
+        List<JawaMethodDeclaration> mds = getMethodDeclarationList();
+        PsiMethod[] methods = new PsiMethod[mds.size()];
+        return mds.toArray(methods);
     }
 
     @NotNull
@@ -151,13 +167,13 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
     @NotNull
     @Override
     public PsiField[] getAllFields() {
-        return new PsiField[0];
+        return getFields();
     }
 
     @NotNull
     @Override
     public PsiMethod[] getAllMethods() {
-        return new PsiMethod[0];
+        return getMethods();
     }
 
     @NotNull
@@ -192,14 +208,14 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
 
     @NotNull
     @Override
-    public List<Pair<PsiMethod, PsiSubstitutor>> findMethodsAndTheirSubstitutorsByName(@NonNls String s, boolean b) {
-        return null;
+    public List<Pair<PsiMethod, PsiSubstitutor>> findMethodsAndTheirSubstitutorsByName(@NonNls String name, boolean checkBases) {
+        return PsiClassImplUtil.findMethodsAndTheirSubstitutorsByName(this, name, checkBases);
     }
 
     @NotNull
     @Override
     public List<Pair<PsiMethod, PsiSubstitutor>> getAllMethodsAndTheirSubstitutors() {
-        return null;
+        return PsiClassImplUtil.getAllWithSubstitutorsByMap(this, PsiClassImplUtil.MemberType.METHOD);
     }
 
     @Nullable
@@ -250,7 +266,7 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
     @NotNull
     @Override
     public Collection<HierarchicalMethodSignature> getVisibleSignatures() {
-        return null;
+        return PsiSuperMethodImplUtil.getVisibleSignatures(this);
     }
 
     @Override

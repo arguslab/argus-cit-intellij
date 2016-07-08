@@ -8,13 +8,18 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import org.argus.cit.intellij.jawa.lang.psi.mixins.JawaExtendsAndImplementsClausesImplMixin;
 import org.argus.cit.intellij.jawa.lang.psi.*;
+import com.intellij.psi.stubs.IStubElementType;
 
-public class JawaExtendsAndImplementsClausesImpl extends ASTWrapperPsiElement implements JawaExtendsAndImplementsClauses {
+public class JawaExtendsAndImplementsClausesImpl extends JawaExtendsAndImplementsClausesImplMixin implements JawaExtendsAndImplementsClauses {
 
   public JawaExtendsAndImplementsClausesImpl(ASTNode node) {
     super(node);
+  }
+
+  public JawaExtendsAndImplementsClausesImpl(org.argus.cit.intellij.jawa.lang.psi.stubs.JawaExtendsAndImplementsClausesStub stub, IStubElementType nodeType) {
+    super(stub, nodeType);
   }
 
   public void accept(@NotNull JawaVisitor visitor) {

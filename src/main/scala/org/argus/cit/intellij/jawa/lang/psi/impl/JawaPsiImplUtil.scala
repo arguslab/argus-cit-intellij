@@ -26,6 +26,10 @@ object JawaPsiImplUtil {
     val baseTyp = element.getApostropheId.getText.replaceAll("`", "")
     new JawaType(baseTyp)
   }
+  def getJawaType(element: JawaTypeSymbol): JawaType = {
+    val baseTyp = element.getApostropheId.getText.replaceAll("`", "")
+    new JawaType(baseTyp)
+  }
   def getSignature(element: JawaSignatureSymbol): Signature = {
     new Signature(element.getApostropheId.getText.replaceAll("`", ""))
   }

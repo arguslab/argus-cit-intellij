@@ -94,6 +94,10 @@
   mixin("ClassOrInterfaceDeclaration")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaClassOrInterfaceDeclarationImplMixin"
   stubClass("ClassOrInterfaceDeclaration")="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaClassOrInterfaceStub"
 
+  implements("ExtendsAndImplementsClauses")="org.argus.cit.intellij.jawa.lang.psi.api.base.JawaPsiReferenceList"
+  mixin("ExtendsAndImplementsClauses")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaExtendsAndImplementsClausesImplMixin"
+  stubClass("ExtendsAndImplementsClauses")="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaExtendsAndImplementsClausesStub"
+
   implements("FieldDeclaration")="org.argus.cit.intellij.jawa.lang.psi.api.base.JawaPsiField"
   mixin("FieldDeclaration")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaFieldDeclarationImplMixin"
   stubClass("FieldDeclaration")="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaFieldStub"
@@ -247,7 +251,7 @@ CatchClause ::= 'catch' JwType CatchRange 'goto' LocationSymbol ';'
 CatchRange ::= '@' '[' LocationSymbol '..' LocationSymbol ']' {pin=2}
 
 TypeDefSymbol ::= APOSTROPHE_ID {methods=[getJawaType]}
-TypeSymbol ::= APOSTROPHE_ID
+TypeSymbol ::= APOSTROPHE_ID {methods=[getJawaType]}
 
 VarDefSymbol ::= ID
 VarSymbol ::= ID
