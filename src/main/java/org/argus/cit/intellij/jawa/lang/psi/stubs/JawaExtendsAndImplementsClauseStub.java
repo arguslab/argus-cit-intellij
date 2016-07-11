@@ -11,10 +11,12 @@
 package org.argus.cit.intellij.jawa.lang.psi.stubs;
 
 import com.intellij.psi.stubs.StubElement;
-import org.argus.cit.intellij.jawa.lang.psi.JawaExtendsAndImplementsClauses;
+import org.argus.cit.intellij.jawa.lang.psi.JawaExtendsAndImplementsClause;
+import org.argus.jawa.core.JawaType;
 
 /**
  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
  */
-public interface JawaExtendsAndImplementsClausesStub extends StubElement<JawaExtendsAndImplementsClauses> {
+public interface JawaExtendsAndImplementsClauseStub extends StubElement<JawaExtendsAndImplementsClause> {
+    JawaType[] getReferenceTypes();
 }

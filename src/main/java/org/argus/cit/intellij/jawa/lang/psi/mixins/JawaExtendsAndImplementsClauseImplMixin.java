@@ -14,12 +14,13 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiClassType;
 import com.intellij.psi.PsiJavaCodeReferenceElement;
 import com.intellij.psi.PsiType;
+import com.intellij.psi.impl.source.tree.JavaElementType;
 import com.intellij.psi.stubs.IStubElementType;
 import org.apache.commons.lang.ArrayUtils;
 import org.argus.cit.intellij.jawa.lang.psi.JawaExtendAndImplement;
-import org.argus.cit.intellij.jawa.lang.psi.JawaExtendsAndImplementsClauses;
+import org.argus.cit.intellij.jawa.lang.psi.JawaExtendsAndImplementsClause;
 import org.argus.cit.intellij.jawa.lang.psi.JawaStubBasedPsiElementBase;
-import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaExtendsAndImplementsClausesStub;
+import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaExtendsAndImplementsClauseStub;
 import org.argus.cit.intellij.jawa.lang.psi.types.JawaTypeSystem;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,22 +29,22 @@ import java.util.List;
 /**
  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
  */
-public abstract class JawaExtendsAndImplementsClausesImplMixin
-        extends JawaStubBasedPsiElementBase<JawaExtendsAndImplementsClausesStub>
-        implements JawaExtendsAndImplementsClauses {
+public abstract class JawaExtendsAndImplementsClauseImplMixin
+        extends JawaStubBasedPsiElementBase<JawaExtendsAndImplementsClauseStub>
+        implements JawaExtendsAndImplementsClause {
 
-    public JawaExtendsAndImplementsClausesImplMixin(@NotNull JawaExtendsAndImplementsClausesStub stub, @NotNull IStubElementType nodeType) {
+    public JawaExtendsAndImplementsClauseImplMixin(@NotNull JawaExtendsAndImplementsClauseStub stub, @NotNull IStubElementType nodeType) {
         super(stub, nodeType);
     }
 
-    public JawaExtendsAndImplementsClausesImplMixin(@NotNull ASTNode node) {
+    public JawaExtendsAndImplementsClauseImplMixin(@NotNull ASTNode node) {
         super(node);
     }
 
     @NotNull
     @Override
     public PsiJavaCodeReferenceElement[] getReferenceElements() {
-        return new PsiJavaCodeReferenceElement[0];
+        return calcTreeElement().getChildrenAsPsiElements(JavaElementType.JAVA_CODE_REFERENCE, PsiJavaCodeReferenceElement.ARRAY_FACTORY);
     }
 
     @NotNull

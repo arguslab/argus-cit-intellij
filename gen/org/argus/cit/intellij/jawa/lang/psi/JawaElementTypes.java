@@ -28,7 +28,7 @@ public interface JawaElementTypes {
   IElementType EXCEPTION_EXPRESSION = JawaElementTypeFactory.getElementType("EXCEPTION_EXPRESSION");
   IElementType EXPRESSION_LHS = JawaElementTypeFactory.getElementType("EXPRESSION_LHS");
   IElementType EXPRESSION_RHS = JawaElementTypeFactory.getElementType("EXPRESSION_RHS");
-  IElementType EXTENDS_AND_IMPLEMENTS_CLAUSES = JawaElementTypeFactory.getElementType("EXTENDS_AND_IMPLEMENTS_CLAUSES");
+  IElementType EXTENDS_AND_IMPLEMENTS_CLAUSE = JawaElementTypeFactory.getElementType("EXTENDS_AND_IMPLEMENTS_CLAUSE");
   IElementType EXTEND_AND_IMPLEMENT = JawaElementTypeFactory.getElementType("EXTEND_AND_IMPLEMENT");
   IElementType FIELD_DECLARATION = JawaElementTypeFactory.getElementType("FIELD_DECLARATION");
   IElementType FIELD_DEF_SYMBOL = JawaElementTypeFactory.getElementType("FIELD_DEF_SYMBOL");
@@ -207,8 +207,8 @@ public interface JawaElementTypes {
       else if (type == EXPRESSION_RHS) {
         return new JawaExpressionRhsImpl(node);
       }
-      else if (type == EXTENDS_AND_IMPLEMENTS_CLAUSES) {
-        return new JawaExtendsAndImplementsClausesImpl(node);
+      else if (type == EXTENDS_AND_IMPLEMENTS_CLAUSE) {
+        return new JawaExtendsAndImplementsClauseImpl(node);
       }
       else if (type == EXTEND_AND_IMPLEMENT) {
         return new JawaExtendAndImplementImpl(node);

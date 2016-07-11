@@ -17,6 +17,7 @@ import org.argus.cit.intellij.jawa.lang.psi.stubs.elements._
   */
 object JawaStubElementTypes {
   val CLASS = new JawaClassDeclarationElementType("CLASS")
+  val EXTENDS = new JawaExtendsClauseElementType("EXTENDS")
   val METHOD = new JawaMethodDeclarationElementType("METHOD")
   val FIELD = new JawaFieldDeclarationElementType("FIELD")
   val ACCESS_FLAG = new JawaAccessFlagElementType("ACCESS_FLAG")

@@ -83,8 +83,8 @@ public class JawaParser implements PsiParser, LightPsiParser {
     else if (t == EXTEND_AND_IMPLEMENT) {
       r = ExtendAndImplement(b, 0);
     }
-    else if (t == EXTENDS_AND_IMPLEMENTS_CLAUSES) {
-      r = ExtendsAndImplementsClauses(b, 0);
+    else if (t == EXTENDS_AND_IMPLEMENTS_CLAUSE) {
+      r = ExtendsAndImplementsClause(b, 0);
     }
     else if (t == FIELD_DECLARATION) {
       r = FieldDeclaration(b, 0);
@@ -538,7 +538,7 @@ public class JawaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // 'record' TypeDefSymbol KindAnnotation AccessFlagAnnotation ExtendsAndImplementsClauses? InstanceFieldDeclarationBlock StaticFieldDeclaration* MethodDeclaration*
+  // 'record' TypeDefSymbol KindAnnotation AccessFlagAnnotation ExtendsAndImplementsClause? InstanceFieldDeclarationBlock StaticFieldDeclaration* MethodDeclaration*
   public static boolean ClassOrInterfaceDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ClassOrInterfaceDeclaration")) return false;
     if (!nextTokenIs(b, CLASS_OR_INTERFACE)) return false;
@@ -556,10 +556,10 @@ public class JawaParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ExtendsAndImplementsClauses?
+  // ExtendsAndImplementsClause?
   private static boolean ClassOrInterfaceDeclaration_4(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ClassOrInterfaceDeclaration_4")) return false;
-    ExtendsAndImplementsClauses(b, l + 1);
+    ExtendsAndImplementsClause(b, l + 1);
     return true;
   }
 
@@ -711,34 +711,34 @@ public class JawaParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // 'extends' ExtendAndImplement (',' ExtendAndImplement)*
-  public static boolean ExtendsAndImplementsClauses(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ExtendsAndImplementsClauses")) return false;
+  public static boolean ExtendsAndImplementsClause(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ExtendsAndImplementsClause")) return false;
     if (!nextTokenIs(b, EXTENDS_AND_IMPLEMENTS)) return false;
     boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_, EXTENDS_AND_IMPLEMENTS_CLAUSES, null);
+    Marker m = enter_section_(b, l, _NONE_, EXTENDS_AND_IMPLEMENTS_CLAUSE, null);
     r = consumeToken(b, EXTENDS_AND_IMPLEMENTS);
     r = r && ExtendAndImplement(b, l + 1);
     p = r; // pin = 2
-    r = r && ExtendsAndImplementsClauses_2(b, l + 1);
+    r = r && ExtendsAndImplementsClause_2(b, l + 1);
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }
 
   // (',' ExtendAndImplement)*
-  private static boolean ExtendsAndImplementsClauses_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ExtendsAndImplementsClauses_2")) return false;
+  private static boolean ExtendsAndImplementsClause_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ExtendsAndImplementsClause_2")) return false;
     int c = current_position_(b);
     while (true) {
-      if (!ExtendsAndImplementsClauses_2_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "ExtendsAndImplementsClauses_2", c)) break;
+      if (!ExtendsAndImplementsClause_2_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "ExtendsAndImplementsClause_2", c)) break;
       c = current_position_(b);
     }
     return true;
   }
 
   // ',' ExtendAndImplement
-  private static boolean ExtendsAndImplementsClauses_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ExtendsAndImplementsClauses_2_0")) return false;
+  private static boolean ExtendsAndImplementsClause_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ExtendsAndImplementsClause_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, COMMA);

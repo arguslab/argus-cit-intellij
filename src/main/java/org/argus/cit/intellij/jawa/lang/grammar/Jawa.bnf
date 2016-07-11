@@ -94,9 +94,9 @@
   mixin("ClassOrInterfaceDeclaration")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaClassOrInterfaceDeclarationImplMixin"
   stubClass("ClassOrInterfaceDeclaration")="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaClassOrInterfaceStub"
 
-  implements("ExtendsAndImplementsClauses")="org.argus.cit.intellij.jawa.lang.psi.api.base.JawaPsiReferenceList"
-  mixin("ExtendsAndImplementsClauses")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaExtendsAndImplementsClausesImplMixin"
-  stubClass("ExtendsAndImplementsClauses")="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaExtendsAndImplementsClausesStub"
+  implements("ExtendsAndImplementsClause")="org.argus.cit.intellij.jawa.lang.psi.api.base.JawaPsiReferenceList"
+  mixin("ExtendsAndImplementsClause")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaExtendsAndImplementsClauseImplMixin"
+  stubClass("ExtendsAndImplementsClause")="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaExtendsAndImplementsClauseStub"
 
   implements("FieldDeclaration")="org.argus.cit.intellij.jawa.lang.psi.api.base.JawaPsiField"
   mixin("FieldDeclaration")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaFieldDeclarationImplMixin"
@@ -125,7 +125,7 @@
 
 CompilationUnit ::= ClassOrInterfaceDeclaration*
 
-ClassOrInterfaceDeclaration ::= 'record' TypeDefSymbol KindAnnotation AccessFlagAnnotation ExtendsAndImplementsClauses? InstanceFieldDeclarationBlock StaticFieldDeclaration* MethodDeclaration*
+ClassOrInterfaceDeclaration ::= 'record' TypeDefSymbol KindAnnotation AccessFlagAnnotation ExtendsAndImplementsClause? InstanceFieldDeclarationBlock StaticFieldDeclaration* MethodDeclaration*
 
 Annotation ::= TypeAnnotation | SignatureAnnotation | KindAnnotation | AccessFlagAnnotation | AnnotationKey ID?
 TypeAnnotation ::= ('@owner'|'@type'|'@classDescriptor') TypeExpression
@@ -134,7 +134,7 @@ KindAnnotation ::= '@kind' ID
 AccessFlagAnnotation ::= '@AccessFlag' ID? {methods=[getModifiers]}
 AnnotationKey ::= '@' ID
 
-ExtendsAndImplementsClauses ::= 'extends' ExtendAndImplement (',' ExtendAndImplement)* {pin=2}
+ExtendsAndImplementsClause ::= 'extends' ExtendAndImplement (',' ExtendAndImplement)* {pin=2}
 ExtendAndImplement ::= TypeSymbol KindAnnotation
 
 InstanceFieldDeclarationBlock ::= '{' InstanceFieldDeclaration* '}'

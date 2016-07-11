@@ -13,11 +13,12 @@ package org.argus.cit.intellij.jawa.lang.psi.mixins;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.Pair;
 import com.intellij.psi.*;
+import com.intellij.psi.impl.InheritanceImplUtil;
 import com.intellij.psi.impl.PsiClassImplUtil;
+import com.intellij.psi.impl.PsiImplUtil;
 import com.intellij.psi.impl.PsiSuperMethodImplUtil;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.stubs.IStubElementType;
-import com.intellij.util.IncorrectOperationException;
 import org.argus.cit.intellij.jawa.icons.Icons;
 import org.argus.cit.intellij.jawa.lang.psi.*;
 import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.synthetic.JavaIdentifier;
@@ -29,6 +30,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -106,24 +108,24 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
     @Nullable
     @Override
     public PsiClass getSuperClass() {
-        return null;
+        return PsiClassImplUtil.getSuperClass(this);
     }
 
     @Override
     public PsiClass[] getInterfaces() {
-        return new PsiClass[0];
+        return PsiClassImplUtil.getInterfaces(this);
     }
 
     @NotNull
     @Override
     public PsiClass[] getSupers() {
-        return new PsiClass[0];
+        return PsiClassImplUtil.getSupers(this);
     }
 
     @NotNull
     @Override
     public PsiClassType[] getSuperTypes() {
-        return new PsiClassType[0];
+        return PsiClassImplUtil.getSuperTypes(this);
     }
 
     @NotNull
@@ -149,7 +151,12 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
     @NotNull
     @Override
     public PsiMethod[] getConstructors() {
-        return new PsiMethod[0];
+        List<PsiMethod> consts = new ArrayList<>();
+        Arrays.asList(getMethods()).forEach(m -> {
+            if(m.isConstructor()) consts.add(m);
+        });
+        PsiMethod[] methods = new PsiMethod[consts.size()];
+        return consts.toArray(methods);
     }
 
     @NotNull
@@ -179,7 +186,7 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
     @NotNull
     @Override
     public PsiClass[] getAllInnerClasses() {
-        return new PsiClass[0];
+        return getInnerClasses();
     }
 
     @Nullable
@@ -190,14 +197,14 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
 
     @Nullable
     @Override
-    public PsiMethod findMethodBySignature(PsiMethod psiMethod, boolean b) {
-        return null;
+    public PsiMethod findMethodBySignature(PsiMethod patternMethod, boolean checkBases) {
+        return PsiClassImplUtil.findMethodBySignature(this, patternMethod, checkBases);
     }
 
     @NotNull
     @Override
-    public PsiMethod[] findMethodsBySignature(PsiMethod psiMethod, boolean b) {
-        return new PsiMethod[0];
+    public PsiMethod[] findMethodsBySignature(PsiMethod patternMethod, boolean checkBases) {
+        return PsiClassImplUtil.findMethodsBySignature(this, patternMethod, checkBases);
     }
 
     @NotNull
@@ -244,17 +251,32 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
 
     @Override
     public PsiElement getScope() {
-        return null;
+        final JawaClassOrInterfaceStub stub = getStub();
+        if (stub != null) {
+            return stub.getParentStub().getPsi();
+        }
+
+        ASTNode treeElement = getNode();
+        ASTNode parent = treeElement.getTreeParent();
+
+        while(parent != null) {
+            if (parent.getElementType() instanceof IStubElementType){
+                return parent.getPsi();
+            }
+            parent = parent.getTreeParent();
+        }
+
+        return getContainingFile();
     }
 
     @Override
-    public boolean isInheritor(@NotNull PsiClass psiClass, boolean b) {
-        return false;
+    public boolean isInheritor(@NotNull PsiClass baseClass, boolean checkDeep) {
+        return InheritanceImplUtil.isInheritor(this, baseClass, checkDeep);
     }
 
     @Override
-    public boolean isInheritorDeep(PsiClass psiClass, @Nullable PsiClass psiClass1) {
-        return false;
+    public boolean isInheritorDeep(PsiClass baseClass, @Nullable PsiClass classToByPass) {
+        return InheritanceImplUtil.isInheritorDeep(this, baseClass, classToByPass);
     }
 
     @Nullable
@@ -270,8 +292,36 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
     }
 
     @Override
-    public PsiElement setName(@NonNls @NotNull String s) {
-        throw new IncorrectOperationException("cannot set name");
+    public PsiElement setName(@NonNls @NotNull String newName) {
+        boolean isRenameFile = isRenameFileOnRenaming();
+
+        PsiIdentifier id = getNameIdentifier();
+        if(id != null)
+            PsiImplUtil.setName(id, newName);
+
+        if (isRenameFile) {
+            PsiFile file = (PsiFile)getParent();
+            String fileName = file.getName();
+            int dotIndex = fileName.lastIndexOf('.');
+            file.setName(dotIndex >= 0 ? newName + "." + fileName.substring(dotIndex + 1) : newName);
+        }
+
+        return this;
+    }
+
+    private boolean isRenameFileOnRenaming() {
+        final PsiElement parent = getParent();
+        if (parent instanceof PsiFile) {
+            PsiFile file = (PsiFile)parent;
+            String fileName = file.getName();
+            int dotIndex = fileName.lastIndexOf('.');
+            String name = dotIndex >= 0 ? fileName.substring(0, dotIndex) : fileName;
+            String oldName = getName();
+            return name.equals(oldName);
+        }
+        else {
+            return false;
+        }
     }
 
     @Nullable

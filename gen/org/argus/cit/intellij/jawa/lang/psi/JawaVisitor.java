@@ -95,7 +95,7 @@ public class JawaVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitExtendsAndImplementsClauses(@NotNull JawaExtendsAndImplementsClauses o) {
+  public void visitExtendsAndImplementsClause(@NotNull JawaExtendsAndImplementsClause o) {
     visitPsiReferenceList(o);
   }
 

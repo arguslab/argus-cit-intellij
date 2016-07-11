@@ -14,7 +14,7 @@ public interface JawaClassOrInterfaceDeclaration extends JawaTypeDefinition, Stu
   JawaAccessFlagAnnotation getAccessFlagAnnotation();
 
   @Nullable
-  JawaExtendsAndImplementsClauses getExtendsAndImplementsClauses();
+  JawaExtendsAndImplementsClause getExtendsAndImplementsClause();
 
   @NotNull
   JawaInstanceFieldDeclarationBlock getInstanceFieldDeclarationBlock();

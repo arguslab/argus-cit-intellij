@@ -39,8 +39,8 @@ public class JawaClassOrInterfaceDeclarationImpl extends JawaClassOrInterfaceDec
 
   @Override
   @Nullable
-  public JawaExtendsAndImplementsClauses getExtendsAndImplementsClauses() {
-    return PsiTreeUtil.getStubChildOfType(this, JawaExtendsAndImplementsClauses.class);
+  public JawaExtendsAndImplementsClause getExtendsAndImplementsClause() {
+    return PsiTreeUtil.getStubChildOfType(this, JawaExtendsAndImplementsClause.class);
   }
 
   @Override

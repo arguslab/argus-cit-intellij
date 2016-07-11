@@ -2,28 +2,28 @@
 package org.argus.cit.intellij.jawa.lang.psi.impl;
 
 import java.util.List;
+
+import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaExtendsAndImplementsClauseStub;
 import org.jetbrains.annotations.*;
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
-import org.argus.cit.intellij.jawa.lang.psi.mixins.JawaExtendsAndImplementsClausesImplMixin;
+import org.argus.cit.intellij.jawa.lang.psi.mixins.JawaExtendsAndImplementsClauseImplMixin;
 import org.argus.cit.intellij.jawa.lang.psi.*;
 import com.intellij.psi.stubs.IStubElementType;
 
-public class JawaExtendsAndImplementsClausesImpl extends JawaExtendsAndImplementsClausesImplMixin implements JawaExtendsAndImplementsClauses {
+public class JawaExtendsAndImplementsClauseImpl extends JawaExtendsAndImplementsClauseImplMixin implements JawaExtendsAndImplementsClause {
 
-  public JawaExtendsAndImplementsClausesImpl(ASTNode node) {
+  public JawaExtendsAndImplementsClauseImpl(ASTNode node) {
     super(node);
   }
 
-  public JawaExtendsAndImplementsClausesImpl(org.argus.cit.intellij.jawa.lang.psi.stubs.JawaExtendsAndImplementsClausesStub stub, IStubElementType nodeType) {
+  public JawaExtendsAndImplementsClauseImpl(JawaExtendsAndImplementsClauseStub stub, IStubElementType nodeType) {
     super(stub, nodeType);
   }
 
   public void accept(@NotNull JawaVisitor visitor) {
-    visitor.visitExtendsAndImplementsClauses(this);
+    visitor.visitExtendsAndImplementsClause(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

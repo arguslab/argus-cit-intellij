@@ -12,9 +12,7 @@ package org.argus.cit.intellij.jawa.lang.psi;
 
 import com.intellij.extapi.psi.StubBasedPsiElementBase;
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.ResolveState;
-import com.intellij.psi.scope.PsiScopeProcessor;
+import com.intellij.psi.impl.source.tree.CompositeElement;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubElement;
 import org.jetbrains.annotations.NotNull;
@@ -36,13 +34,17 @@ public class JawaStubBasedPsiElementBase<T extends StubElement> extends StubBase
     }
 
     @Override
-    public <T extends JawaPsiElement> T findChildByClassJawa(Class<T> clazz) {
+    public <Tp extends JawaPsiElement> Tp findChildByClassJawa(Class<Tp> clazz) {
         return findChildByClass(clazz);
     }
 
     @Override
-    public <T extends JawaPsiElement> T[] findChildrenByClassJawa(Class<T> clazz) {
+    public <Tp extends JawaPsiElement> Tp[] findChildrenByClassJawa(Class<Tp> clazz) {
         return findChildrenByClass(clazz);
+    }
+
+    protected CompositeElement calcTreeElement() {
+        return (CompositeElement)getNode();
     }
 
 //    @Override
