@@ -47,4 +47,7 @@ object JawaPsiImplUtil {
       element.getStaticFieldDefSymbol.getStaticId.getText.replaceAll("`", "").replaceAll("@@", "")
     } else null
   }
+  def isImplements(element: JawaExtendAndImplement): Boolean = {
+    element.getKindAnnotation.getId.getText == "interface"
+  }
 }

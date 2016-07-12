@@ -10,14 +10,13 @@
 
 package org.argus.cit.intellij.jawa.lang.psi.stubs;
 
-import com.intellij.psi.stubs.StubElement;
-import org.argus.cit.intellij.jawa.lang.psi.JawaExtendsAndImplementsClause;
+import com.intellij.psi.stubs.NamedStub;
+import org.argus.cit.intellij.jawa.lang.psi.JawaTypeSymbol;
 import org.argus.jawa.core.JawaType;
 
 /**
  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
  */
-public interface JawaExtendsAndImplementsClauseStub extends StubElement<JawaExtendsAndImplementsClause> {
-    JawaType getExtendType();
-    JawaType[] getInterfaceTypes();
+public interface JawaTypeSymbolStub extends NamedStub<JawaTypeSymbol> {
+    JawaType getJawaType();
 }

@@ -13,35 +13,33 @@ package org.argus.cit.intellij.jawa.lang.psi.stubs.impl
 import com.intellij.psi.PsiElement
 import com.intellij.psi.stubs.{IStubElementType, StubElement}
 import com.intellij.util.io.StringRef
-import org.argus.cit.intellij.jawa.lang.psi.JawaParam
-import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaParamStub
+import org.argus.cit.intellij.jawa.lang.psi.JawaTypeSymbol
+import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaTypeSymbolStub
+import org.argus.jawa.core.JawaType
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
-class JawaParamStubImpl[ParentPsi <: PsiElement](parent: StubElement[ParentPsi],
-                                                 elemType: IStubElementType[_ <: StubElement[_ <: PsiElement], _ <: PsiElement])
-  extends StubBaseWrapper[JawaParam](parent, elemType) with JawaParamStub {
-  private var name: StringRef = _
+class JawaTypeSymbolStubImpl [ParentPsi <: PsiElement](parent: StubElement[ParentPsi],
+                                                       elemType: IStubElementType[_ <: StubElement[_ <: PsiElement], _ <: PsiElement])
+  extends StubBaseWrapper[JawaTypeSymbol](parent, elemType) with JawaTypeSymbolStub {
   private var typeText: StringRef = _
 
   def this(parent: StubElement[ParentPsi],
            elemType: IStubElementType[_ <: StubElement[_ <: PsiElement], _ <: PsiElement],
-           name: String, typeText: String) = {
+           typeText: String) = {
     this(parent, elemType.asInstanceOf[IStubElementType[StubElement[PsiElement], PsiElement]])
-    this.name = StringRef.fromString(name)
     this.typeText = StringRef.fromString(typeText)
   }
 
   def this(parent: StubElement[ParentPsi],
            elemType: IStubElementType[_ <: StubElement[_ <: PsiElement], _ <: PsiElement],
-           name: StringRef, typeText: StringRef) = {
+           typeText: StringRef) = {
     this(parent, elemType.asInstanceOf[IStubElementType[StubElement[PsiElement], PsiElement]])
-    this.name = name
     this.typeText = typeText
   }
 
-  def getName: String = StringRef.toString(name)
+  def getName: String = StringRef.toString(typeText)
 
-  def getTypeText: String = StringRef.toString(typeText)
+  def getJawaType: JawaType = new JawaType(StringRef.toString(typeText))
 }

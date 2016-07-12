@@ -41,7 +41,7 @@ public class JawaJwTypeImpl extends JawaJwTypeImplMixin implements JawaJwType {
   @Override
   @NotNull
   public JawaTypeSymbol getTypeSymbol() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, JawaTypeSymbol.class));
+    return notNullChild(PsiTreeUtil.getStubChildOfType(this, JawaTypeSymbol.class));
   }
 
   public JawaType getJawaType() {

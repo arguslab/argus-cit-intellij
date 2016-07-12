@@ -14,7 +14,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.stubs.{IndexSink, StubElement, StubInputStream, StubOutputStream}
 import org.argus.cit.intellij.jawa.lang.psi.JawaJwType
 import org.argus.cit.intellij.jawa.lang.psi.impl.JawaJwTypeImpl
-import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaJwTypeStub
+import org.argus.cit.intellij.jawa.lang.psi.stubs.{JawaJwTypeStub, JawaStubElementTypes}
 import org.argus.cit.intellij.jawa.lang.psi.stubs.impl.JawaJwTypeStubImpl
 
 /**
@@ -31,7 +31,7 @@ class JawaJwTypeElementType(debugName: String) extends JawaStubElementType[JawaJ
   }
 
   def createPsi(stub: JawaJwTypeStub): JawaJwType = {
-    new JawaJwTypeImpl(stub, this)
+    new JawaJwTypeImpl(stub, JawaStubElementTypes.TYPE)
   }
 
   def createStubImpl[ParentPsi <: PsiElement](psi: JawaJwType, parentStub: StubElement[ParentPsi]): JawaJwTypeStub = {

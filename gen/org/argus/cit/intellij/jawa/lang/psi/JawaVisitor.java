@@ -12,6 +12,7 @@ import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaTypeElement;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaPsiMethod;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaParameter;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaParameterList;
+import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaReference;
 
 public class JawaVisitor extends PsiElementVisitor {
 
@@ -280,7 +281,7 @@ public class JawaVisitor extends PsiElementVisitor {
   }
 
   public void visitTypeSymbol(@NotNull JawaTypeSymbol o) {
-    visitPsiElement(o);
+    visitReference(o);
   }
 
   public void visitUnaryExpression(@NotNull JawaUnaryExpression o) {
@@ -316,6 +317,10 @@ public class JawaVisitor extends PsiElementVisitor {
   }
 
   public void visitPsiReferenceList(@NotNull JawaPsiReferenceList o) {
+    visitPsiElement(o);
+  }
+
+  public void visitReference(@NotNull JawaReference o) {
     visitPsiElement(o);
   }
 

@@ -2,12 +2,12 @@
 package org.argus.cit.intellij.jawa.lang.psi.impl;
 
 import java.util.List;
-
-import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaExtendsAndImplementsClauseStub;
 import org.jetbrains.annotations.*;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
+import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
 import org.argus.cit.intellij.jawa.lang.psi.mixins.JawaExtendsAndImplementsClauseImplMixin;
 import org.argus.cit.intellij.jawa.lang.psi.*;
 import com.intellij.psi.stubs.IStubElementType;
@@ -18,7 +18,7 @@ public class JawaExtendsAndImplementsClauseImpl extends JawaExtendsAndImplements
     super(node);
   }
 
-  public JawaExtendsAndImplementsClauseImpl(JawaExtendsAndImplementsClauseStub stub, IStubElementType nodeType) {
+  public JawaExtendsAndImplementsClauseImpl(org.argus.cit.intellij.jawa.lang.psi.stubs.JawaExtendsAndImplementsClauseStub stub, IStubElementType nodeType) {
     super(stub, nodeType);
   }
 

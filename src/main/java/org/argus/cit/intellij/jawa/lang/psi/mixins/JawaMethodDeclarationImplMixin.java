@@ -12,11 +12,11 @@ package org.argus.cit.intellij.jawa.lang.psi.mixins;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.*;
-import com.intellij.psi.impl.source.HierarchicalMethodSignatureImpl;
+import com.intellij.psi.impl.PsiImplUtil;
+import com.intellij.psi.impl.PsiSuperMethodImplUtil;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.stubs.IStubElementType;
-import com.intellij.psi.util.MethodSignatureBackedByPsiMethod;
-import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.psi.util.*;
 import com.intellij.util.IncorrectOperationException;
 import org.argus.cit.intellij.jawa.icons.Icons;
 import org.argus.cit.intellij.jawa.lang.psi.*;
@@ -31,7 +31,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -91,8 +90,15 @@ public abstract class JawaMethodDeclarationImplMixin
 
     @NotNull
     @Override
-    public MethodSignatureBackedByPsiMethod getSignature(@NotNull PsiSubstitutor psiSubstitutor) {
-        return MethodSignatureBackedByPsiMethod.create(this, psiSubstitutor);
+    public MethodSignature getSignature(@NotNull PsiSubstitutor substitutor) {
+        JawaMethodDeclaration outthis = this;
+        if (substitutor == PsiSubstitutor.EMPTY) {
+            return CachedValuesManager.getCachedValue(this, () -> {
+                MethodSignature signature = MethodSignatureBackedByPsiMethod.create(outthis, PsiSubstitutor.EMPTY);
+                return CachedValueProvider.Result.create(signature, PsiModificationTracker.JAVA_STRUCTURE_MODIFICATION_COUNT);
+            });
+        }
+        return MethodSignatureBackedByPsiMethod.create(this, substitutor);
     }
 
     @Nullable
@@ -104,38 +110,38 @@ public abstract class JawaMethodDeclarationImplMixin
     @NotNull
     @Override
     public PsiMethod[] findSuperMethods() {
-        return new PsiMethod[0];
+        return PsiSuperMethodImplUtil.findSuperMethods(this);
     }
 
     @NotNull
     @Override
-    public PsiMethod[] findSuperMethods(boolean b) {
-        return new PsiMethod[0];
+    public PsiMethod[] findSuperMethods(boolean checkAccess) {
+        return PsiSuperMethodImplUtil.findSuperMethods(this, checkAccess);
     }
 
     @NotNull
     @Override
-    public PsiMethod[] findSuperMethods(PsiClass psiClass) {
-        return new PsiMethod[0];
+    public PsiMethod[] findSuperMethods(PsiClass parentClass) {
+        return PsiSuperMethodImplUtil.findSuperMethods(this, parentClass);
     }
 
     @NotNull
     @Override
-    public List<MethodSignatureBackedByPsiMethod> findSuperMethodSignaturesIncludingStatic(boolean b) {
-        return new ArrayList<>();
+    public List<MethodSignatureBackedByPsiMethod> findSuperMethodSignaturesIncludingStatic(boolean checkAccess) {
+        return PsiSuperMethodImplUtil.findSuperMethodSignaturesIncludingStatic(this, checkAccess);
     }
 
     @Nullable
     @Override
     @Deprecated
     public PsiMethod findDeepestSuperMethod() {
-        return null;
+        return PsiSuperMethodImplUtil.findDeepestSuperMethod(this);
     }
 
     @NotNull
     @Override
     public PsiMethod[] findDeepestSuperMethods() {
-        return new PsiMethod[0];
+        return PsiSuperMethodImplUtil.findDeepestSuperMethods(this);
     }
 
     @NotNull
@@ -152,7 +158,7 @@ public abstract class JawaMethodDeclarationImplMixin
     @NotNull
     @Override
     public HierarchicalMethodSignature getHierarchicalMethodSignature() {
-        return new HierarchicalMethodSignatureImpl(getSignature(PsiSubstitutor.EMPTY));
+        return PsiSuperMethodImplUtil.getHierarchicalMethodSignature(this);
     }
 
     @Nullable
@@ -186,23 +192,16 @@ public abstract class JawaMethodDeclarationImplMixin
     @Nullable
     @Override
     public PsiClass getContainingClass() {
-        JawaMethodStub stub = getStub();
-        if(stub != null) {
-            return stub.getParentStubOfType(JawaTypeDefinition.class);
-        } else {
-            return PsiTreeUtil.getContextOfType(this, true, JawaTypeDefinition.class);
-        }
+        PsiElement parent = getParent();
+        return parent instanceof PsiClass ? (PsiClass)parent : PsiTreeUtil.getParentOfType(this, JawaTypeDefinition.class);
     }
 
     @Override
     public PsiElement setName(@NonNls @NotNull String name) {
-//        if (isConstructor()) return this;
-//        else {
-//            ASTNode id = nameId().getNode();
-//            ASTNode parent = id.getTreeParent();
-//            ASTNode newid = JawaPsiElementFactory.
-//        }
-        throw new IncorrectOperationException("cannot set name");
+        final PsiIdentifier identifier = getNameIdentifier();
+        if (identifier == null) throw new IncorrectOperationException("Empty name: " + this);
+        PsiImplUtil.setName(identifier, name);
+        return this;
     }
 
     @Override

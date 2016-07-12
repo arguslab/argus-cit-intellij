@@ -25,6 +25,7 @@ object JawaElementTypeFactory {
     case "FIELD_DECLARATION" => JawaStubElementTypes.FIELD
     case "ACCESS_FLAG_ANNOTATION" => JawaStubElementTypes.ACCESS_FLAG
     case "JW_TYPE" => JawaStubElementTypes.TYPE
+    case "TYPE_SYMBOL" => JawaStubElementTypes.TYPE_SYMBOL
     case "PARAM_CLAUSE" => JawaStubElementTypes.PARAM_CLAUSE
     case "PARAM" => JawaStubElementTypes.PARAM
     case _ => JawaElementType(name)

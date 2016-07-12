@@ -15,7 +15,7 @@ import com.intellij.psi.stubs.{IndexSink, StubElement, StubInputStream, StubOutp
 import com.intellij.util.ArrayUtil
 import org.argus.cit.intellij.jawa.lang.psi.JawaAccessFlagAnnotation
 import org.argus.cit.intellij.jawa.lang.psi.impl.JawaAccessFlagAnnotationImpl
-import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaAccessFlagStub
+import org.argus.cit.intellij.jawa.lang.psi.stubs.{JawaAccessFlagStub, JawaStubElementTypes}
 import org.argus.cit.intellij.jawa.lang.psi.stubs.impl.JawaAccessFlagStubImpl
 
 /**
@@ -23,7 +23,7 @@ import org.argus.cit.intellij.jawa.lang.psi.stubs.impl.JawaAccessFlagStubImpl
   */
 class JawaAccessFlagElementType(debugName: String) extends JawaStubElementType[JawaAccessFlagStub, JawaAccessFlagAnnotation](debugName) {
   def createPsi(stub: JawaAccessFlagStub): JawaAccessFlagAnnotation = {
-    new JawaAccessFlagAnnotationImpl(stub, this)
+    new JawaAccessFlagAnnotationImpl(stub, JawaStubElementTypes.ACCESS_FLAG)
   }
 
   def createStubImpl[ParentPsi <: PsiElement](psi: JawaAccessFlagAnnotation, parentStub: StubElement[ParentPsi]): JawaAccessFlagStub = {

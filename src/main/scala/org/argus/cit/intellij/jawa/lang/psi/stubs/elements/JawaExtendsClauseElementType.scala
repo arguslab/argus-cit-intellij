@@ -12,31 +12,49 @@ package org.argus.cit.intellij.jawa.lang.psi.stubs.elements
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.stubs.{IndexSink, StubElement, StubInputStream, StubOutputStream}
+import com.intellij.util.io.StringRef
 import org.argus.cit.intellij.jawa.lang.psi.JawaExtendsAndImplementsClause
 import org.argus.cit.intellij.jawa.lang.psi.impl.JawaExtendsAndImplementsClauseImpl
-import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaExtendsAndImplementsClauseStub
+import org.argus.cit.intellij.jawa.lang.psi.stubs.{JawaExtendsAndImplementsClauseStub, JawaStubElementTypes}
 import org.argus.cit.intellij.jawa.lang.psi.stubs.impl.JawaExtendsAndImplementsClausesStubImpl
+import org.sireum.util._
+
+import collection.JavaConversions._
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
 class JawaExtendsClauseElementType(debugName: String) extends JawaStubElementType[JawaExtendsAndImplementsClauseStub, JawaExtendsAndImplementsClause](debugName) {
   def serialize(stub: JawaExtendsAndImplementsClauseStub, dataStream: StubOutputStream) {
-    dataStream.writeName(stub.getJawaTypeText)
+    val hasExtend = stub.getExtendType != null
+    dataStream.writeBoolean(hasExtend)
+    if(hasExtend) dataStream.writeName(stub.getExtendType.jawaName)
+    val interfaceTypes = stub.getInterfaceTypes.map(_.jawaName)
+    dataStream.writeInt(interfaceTypes.length)
+    for (name <- interfaceTypes) dataStream.writeName(name)
   }
 
   def deserializeImpl(dataStream: StubInputStream, parentStub: Any): JawaExtendsAndImplementsClauseStub = {
-    val jawatypeText = dataStream.readName()
-    new JawaExtendsAndImplementsClausesStubImpl(parentStub.asInstanceOf[StubElement[PsiElement]], this, jawatypeText)
+    val hasExtend = dataStream.readBoolean
+    val extType: StringRef = if(hasExtend) dataStream.readName else null
+    val length: Int = dataStream.readInt
+    val interfaceTypes = new Array[StringRef](length)
+    for (i <- 0 until length) interfaceTypes(i) = dataStream.readName
+    new JawaExtendsAndImplementsClausesStubImpl(parentStub.asInstanceOf[StubElement[PsiElement]], this, extType, interfaceTypes)
   }
 
   def createPsi(stub: JawaExtendsAndImplementsClauseStub): JawaExtendsAndImplementsClause = {
-    new JawaExtendsAndImplementsClauseImpl(stub, this)
+    new JawaExtendsAndImplementsClauseImpl(stub, JawaStubElementTypes.EXTENDS)
   }
 
   def createStubImpl[ParentPsi <: PsiElement](psi: JawaExtendsAndImplementsClause, parentStub: StubElement[ParentPsi]): JawaExtendsAndImplementsClauseStub = {
-    val jawatypeText: String = psi.getJawaType.jawaName
-    new JawaExtendsAndImplementsClausesStubImpl(parentStub, this, jawatypeText)
+    var extTypeText: String = null
+    val impTypeTexts: MSet[String] = msetEmpty
+    psi.getExtendAndImplementList foreach { eil =>
+      if(eil.isImplements) impTypeTexts += eil.getTypeSymbol.getJawaType.jawaName
+      else extTypeText = eil.getTypeSymbol.getJawaType.jawaName
+    }
+    new JawaExtendsAndImplementsClausesStubImpl(parentStub, this, extTypeText, impTypeTexts.toArray)
   }
 
   override def indexStub(t: JawaExtendsAndImplementsClauseStub, indexSink: IndexSink): Unit = {}

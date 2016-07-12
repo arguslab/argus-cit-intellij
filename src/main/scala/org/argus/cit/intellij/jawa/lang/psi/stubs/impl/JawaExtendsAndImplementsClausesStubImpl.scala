@@ -25,12 +25,12 @@ class JawaExtendsAndImplementsClausesStubImpl [ParentPsi <: PsiElement](parent: 
   extends StubBaseWrapper[JawaExtendsAndImplementsClause](parent, elemType) with JawaExtendsAndImplementsClauseStub {
 
   private var extType: StringRef = _
-  private var impTypes: Set[StringRef] = _
+  private var impTypes: Array[StringRef] = _
 
   def this(parent: StubElement[ParentPsi],
            elemType: IStubElementType[_ <: StubElement[_ <: PsiElement], _ <: PsiElement],
            extType: String,
-           impTypes: Set[String]) = {
+           impTypes: Array[String]) = {
     this(parent, elemType.asInstanceOf[IStubElementType[StubElement[PsiElement], PsiElement]])
     this.extType = StringRef.fromString(extType)
     this.impTypes = impTypes map StringRef.fromString
@@ -39,13 +39,18 @@ class JawaExtendsAndImplementsClausesStubImpl [ParentPsi <: PsiElement](parent: 
   def this(parent: StubElement[ParentPsi],
            elemType: IStubElementType[_ <: StubElement[_ <: PsiElement], _ <: PsiElement],
            extType: StringRef,
-           impTypes: Set[StringRef]) = {
+           impTypes: Array[StringRef]) = {
     this(parent, elemType.asInstanceOf[IStubElementType[StubElement[PsiElement], PsiElement]])
     this.extType = extType
     this.impTypes = impTypes
   }
 
-  override def getReferenceTypes: Array[JawaType] = {
-    this.impTypes.map(t => new JawaType(StringRef.toString(t))).toArray
+  override def getExtendType: JawaType = {
+    if(this.extType != null) new JawaType(StringRef.toString(this.extType))
+    else null
+  }
+
+  override def getInterfaceTypes: Array[JawaType] = {
+    this.impTypes.map(t => new JawaType(StringRef.toString(t)))
   }
 }

@@ -38,4 +38,8 @@ public class JawaExtendAndImplementImpl extends ASTWrapperPsiElement implements 
     return notNullChild(PsiTreeUtil.getChildOfType(this, JawaTypeSymbol.class));
   }
 
+  public boolean isImplements() {
+    return JawaPsiImplUtil.isImplements(this);
+  }
+
 }

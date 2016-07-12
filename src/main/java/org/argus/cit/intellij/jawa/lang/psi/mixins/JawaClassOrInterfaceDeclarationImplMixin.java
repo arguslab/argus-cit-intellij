@@ -80,19 +80,19 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
     @Nullable
     @Override
     public PsiReferenceList getExtendsList() {
-        return getExtendsAndImplementsClauses();
+        return getExtendsAndImplementsClause();
     }
 
     @Nullable
     @Override
     public PsiReferenceList getImplementsList() {
-        return getExtendsAndImplementsClauses();
+        return getExtendsAndImplementsClause();
     }
 
     @NotNull
     @Override
     public PsiClassType[] getExtendsListTypes() {
-        JawaExtendsAndImplementsClauses eic = getExtendsAndImplementsClauses();
+        JawaExtendsAndImplementsClause eic = getExtendsAndImplementsClause();
         if(eic != null) return eic.getReferencedTypes();
         else return PsiClassType.EMPTY_ARRAY;
     }
@@ -100,7 +100,7 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
     @NotNull
     @Override
     public PsiClassType[] getImplementsListTypes() {
-        JawaExtendsAndImplementsClauses eic = getExtendsAndImplementsClauses();
+        JawaExtendsAndImplementsClause eic = getExtendsAndImplementsClause();
         if(eic != null) return eic.getReferencedTypes();
         else return PsiClassType.EMPTY_ARRAY;
     }
@@ -191,8 +191,8 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
 
     @Nullable
     @Override
-    public PsiField findFieldByName(@NonNls String s, boolean b) {
-        return null;
+    public PsiField findFieldByName(@NonNls String name, boolean checkBases) {
+        return PsiClassImplUtil.findFieldByName(this, name, checkBases);
     }
 
     @Nullable
@@ -209,8 +209,8 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
 
     @NotNull
     @Override
-    public PsiMethod[] findMethodsByName(@NonNls String s, boolean b) {
-        return new PsiMethod[0];
+    public PsiMethod[] findMethodsByName(@NonNls String name, boolean checkBases) {
+        return PsiClassImplUtil.findMethodsByName(this, name, checkBases);
     }
 
     @NotNull

@@ -14,7 +14,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.stubs.{IndexSink, StubElement, StubInputStream, StubOutputStream}
 import org.argus.cit.intellij.jawa.lang.psi.JawaParam
 import org.argus.cit.intellij.jawa.lang.psi.impl.JawaParamImpl
-import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaParamStub
+import org.argus.cit.intellij.jawa.lang.psi.stubs.{JawaParamStub, JawaStubElementTypes}
 import org.argus.cit.intellij.jawa.lang.psi.stubs.impl.JawaParamStubImpl
 
 /**
@@ -33,7 +33,7 @@ class JawaParamElementType(debugName: String) extends JawaStubElementType[JawaPa
   }
 
   def createPsi(stub: JawaParamStub): JawaParam = {
-    new JawaParamImpl(stub, this)
+    new JawaParamImpl(stub, JawaStubElementTypes.PARAM)
   }
 
   def createStubImpl[ParentPsi <: PsiElement](psi: JawaParam, parentStub: StubElement[ParentPsi]): JawaParamStub = {

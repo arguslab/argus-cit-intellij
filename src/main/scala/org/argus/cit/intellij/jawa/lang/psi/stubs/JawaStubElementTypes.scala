@@ -22,6 +22,7 @@ object JawaStubElementTypes {
   val FIELD = new JawaFieldDeclarationElementType("FIELD")
   val ACCESS_FLAG = new JawaAccessFlagElementType("ACCESS_FLAG")
   val TYPE = new JawaJwTypeElementType("TYPE")
+  val TYPE_SYMBOL = new JawaTypeSymbolElementType("TYPE_SYMBOL")
   val PARAM_CLAUSE = new JawaParamClauseElementType("PARAM_CLAUSE")
   val PARAM = new JawaParamElementType("PARAM")
 }

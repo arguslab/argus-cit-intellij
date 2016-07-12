@@ -106,6 +106,10 @@
   mixin("JwType")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaJwTypeImplMixin"
   stubClass("JwType")="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaJwTypeStub"
 
+  implements("TypeSymbol")="org.argus.cit.intellij.jawa.lang.psi.api.base.JawaReference"
+  mixin("TypeSymbol")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaTypeSymbolImplMixin"
+  stubClass("TypeSymbol")="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaTypeSymbolStub"
+
   implements("MethodDeclaration")="org.argus.cit.intellij.jawa.lang.psi.api.base.JawaPsiMethod"
   mixin("MethodDeclaration")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaMethodDeclarationImplMixin"
   stubClass("MethodDeclaration")="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaMethodStub"
@@ -135,7 +139,7 @@ AccessFlagAnnotation ::= '@AccessFlag' ID? {methods=[getModifiers]}
 AnnotationKey ::= '@' ID
 
 ExtendsAndImplementsClause ::= 'extends' ExtendAndImplement (',' ExtendAndImplement)* {pin=2}
-ExtendAndImplement ::= TypeSymbol KindAnnotation
+ExtendAndImplement ::= TypeSymbol KindAnnotation {methods=[isImplements]}
 
 InstanceFieldDeclarationBlock ::= '{' InstanceFieldDeclaration* '}'
 InstanceFieldDeclaration ::= FieldDeclaration ';'

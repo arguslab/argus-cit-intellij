@@ -13,4 +13,6 @@ public interface JawaExtendAndImplement extends PsiElement {
   @NotNull
   JawaTypeSymbol getTypeSymbol();
 
+  boolean isImplements();
+
 }
