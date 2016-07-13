@@ -364,6 +364,11 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
     }
 
     @Override
+    public String getName() {
+        return name();
+    }
+
+    @Override
     public String name() {
         JawaClassOrInterfaceStub stub = getStub();
         if(stub != null) return stub.getName();
