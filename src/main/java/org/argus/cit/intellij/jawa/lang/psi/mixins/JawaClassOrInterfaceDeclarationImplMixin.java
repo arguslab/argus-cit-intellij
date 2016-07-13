@@ -383,7 +383,7 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
     @Override
     public Icon getIcon(int flags) {
         int mods = getAccessFlagAnnotation().getModifiers();
-        if(AccessFlag.isInterface(mods)) return Icons.Interface();
+        if(isInterface()) return Icons.Interface();
         else if(AccessFlag.isAbstract(mods)) return Icons.AbstractClass();
         else return Icons.Class();
     }
