@@ -58,7 +58,7 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
     }
 
     private String javaQualName() {
-        return getTypeDefSymbol().getJawaType().name();
+        return getTypeDefSymbol().getJawaType().jawaName();
     }
 
     @Override

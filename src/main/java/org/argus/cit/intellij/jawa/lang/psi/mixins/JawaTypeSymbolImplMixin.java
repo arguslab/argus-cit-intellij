@@ -12,13 +12,21 @@ package org.argus.cit.intellij.jawa.lang.psi.mixins;
 
 
 import com.intellij.lang.ASTNode;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
+import com.intellij.psi.codeStyle.JavaCodeStyleManager;
+import com.intellij.psi.codeStyle.JavaCodeStyleSettingsFacade;
+import com.intellij.psi.filters.ElementFilter;
 import com.intellij.psi.filters.OrFilter;
+import com.intellij.psi.impl.CheckUtil;
 import com.intellij.psi.impl.PsiImplUtil;
 import com.intellij.psi.impl.source.tree.JavaSourceUtil;
 import com.intellij.psi.impl.source.tree.java.PsiReferenceExpressionImpl;
+import com.intellij.psi.scope.ElementClassFilter;
 import com.intellij.psi.scope.PsiScopeProcessor;
+import com.intellij.psi.scope.processor.FilterScopeProcessor;
+import com.intellij.psi.scope.util.PsiScopesUtil;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.util.IncorrectOperationException;
 import org.argus.cit.intellij.jawa.lang.psi.JawaStubBasedPsiElementBase;
@@ -28,6 +36,7 @@ import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaTypeSymbolStub;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 
 /**
  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
@@ -73,9 +82,14 @@ public abstract class JawaTypeSymbolImplMixin
     }
 
     @Override
-    public void processVariants(@NotNull PsiScopeProcessor psiScopeProcessor) {
+    public void processVariants(@NotNull PsiScopeProcessor processor) {
         final OrFilter filter = new OrFilter();
-
+        filter.addFilter(ElementClassFilter.PACKAGE_FILTER);
+        if (isQualified()) {
+            filter.addFilter(ElementClassFilter.CLASS);
+        }
+        final FilterScopeProcessor proc = new FilterScopeProcessor(filter, processor);
+        PsiScopesUtil.resolveAndWalk(proc, this, null, true);
     }
 
     @NotNull
@@ -152,19 +166,80 @@ public abstract class JawaTypeSymbolImplMixin
     }
 
     @Override
-    public PsiElement bindToElement(@NotNull PsiElement psiElement) throws IncorrectOperationException {
-        return null;
+    public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
+        PsiFile containingFile = getContainingFile();
+        CheckUtil.checkWritable(containingFile);
+        if (isReferenceTo(element)) return this;
+        if (!(element instanceof PsiClass)) {
+            throw cannotBindError(element);
+        }
+        return bindToClass((PsiClass)element, containingFile);
+    }
+
+    private static IncorrectOperationException cannotBindError(PsiElement element) {
+        return new IncorrectOperationException("Cannot bind to " + element);
+    }
+
+    private PsiElement bindToClass(@NotNull PsiClass aClass, @NotNull PsiFile containingFile) throws IncorrectOperationException {
+        String qName = aClass.getQualifiedName();
+        Project project = containingFile.getProject();
+        boolean preserveQualification = JavaCodeStyleSettingsFacade.getInstance(project).useFQClassNames();
+        JavaPsiFacade facade = JavaPsiFacade.getInstance(project);
+        if (qName == null) {
+            qName = aClass.getName();
+            assert qName != null : aClass;
+            PsiClass psiClass = facade.getResolveHelper().resolveReferencedClass(qName, this);
+            if (!getManager().areElementsEquivalent(psiClass, aClass)) {
+                throw cannotBindError(aClass);
+            }
+        }
+        else if (facade.findClass(qName, getResolveScope()) == null && !preserveQualification) {
+            return this;
+        }
+
+//        List<PsiAnnotation> annotations = getAnnotations();
+        String text = qName;
+        PsiReferenceParameterList parameterList = getParameterList();
+        if (parameterList != null) {
+            text += parameterList.getText();
+        }
+
+        PsiJavaCodeReferenceElement ref;
+        try {
+            ref = facade.getParserFacade().createReferenceFromText(text, getParent());
+        }
+        catch (IncorrectOperationException e) {
+            throw new IncorrectOperationException(e.getMessage() + " [qname=" + qName + " class=" + aClass + ";" + aClass.getClass().getName() + "]");
+        }
+
+//        ((PsiJavaCodeReferenceElementImpl)ref).setAnnotations(annotations);
+//        getTreeParent().replaceChildInternal(this, (TreeElement)ref.getNode());
+
+        if (!preserveQualification) {
+            JavaCodeStyleManager codeStyleManager = JavaCodeStyleManager.getInstance(project);
+            ref = (PsiJavaCodeReferenceElement)codeStyleManager.shortenClassReferences(ref, JavaCodeStyleManager.INCOMPLETE_CODE);
+        }
+
+        return ref;
     }
 
     @Override
-    public boolean isReferenceTo(PsiElement psiElement) {
-        return false;
+    public boolean isReferenceTo(PsiElement element) {
+        if (!(element instanceof PsiClass)) return false;
+        final String qName = ((PsiClass)element).getQualifiedName();
+        return qName != null && qName.equals(getCanonicalText());
     }
 
     @NotNull
     @Override
     public Object[] getVariants() {
-        return new Object[0];
+        final ElementFilter filter;
+        filter = new OrFilter();
+        ((OrFilter)filter).addFilter(ElementClassFilter.PACKAGE_FILTER);
+        if (isQualified()) {
+            ((OrFilter)filter).addFilter(ElementClassFilter.CLASS);
+        }
+        return PsiImplUtil.getReferenceVariantsByFilter(this, filter);
     }
 
     @Override
