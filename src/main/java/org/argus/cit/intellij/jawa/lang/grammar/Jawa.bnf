@@ -125,6 +125,7 @@
   implements("Param")="org.argus.cit.intellij.jawa.lang.psi.api.base.JawaParameter"
   mixin("Param")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaParamImplMixin"
   stubClass("Param")="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaParamStub"
+
 }
 
 CompilationUnit ::= ClassOrInterfaceDeclaration*

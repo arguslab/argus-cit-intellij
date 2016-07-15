@@ -14,7 +14,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.impl.light.LightIdentifier
 
 /**
-  * Created by fgwei on 6/22/16.
+  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
 class JavaIdentifier(jawaId : PsiElement) extends LightIdentifier(jawaId.getManager, jawaId.getText) {
   override def getTextRange = jawaId.getTextRange
@@ -24,4 +24,16 @@ class JavaIdentifier(jawaId : PsiElement) extends LightIdentifier(jawaId.getMana
   override def getTextOffset: Int = jawaId.getTextOffset
 
   override def getContainingFile = jawaId.getContainingFile
+
+  override def getParent = jawaId.getParent
+
+  override def getPrevSibling: PsiElement = jawaId.getPrevSibling
+
+  override def getNextSibling: PsiElement = jawaId.getNextSibling
+
+  override def copy: PsiElement = new JavaIdentifier(jawaId)
+
+  override def getNavigationElement: PsiElement = jawaId
+
+  override def isValid: Boolean = jawaId.isValid
 }

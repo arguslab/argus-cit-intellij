@@ -1,51 +1,59 @@
-///*
-// * Copyright (c) 2016. Fengguo Wei and others.
-// * All rights reserved. This program and the accompanying materials
-// * are made available under the terms of the Eclipse Public License v1.0
-// * which accompanies this distribution, and is available at
-// * http://www.eclipse.org/legal/epl-v10.html
-// *
-// * Detailed contributors are listed in the CONTRIBUTOR.md
-// */
-//
-//package org.argus.cit.intellij.jawa.annotator.gutter
-//
-//import java.util
-//import javax.swing.Icon
-//
-//import com.intellij.codeHighlighting.Pass
-//import com.intellij.codeInsight.daemon.impl.MarkerType
-//import com.intellij.codeInsight.daemon._
-//import com.intellij.icons.AllIcons
-//import com.intellij.openapi.actionSystem.IdeActions
-//import com.intellij.openapi.application.ApplicationManager
-//import com.intellij.openapi.editor.Document
-//import com.intellij.openapi.editor.colors.{CodeInsightColors, EditorColorsManager, EditorColorsScheme}
-//import com.intellij.openapi.editor.markup.{GutterIconRenderer, SeparatorPlacement}
-//import com.intellij.openapi.progress.ProgressManager
-//import com.intellij.openapi.util.TextRange
-//import com.intellij.openapi.util.text.StringUtil
-//import com.intellij.psi.search.searches.{DirectClassInheritorsSearch, SuperMethodsSearch}
-//import com.intellij.psi.util.MethodSignatureBackedByPsiMethod
-//import com.intellij.psi.{PsiClass, _}
-//import com.intellij.util.FunctionUtil
-//import org.argus.cit.intellij.jawa.lang.psi.JawaMethodDeclaration
-//import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.JawaTypeDefinition
-//
-//import scala.collection.mutable.ArrayBuffer
-//
-///**
-//  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
-//  */
-//class JawaLineMarkerProvider(daemonSettings: DaemonCodeAnalyzerSettings, colorsManager: EditorColorsManager)
-//  extends LineMarkerProviderDescriptor {
-//
+/*
+ * Copyright (c) 2016. Fengguo Wei and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Detailed contributors are listed in the CONTRIBUTOR.md
+ */
+
+package org.argus.cit.intellij.jawa.annotator.gutter
+
+import java.util
+import javax.swing.Icon
+
+import com.intellij.codeHighlighting.Pass
+import com.intellij.codeInsight.daemon.impl.{JavaLineMarkerProvider, MarkerType}
+import com.intellij.codeInsight.daemon._
+import com.intellij.icons.AllIcons
+import com.intellij.openapi.actionSystem.IdeActions
+import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.editor.Document
+import com.intellij.openapi.editor.colors.{CodeInsightColors, EditorColorsManager, EditorColorsScheme}
+import com.intellij.openapi.editor.markup.{GutterIconRenderer, SeparatorPlacement}
+import com.intellij.openapi.progress.ProgressManager
+import com.intellij.openapi.util.TextRange
+import com.intellij.openapi.util.text.StringUtil
+import com.intellij.psi.search.searches.{DirectClassInheritorsSearch, SuperMethodsSearch}
+import com.intellij.psi.util.MethodSignatureBackedByPsiMethod
+import com.intellij.psi.{PsiClass, _}
+import com.intellij.util.FunctionUtil
+import org.argus.cit.intellij.jawa.lang.psi._
+import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.JawaTypeDefinition
+import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.synthetic.JavaIdentifier
+
+import collection.JavaConversions._
+
+/**
+  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
+  */
+class JawaLineMarkerProvider(daemonSettings: DaemonCodeAnalyzerSettings, colorsManager: EditorColorsManager)
+  extends JavaLineMarkerProvider(daemonSettings, colorsManager) {
+
 //  private final val myOverriddenOption = new GutterIconDescriptor.Option("jawa.overridden", "Overridden method", AllIcons.Gutter.OverridenMethod)
 //  private final val myImplementedOption = new GutterIconDescriptor.Option("jawa.implemented", "Implemented method", AllIcons.Gutter.ImplementedMethod)
 //  private final val myOverridingOption = new GutterIconDescriptor.Option("jawa.overriding", "Overriding method", AllIcons.Gutter.OverridingMethod)
 //  private final val myImplementingOption = new GutterIconDescriptor.Option("jawa.implementing", "Implementing method", AllIcons.Gutter.ImplementingMethod)
-//
-//  override def getLineMarkerInfo(element: PsiElement): LineMarkerInfo[_ <: PsiElement] = {
+
+  private def isIdentifier(element: PsiElement): Boolean = element match {
+    case _: JawaTypeDefSymbol | _: JawaFieldDefSymbol | _: JawaStaticFieldDefSymbol | _: JawaMethodDefSymbol => true
+    case _ => false
+  }
+
+  override def getLineMarkerInfo(element: PsiElement): LineMarkerInfo[_ <: PsiElement] = {
+    val elementToProcess = if(isIdentifier(element)) new JavaIdentifier(element) else element
+    super.getLineMarkerInfo(elementToProcess)
 //    val parent = element.getParent
 //    if(element.isInstanceOf[PsiIdentifier] && parent.isInstanceOf[PsiMethod]) {
 //      if (!myOverridingOption.isEnabled && !myImplementingOption.isEnabled) return null
@@ -105,8 +113,8 @@
 //      }
 //    }
 //    null
-//  }
-//
+  }
+
 //  private def getCategory(element: PsiElement, documentChars: CharSequence): Int = {
 //    element match {
 //      case PsiField => 1
@@ -127,8 +135,10 @@
 //    val info: ArrowUpLineMarkerInfo = new ArrowUpLineMarkerInfo(name, icon, JawaMarkerType.OVERRIDING_METHOD, passId)
 //    NavigateAction.setNavigateAction(info, "Go to super method", IdeActions.ACTION_GOTO_SUPER)
 //  }
-//
-//  override def collectSlowLineMarkers(elements: util.List[PsiElement], result: util.Collection[LineMarkerInfo[_ <: PsiElement]]): Unit = {
+
+  override def collectSlowLineMarkers(elements: util.List[PsiElement], result: util.Collection[LineMarkerInfo[_ <: PsiElement]]): Unit = {
+    val elementsToProcess = elements.filter(isIdentifier).map(new JavaIdentifier(_))
+    super.collectSlowLineMarkers(elementsToProcess, result)
 //    ApplicationManager.getApplication.assertReadAccessAllowed()
 //
 //    val members = new ArrayBuffer[PsiElement]
@@ -152,8 +162,8 @@
 //    if (members.nonEmpty) {
 //      GutterUtil.collectOverridingMembers(members, result)
 //    }
-//  }
-//
+  }
+
 //  def getName: String = {
 //    "Jawa line markers"
 //  }
@@ -161,7 +171,7 @@
 //  override def getOptions: Array[GutterIconDescriptor.Option] = {
 //    Array[GutterIconDescriptor.Option](myOverriddenOption, myImplementedOption, myOverridingOption, myImplementingOption)
 //  }
-//
+
 //  private class ArrowUpLineMarkerInfo private(val element: PsiElement, val icon: Icon, val markerType: MarkerType, val passId: Int)
 //    extends MergeableLineMarkerInfo[PsiElement](element, element.getTextRange, icon, passId, markerType.getTooltip, markerType.getNavigationHandler, GutterIconRenderer.Alignment.LEFT) {
 //    def canMergeWith(info: MergeableLineMarkerInfo[_]): Boolean = {
@@ -207,4 +217,4 @@
 //      result.add(info)
 //    }
 //  }
-//}
+}

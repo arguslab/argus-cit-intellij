@@ -30,7 +30,7 @@
     <lang.commenter language="Jawa" implementationClass="org.argus.cit.intellij.jawa.commenter.JawaCommenter"/>
     <lang.foldingBuilder language="Jawa" implementationClass="org.argus.cit.intellij.jawa.folding.JawaFoldingBuilder"/>
     <lang.psiStructureViewFactory language="Jawa" implementationClass="org.argus.cit.intellij.jawa.lang.structureview.JawaStructureViewFactory"/>
-    <codeInsight.lineMarkerProvider language="Jawa" implementationClass="com.intellij.codeInsight.daemon.impl.JavaLineMarkerProvider"/>
+    <codeInsight.lineMarkerProvider language="Jawa" implementationClass="org.argus.cit.intellij.jawa.annotator.gutter.JawaLineMarkerProvider"/>
   </extensions>
 
   <application-components>

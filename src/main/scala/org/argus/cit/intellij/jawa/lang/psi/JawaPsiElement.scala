@@ -11,7 +11,6 @@
 package org.argus.cit.intellij.jawa.lang.psi
 
 import com.intellij.psi.PsiElement
-import com.intellij.psi.tree.{IElementType, TokenSet}
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
