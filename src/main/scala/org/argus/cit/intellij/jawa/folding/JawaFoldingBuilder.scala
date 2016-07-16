@@ -22,7 +22,7 @@ import org.sireum.util._
 import scala.collection.JavaConversions._
 
 /**
-  * @author <a href="mailto:fgwei521@gmail.com">FenggWei</a>
+  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
 class JawaFoldingBuilder extends FoldingBuilderEx {
   override def isCollapsedByDefault(astNode: ASTNode): Boolean = false

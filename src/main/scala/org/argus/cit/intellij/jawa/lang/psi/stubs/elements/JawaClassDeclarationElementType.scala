@@ -43,7 +43,6 @@ class JawaClassDeclarationElementType(debugName: String) extends JawaStubElement
     val methodNames = stub.methodNames
     dataStream.writeInt(methodNames.length)
     for (name <- methodNames) dataStream.writeName(name)
-    dataStream.writeBoolean(stub.isDeprecated)
     dataStream.writeName(stub.javaName)
   }
 
@@ -54,8 +53,8 @@ class JawaClassDeclarationElementType(debugName: String) extends JawaStubElement
     val length = dataStream.readInt
     val methodNames = new Array[StringRef](length)
     for (i <- 0 until length) methodNames(i) = dataStream.readName
-    val parent = parentStub.asInstanceOf[StubElement[PsiElement]]
     val javaName = dataStream.readName
+    val parent = parentStub.asInstanceOf[StubElement[PsiElement]]
     new JawaClassOrInterfaceStubImpl(parent, this, name, javaQualName, fileName, methodNames,
       javaName)
   }

@@ -10,12 +10,17 @@
 
 package org.argus.cit.intellij.jawa.lang.psi.stubs
 
+import com.intellij.psi.PsiFile
+import com.intellij.psi.stubs.PsiFileStub
+import com.intellij.psi.tree.IStubFileElementType
+import org.argus.cit.intellij.jawa.lang.JawaFileType
 import org.argus.cit.intellij.jawa.lang.psi.stubs.elements._
 
 /**
   * Created by fgwei on 6/24/16.
   */
 object JawaStubElementTypes {
+  val FILE: IStubFileElementType[_ <: PsiFileStub[_ <: PsiFile]] = new JawaStubFileElementType(JawaFileType.JAWA_LANGUAGE)
   val CLASS = new JawaClassDeclarationElementType("CLASS")
   val EXTENDS = new JawaExtendsClauseElementType("EXTENDS")
   val METHOD = new JawaMethodDeclarationElementType("METHOD")

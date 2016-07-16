@@ -8,19 +8,11 @@
  * Detailed contributors are listed in the CONTRIBUTOR.md
  */
 
-package org.argus.cit.intellij.jawa.commenter
+package org.argus.cit.intellij.jawa.hierarchy
 
-import com.intellij.lang.Commenter
+import com.intellij.ide.hierarchy.method.JavaMethodHierarchyProvider
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
-class JawaCommenter extends Commenter {
-  override def getCommentedBlockCommentPrefix: String = "/*"
-  override def getCommentedBlockCommentSuffix: String = "*/"
-
-  override def getBlockCommentPrefix: String = "/*"
-  override def getBlockCommentSuffix: String = "*/"
-
-  override def getLineCommentPrefix: String = "//"
-}
+class JawaMethodHierarchyProvider extends JavaMethodHierarchyProvider

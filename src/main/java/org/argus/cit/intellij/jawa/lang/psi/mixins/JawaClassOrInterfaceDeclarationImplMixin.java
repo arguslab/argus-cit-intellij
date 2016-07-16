@@ -11,6 +11,8 @@
 package org.argus.cit.intellij.jawa.lang.psi.mixins;
 
 import com.intellij.lang.ASTNode;
+import com.intellij.navigation.ItemPresentation;
+import com.intellij.navigation.ItemPresentationProviders;
 import com.intellij.openapi.util.Pair;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.InheritanceImplUtil;
@@ -21,6 +23,7 @@ import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.stubs.IStubElementType;
 import org.argus.cit.intellij.jawa.icons.Icons;
 import org.argus.cit.intellij.jawa.lang.psi.*;
+import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.JawaTypeDefinition;
 import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.synthetic.JavaIdentifier;
 import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaClassOrInterfaceStub;
 import org.argus.jawa.core.AccessFlag;
@@ -386,5 +389,10 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
         if(isInterface()) return Icons.Interface();
         else if(AccessFlag.isAbstract(mods)) return Icons.AbstractClass();
         else return Icons.Class();
+    }
+
+    @Override
+    public ItemPresentation getPresentation() {
+        return ItemPresentationProviders.getItemPresentation(this);
     }
 }

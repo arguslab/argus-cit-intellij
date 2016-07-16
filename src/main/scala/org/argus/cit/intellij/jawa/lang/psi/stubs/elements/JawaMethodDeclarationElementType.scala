@@ -12,6 +12,7 @@ package org.argus.cit.intellij.jawa.lang.psi.stubs.elements
 
 import com.intellij.lang.ASTNode
 import com.intellij.psi.PsiElement
+import com.intellij.psi.impl.cache.RecordUtil
 import com.intellij.psi.impl.java.stubs.index.JavaStubIndexKeys
 import com.intellij.psi.stubs.{IndexSink, StubElement, StubInputStream, StubOutputStream}
 import org.argus.cit.intellij.jawa.lang.psi.JawaMethodDeclaration
@@ -44,6 +45,10 @@ class JawaMethodDeclarationElementType(debugName: String) extends JawaStubElemen
     val name = stub.getName
     if (name != null) {
       sink.occurrence(JavaStubIndexKeys.METHODS, name)
+      if (RecordUtil.isStaticNonPrivateMember(stub)) {
+        sink.occurrence(JavaStubIndexKeys.JVM_STATIC_MEMBERS_NAMES, name)
+        sink.occurrence(JavaStubIndexKeys.JVM_STATIC_MEMBERS_TYPES, stub.getSignature.getReturnType.simpleName)
+      }
     }
   }
 

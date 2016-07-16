@@ -31,6 +31,12 @@
     <lang.foldingBuilder language="Jawa" implementationClass="org.argus.cit.intellij.jawa.folding.JawaFoldingBuilder"/>
     <lang.psiStructureViewFactory language="Jawa" implementationClass="org.argus.cit.intellij.jawa.lang.structureview.JawaStructureViewFactory"/>
     <codeInsight.lineMarkerProvider language="Jawa" implementationClass="org.argus.cit.intellij.jawa.annotator.gutter.JawaLineMarkerProvider"/>
+
+    <stubElementTypeHolder class="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaStubElementTypes"/>
+
+    <callHierarchyProvider language="Jawa" implementationClass="org.argus.cit.intellij.jawa.hierarchy.JawaCallHierarchyProvider"/>
+    <methodHierarchyProvider language="Jawa" implementationClass="org.argus.cit.intellij.jawa.hierarchy.JawaMethodHierarchyProvider"/>
+    <typeHierarchyProvider language="Jawa" implementationClass="org.argus.cit.intellij.jawa.hierarchy.JawaTypeHierarchyProvider"/>
   </extensions>
 
   <application-components>

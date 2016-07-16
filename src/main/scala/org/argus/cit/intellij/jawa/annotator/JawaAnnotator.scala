@@ -16,7 +16,7 @@ import com.intellij.openapi.editor.markup.TextAttributes
 import org.argus.cit.intellij.jawa.highlighter.JawaSyntaxHighlighter
 
 /**
-  * @author <a href="mailto:fgwei521@gmail.com">FenggWei</a>
+  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
 abstract class JawaAnnotator extends Annotator {
   val currentScheme = EditorColorsManager.getInstance().getGlobalScheme
