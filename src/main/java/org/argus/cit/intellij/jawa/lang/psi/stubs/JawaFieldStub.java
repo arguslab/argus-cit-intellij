@@ -20,4 +20,5 @@ import org.argus.jawa.core.JawaType;
 public interface JawaFieldStub extends NamedStub<JawaFieldDeclaration> {
     String getFQN();
     JawaType getType();
+    int getFlag();
 }

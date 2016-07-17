@@ -103,10 +103,9 @@ class JawaFileImpl(viewProvider: FileViewProvider, fileType: LanguageFileType = 
 
   override def getClasses: Array[PsiClass] = {
     if (JawaFileImpl.isDuringMoveRefactoring) {
-//      return typeDefinitions.toArray
+      return typeDefinitions.toArray
     }
-    typeDefinitions
-    PsiClass.EMPTY_ARRAY
+    typeDefinitions.toArray
   }
 
   override protected def findChildByClassJawa[T >: Null <: JawaPsiElement](clazz: Class[T]): T = findChildByClass[T](clazz)

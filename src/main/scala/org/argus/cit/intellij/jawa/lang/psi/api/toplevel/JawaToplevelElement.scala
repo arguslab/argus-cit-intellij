@@ -15,6 +15,7 @@ import com.intellij.psi.impl.source.PsiFileImpl
 import com.intellij.psi.stubs.StubElement
 import org.argus.cit.intellij.jawa.JavaArrayFactoryUtil
 import org.argus.cit.intellij.jawa.lang.lexer.JawaTokenTypes
+import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaStubElementTypes
 import org.argus.cit.intellij.jawa.lang.psi.{JawaClassOrInterfaceDeclaration, JawaPsiElement}
 import org.sireum.util._
 
@@ -40,7 +41,7 @@ trait JawaToplevelElement extends JawaPsiElement {
       case _ => null
     }
     if (stub != null) {
-      stub.getChildrenByType[JawaClassOrInterfaceDeclaration](JawaTokenTypes.TYPE_DECLARATION, JavaArrayFactoryUtil.JawaClassOrInterfaceDeclarationFactory)
+      stub.getChildrenByType[JawaClassOrInterfaceDeclaration](JawaStubElementTypes.CLASS, JavaArrayFactoryUtil.JawaClassOrInterfaceDeclarationFactory)
     } else findChildrenByClassJawa(classOf[JawaClassOrInterfaceDeclaration]).toSeq
   }
 }

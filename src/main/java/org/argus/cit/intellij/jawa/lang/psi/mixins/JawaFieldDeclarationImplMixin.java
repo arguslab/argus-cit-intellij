@@ -122,6 +122,11 @@ public abstract class JawaFieldDeclarationImplMixin extends JawaStubBasedPsiElem
     }
 
     @Override
+    public String getName() {
+        return name();
+    }
+
+    @Override
     public String name() {
         JawaFieldStub stub = getStub();
         if(stub != null) return stub.getName();

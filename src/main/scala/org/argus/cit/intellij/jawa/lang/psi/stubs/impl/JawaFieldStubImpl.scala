@@ -27,26 +27,30 @@ class JawaFieldStubImpl[ParentPsi <: PsiElement](parent: StubElement[ParentPsi],
   private var name: StringRef = _
   private var FQN: StringRef = _
   private var typ: StringRef = _
+  private var flag: Int = _
 
   def this(parent: StubElement[ParentPsi],
            elemType: IStubElementType[_ <: StubElement[_ <: PsiElement], _ <: PsiElement],
-           name: String, FQN: String, typ: String) = {
+           name: String, FQN: String, typ: String, flag: Int) = {
     this(parent, elemType.asInstanceOf[IStubElementType[StubElement[PsiElement], PsiElement]])
     this.name = StringRef.fromString(name)
     this.FQN = StringRef.fromString(FQN)
     this.typ = StringRef.fromString(typ)
+    this.flag = flag
   }
 
   def this(parent: StubElement[ParentPsi],
            elemType: IStubElementType[_ <: StubElement[_ <: PsiElement], _ <: PsiElement],
-           name: StringRef, FQN: StringRef, typ: StringRef) = {
+           name: StringRef, FQN: StringRef, typ: StringRef, flag: Int) = {
     this(parent, elemType.asInstanceOf[IStubElementType[StubElement[PsiElement], PsiElement]])
     this.name = name
     this.FQN = FQN
     this.typ = typ
+    this.flag = flag
   }
 
   override def getName: String = StringRef.toString(name)
   override def getFQN: String = StringRef.toString(FQN)
   override def getType: JawaType = JavaKnowledge.getTypeFromName(StringRef.toString(typ))
+  override def getFlag: Int = flag
 }
