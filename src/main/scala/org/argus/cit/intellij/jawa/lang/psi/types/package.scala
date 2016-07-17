@@ -21,9 +21,7 @@ import org.argus.cit.intellij.jawa.project.ProjectExt
 package object types {
   implicit class JawaTypeExt(val scType: JawaType) extends AnyVal {
     def toPsiType(project: Project,
-                  scope: GlobalSearchScope,
-                  noPrimitives: Boolean = false,
-                  skolemToWildcard: Boolean = false) = {
+                  scope: GlobalSearchScope) = {
       project.typeSystem.bridge.toPsiType(scType, project, scope)
     }
   }

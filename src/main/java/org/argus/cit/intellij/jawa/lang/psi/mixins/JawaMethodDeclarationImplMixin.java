@@ -54,9 +54,10 @@ public abstract class JawaMethodDeclarationImplMixin
         return JawaTypeSystem.toPsiType(getJwType().getJawaType(), getProject(), getResolveScope());
     }
 
+    @NotNull
     @Override
     public String getName() {
-        if(isConstructor() && getContainingClass() != null) {
+        if(isConstructor() && getContainingClass() != null && getContainingClass().getName() != null) {
             return getContainingClass().getName();
         } else {
             return name();

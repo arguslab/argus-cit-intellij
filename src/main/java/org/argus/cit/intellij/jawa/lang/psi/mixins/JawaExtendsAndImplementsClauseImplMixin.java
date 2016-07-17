@@ -15,8 +15,8 @@ import com.intellij.psi.PsiClassType;
 import com.intellij.psi.PsiJavaCodeReferenceElement;
 import com.intellij.psi.PsiType;
 import com.intellij.psi.impl.source.tree.JavaElementType;
+import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.IStubElementType;
-import org.apache.commons.lang.ArrayUtils;
 import org.argus.cit.intellij.jawa.lang.psi.JawaExtendAndImplement;
 import org.argus.cit.intellij.jawa.lang.psi.JawaExtendsAndImplementsClause;
 import org.argus.cit.intellij.jawa.lang.psi.JawaStubBasedPsiElementBase;
@@ -24,6 +24,7 @@ import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaExtendsAndImplementsClause
 import org.argus.cit.intellij.jawa.lang.psi.types.JawaTypeSystem;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,12 +52,13 @@ public abstract class JawaExtendsAndImplementsClauseImplMixin
     @Override
     public PsiClassType[] getReferencedTypes() {
         List<JawaExtendAndImplement> eis = getExtendAndImplementList();
-        PsiClassType[] typs = new PsiClassType[eis.size()];
+        List<PsiClassType> typs = new ArrayList<>();
         eis.forEach(ei -> {
-            PsiType pt = JawaTypeSystem.toPsiType(ei.getTypeSymbol().getJawaType(), getProject(), getResolveScope());
-            if(pt instanceof PsiClassType) ArrayUtils.add(typs, pt);
+            PsiType pt = JawaTypeSystem.toPsiType(ei.getTypeSymbol().getJawaType(), getProject(), GlobalSearchScope.allScope(getProject()));
+            if(pt instanceof PsiClassType) typs.add((PsiClassType)pt);
         });
-        return typs;
+        PsiClassType[] res = new PsiClassType[typs.size()];
+        return typs.toArray(res);
     }
 
     @Override

@@ -64,7 +64,9 @@ trait JawaTypePsiTypeBridge extends TypeSystemOwner {
 //      case Null => javaObject
 //      case Nothing => javaObject
       case t if t.isArray => new PsiArrayType(toPsiType(new JawaType(t.baseType), project, scope))
-      case _ => javaObject
+      case t =>
+        createTypeByFqn(project, scope, t.jawaName)
+//        javaObject
     }
   }
 
