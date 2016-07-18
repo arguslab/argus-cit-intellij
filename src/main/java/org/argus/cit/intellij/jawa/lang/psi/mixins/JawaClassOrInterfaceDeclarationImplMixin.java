@@ -14,13 +14,16 @@ import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.ItemPresentationProviders;
 import com.intellij.openapi.util.Pair;
+import com.intellij.pom.java.LanguageLevel;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.InheritanceImplUtil;
 import com.intellij.psi.impl.PsiClassImplUtil;
 import com.intellij.psi.impl.PsiImplUtil;
 import com.intellij.psi.impl.PsiSuperMethodImplUtil;
 import com.intellij.psi.javadoc.PsiDocComment;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.util.PsiUtil;
 import org.argus.cit.intellij.jawa.icons.Icons;
 import org.argus.cit.intellij.jawa.lang.psi.*;
 import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.synthetic.JavaIdentifier;
@@ -291,6 +294,16 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
     @Override
     public Collection<HierarchicalMethodSignature> getVisibleSignatures() {
         return PsiSuperMethodImplUtil.getVisibleSignatures(this);
+    }
+
+    @Override
+    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
+//        if (isEnum()) {
+//            if (!PsiClassImplUtil.processDeclarationsInEnum(processor, state, myInnersCache)) return false;
+//        }
+
+        LanguageLevel level = PsiUtil.getLanguageLevel(place);
+        return PsiClassImplUtil.processDeclarationsInClass(this, processor, state, null, lastParent, place, level, false);
     }
 
     @Override
