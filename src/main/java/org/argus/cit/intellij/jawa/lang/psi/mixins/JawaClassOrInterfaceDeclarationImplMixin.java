@@ -392,7 +392,7 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
 
     @Override
     public PsiElement nameId() {
-        return getTypeDefSymbol().getApostropheId();
+        return getTypeDefSymbol();
     }
 
     @Override

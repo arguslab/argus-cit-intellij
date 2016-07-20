@@ -31,6 +31,10 @@
     <lang.foldingBuilder language="Jawa" implementationClass="org.argus.cit.intellij.jawa.folding.JawaFoldingBuilder"/>
     <lang.psiStructureViewFactory language="Jawa" implementationClass="org.argus.cit.intellij.jawa.lang.structureview.JawaStructureViewFactory"/>
     <codeInsight.lineMarkerProvider language="Jawa" implementationClass="org.argus.cit.intellij.jawa.annotator.gutter.JawaLineMarkerProvider"/>
+    <codeInsight.overrideMethod language="Jawa" implementationClass="com.intellij.codeInsight.generation.JavaOverrideMethodsHandler"/>
+    <codeInsight.implementMethod language="Jawa" implementationClass="com.intellij.codeInsight.generation.JavaImplementMethodsHandler"/>
+    <codeInsight.delegateMethods language="Jawa" implementationClass="com.intellij.codeInsight.generation.GenerateDelegateHandler"/>
+    <codeInsight.gotoSuper language="Jawa" implementationClass="com.intellij.codeInsight.navigation.JavaGotoSuperHandler"/>
 
     <stubElementTypeHolder class="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaStubElementTypes"/>
 

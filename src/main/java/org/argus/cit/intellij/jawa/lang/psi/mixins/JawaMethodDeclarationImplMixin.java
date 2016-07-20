@@ -223,7 +223,7 @@ public abstract class JawaMethodDeclarationImplMixin
 
     @Override
     public PsiElement nameId() {
-        return getMethodDefSymbol().getApostropheId();
+        return getMethodDefSymbol();
     }
 
     @Override

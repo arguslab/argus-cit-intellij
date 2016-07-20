@@ -11,6 +11,8 @@
 package org.argus.cit.intellij.jawa.lang.psi.stubs.elements
 
 import com.intellij.psi.PsiElement
+import com.intellij.psi.impl.java.stubs.PsiClassStub
+import com.intellij.psi.impl.java.stubs.index.JavaStubIndexKeys
 import com.intellij.psi.stubs.{IndexSink, StubElement, StubInputStream, StubOutputStream}
 import com.intellij.util.io.StringRef
 import org.argus.cit.intellij.jawa.lang.psi.JawaExtendsAndImplementsClause
@@ -57,5 +59,22 @@ class JawaExtendsClauseElementType(debugName: String) extends JawaStubElementTyp
     new JawaExtendsAndImplementsClausesStubImpl(parentStub, this, extTypeText, impTypeTexts.toArray)
   }
 
-  override def indexStub(t: JawaExtendsAndImplementsClauseStub, indexSink: IndexSink): Unit = {}
+  override def indexStub(stub: JawaExtendsAndImplementsClauseStub, sink: IndexSink): Unit = {
+    val names = stub.getInterfaceTypes.map(_.simpleName).toBuffer
+    if(stub.getExtendType != null)
+      names += stub.getExtendType.simpleName
+    names.foreach { name =>
+      sink.occurrence(JavaStubIndexKeys.SUPER_CLASSES, name)
+    }
+
+    stub.getParentStub match {
+      case psiClassStub: PsiClassStub[_] =>
+        if (psiClassStub.isEnum) {
+          sink.occurrence(JavaStubIndexKeys.SUPER_CLASSES, "Enum")
+        }
+        if (psiClassStub.isAnnotationType) {
+          sink.occurrence(JavaStubIndexKeys.SUPER_CLASSES, "Annotation")
+        }
+    }
+  }
 }
