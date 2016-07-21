@@ -21,6 +21,10 @@
        on how to target different products -->
   <!--<depends>com.intellij.modules.lang</depends>-->
 
+  <extensionPoints>
+    <extensionPoint name="serverWidgetEP" interface="org.argus.cit.intellij.jawa.compiler.ServerWidgetEP"/>
+  </extensionPoints>
+
   <extensions defaultExtensionNs="com.intellij">
     <fileTypeFactory implementation="org.argus.cit.intellij.jawa.lang.JawaFileTypeFactory"/>
     <lang.parserDefinition language="Jawa" implementationClass="org.argus.cit.intellij.jawa.lang.parser.JawaParserDefinition"/>
@@ -41,13 +45,29 @@
     <callHierarchyProvider language="Jawa" implementationClass="org.argus.cit.intellij.jawa.hierarchy.JawaCallHierarchyProvider"/>
     <methodHierarchyProvider language="Jawa" implementationClass="org.argus.cit.intellij.jawa.hierarchy.JawaMethodHierarchyProvider"/>
     <typeHierarchyProvider language="Jawa" implementationClass="org.argus.cit.intellij.jawa.hierarchy.JawaTypeHierarchyProvider"/>
+
+    <applicationService serviceInterface="org.argus.cit.intellij.jawa.compiler.JawaCompileServerSettings"
+                        serviceImplementation="org.argus.cit.intellij.jawa.compiler.JawaCompileServerSettings"/>
+
   </extensions>
 
   <application-components>
     <component>
       <implementation-class>org.argus.cit.intellij.jawa.JawaLoader</implementation-class>
     </component>
+    <component>
+      <implementation-class>org.argus.cit.intellij.jawa.compiler.CompileServerLauncher</implementation-class>
+    </component>
   </application-components>
+
+  <project-components>
+    <component>
+      <implementation-class>org.argus.cit.intellij.jawa.compiler.ServerMediator</implementation-class>
+    </component>
+    <component>
+      <implementation-class>org.argus.cit.intellij.jawa.compiler.CompileServerManager</implementation-class>
+    </component>
+  </project-components>
 
   <actions>
     <!-- Add your actions here -->
