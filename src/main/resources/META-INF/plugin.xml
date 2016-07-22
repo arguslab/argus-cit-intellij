@@ -65,6 +65,9 @@
       <implementation-class>org.argus.cit.intellij.jawa.compiler.ServerMediator</implementation-class>
     </component>
     <component>
+      <implementation-class>org.argus.cit.intellij.jawa.project.JawaProjectEvents</implementation-class>
+    </component>
+    <component>
       <implementation-class>org.argus.cit.intellij.jawa.compiler.CompileServerManager</implementation-class>
     </component>
   </project-components>

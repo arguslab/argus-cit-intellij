@@ -190,8 +190,7 @@ object CompileServerLauncher {
       new File(jpsRoot, "nailgun.jar"),
       new File(jpsRoot, "sbt-interface.jar"),
       new File(jpsRoot, "incremental-compiler.jar"),
-      new File(jpsRoot, "scala-jps-plugin.jar"),
-      dottyInterfacesJar
+      new File(jpsRoot, "scala-jps-plugin.jar")
     )
   }
 

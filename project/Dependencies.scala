@@ -25,10 +25,22 @@ object Dependencies {
   val sfaLibrary = "com.github.arguslab" %% "saf-library" % argusSafVersion
   val jawaCore = "com.github.arguslab" %% "jawa-core" % argusSafVersion
   val jawaCompiler = "com.github.arguslab" %% "jawa-compiler" % jawaCompilerVersion
+
+  val nailgun = "org.jetbrains" % "nailgun-patched" % "1.0.0"
+  val compilerInterfaceSources = "org.jetbrains" % "compiler-interface-sources" % "1.0.0"
+  val bundledJline = "org.jetbrains" % "jline" % "1.0.0"
+  val incrementalCompiler = "org.jetbrains" % "incremental-compiler" % "1.0.0"
 }
 
 object DependencyGroups {
   import Dependencies._
+
+  val sbtBundled = Seq(
+    compilerInterfaceSources,
+    bundledJline,
+    incrementalCompiler
+//    sbtInterface
+  )
 
   val argus_cit_intellij = Seq(sfaLibrary, jawaCore, jawaCompiler)
 

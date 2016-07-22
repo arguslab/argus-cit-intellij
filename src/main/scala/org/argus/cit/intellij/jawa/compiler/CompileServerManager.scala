@@ -91,8 +91,7 @@ class CompileServerManager(project: Project) extends ProjectComponent {
   }
 
   private def applicable = running ||
-    JawaCompileServerSettings.getInstance.COMPILE_SERVER_ENABLED &&
-      project.hasJawa
+    JawaCompileServerSettings.getInstance.COMPILE_SERVER_ENABLED
 
   private def running = launcher.running
 
@@ -167,7 +166,7 @@ class CompileServerManager(project: Project) extends ProjectComponent {
 
   private object Configure extends AnAction("&Configure...", "Configure compile server", AllIcons.General.Settings) with DumbAware {
     def actionPerformed(e: AnActionEvent) {
-      showCompileServerSettingsDialog()
+      CompileServerManager.showCompileServerSettingsDialog()
     }
   }
 

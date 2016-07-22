@@ -39,6 +39,22 @@ lazy val argus_cit_intellij: Project =
     aggregate.in(updateIdea) := false
   )
 
+lazy val nailgun_runners =
+  newProject("nailgun-runners", file("nailgun-runners"))
+    .settings(libraryDependencies += Dependencies.nailgun)
+
+lazy val jc_plugin  =
+  newProject("jc-plugin", file("jc-plugin"))
+    .dependsOn(compiler_settings)
+    .enablePlugins(SbtIdeaPlugin)
+    .settings(
+      libraryDependencies ++= Seq(Dependencies.nailgun) ++ DependencyGroups.sbtBundled
+    )
+
+lazy val compiler_settings =
+  newProject("compiler-settings", file("compiler-settings"))
+    .enablePlugins(SbtIdeaPlugin)
+    .settings(libraryDependencies += Dependencies.nailgun)
 
 // Utility projects
 
@@ -75,7 +91,7 @@ lazy val packagedPluginDir = settingKey[File]("Path to packaged, but not yet com
 packagedPluginDir in ThisBuild := baseDirectory.in(ThisBuild).value / "out" / "plugin" / "Argus-CIT"
 
 lazy val pluginPackager =
-  newProject("pluginPackager")
+  newProject("plugin-packager")
     .settings(
       artifactPath := packagedPluginDir.value,
       dependencyClasspath <<= (
@@ -105,7 +121,7 @@ lazy val pluginPackager =
     )
 
 lazy val pluginCompressor =
-  newProject("pluginCompressor")
+  newProject("plugin-compressor")
     .settings(
       artifactPath := baseDirectory.in(ThisBuild).value / "out" / "argus-cit-plugin.zip",
       pack := {

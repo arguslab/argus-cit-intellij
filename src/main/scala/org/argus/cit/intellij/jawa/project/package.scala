@@ -10,6 +10,7 @@
 
 package org.argus.cit.intellij.jawa
 
+import com.intellij.openapi.module.{Module, ModuleManager}
 import com.intellij.openapi.project.Project
 import org.argus.cit.intellij.jawa.lang.psi.types.JawaTypeSystem
 import org.argus.cit.intellij.jawa.lang.psi.types.api.TypeSystem
@@ -19,6 +20,10 @@ import org.argus.cit.intellij.jawa.lang.psi.types.api.TypeSystem
   */
 package object project {
   implicit class ProjectExt(val project: Project) extends AnyVal {
+    private def modules: Seq[Module] = ModuleManager.getInstance(project).getModules.toSeq
+
+    def jawaEvents: JawaProjectEvents = project.getComponent(classOf[JawaProjectEvents])
+
     def typeSystem: TypeSystem = JawaTypeSystem
   }
 }
