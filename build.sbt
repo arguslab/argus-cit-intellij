@@ -32,12 +32,13 @@ addCommandAlias("packagePluginZip", "pluginCompressor/package")
 
 lazy val argus_cit_intellij: Project =
   newProject("argus-cit-intellij", file("."))
-  .enablePlugins(SbtIdeaPlugin)
-  .settings(argusSafSettings)
-  .settings(
-    libraryDependencies ++= DependencyGroups.argus_cit_intellij,
-    aggregate.in(updateIdea) := false
-  )
+    .dependsOn(compiler_settings)
+    .enablePlugins(SbtIdeaPlugin)
+    .settings(argusSafSettings)
+    .settings(
+      libraryDependencies ++= DependencyGroups.jawa,
+      aggregate.in(updateIdea) := false
+    )
 
 lazy val nailgun_runners =
   newProject("nailgun-runners", file("nailgun-runners"))
@@ -48,7 +49,7 @@ lazy val jc_plugin  =
     .dependsOn(compiler_settings)
     .enablePlugins(SbtIdeaPlugin)
     .settings(
-      libraryDependencies ++= Seq(Dependencies.nailgun) ++ DependencyGroups.sbtBundled
+      libraryDependencies ++= Seq(Dependencies.nailgun) ++ DependencyGroups.sbtBundled ++ DependencyGroups.jawa
     )
 
 lazy val compiler_settings =
@@ -100,7 +101,7 @@ lazy val pluginPackager =
       mappings := {
         import Packaging.PackageEntry._
         val crossLibraries = List(Dependencies.sfaLibrary, Dependencies.jawaCore, Dependencies.jawaCompiler)
-        val librariesToCopyAsIs = DependencyGroups.argus_cit_intellij.filterNot(lib =>
+        val librariesToCopyAsIs = DependencyGroups.jawa.filterNot(lib =>
           crossLibraries.contains(lib))
         val lib = Seq(
           Artifact(pack.in(argus_cit_intellij, Compile).value,

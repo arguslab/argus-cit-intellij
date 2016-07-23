@@ -20,8 +20,8 @@ import org.jetbrains.jps.model.module.JpsModule
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
 object SettingsManager {
-  final val GLOBAL_SETTINGS_ROLE = JpsElementChildRoleBase.create("jawa global settings")
-  final val PROJECT_SETTINGS_ROLE = JpsElementChildRoleBase.create("jawa project settings")
+  final val GLOBAL_SETTINGS_ROLE: JpsElementChildRoleBase[GlobalSettings] = JpsElementChildRoleBase.create("jawa global settings")
+  final val PROJECT_SETTINGS_ROLE: JpsElementChildRoleBase[ProjectSettings] = JpsElementChildRoleBase.create("jawa project settings")
 
   def getGlobalSettings(global: JpsGlobal): GlobalSettings = Option(global.getContainer.getChild(GLOBAL_SETTINGS_ROLE)).getOrElse(GlobalSettingsImpl.DEFAULT)
   def setGlobalSettings(global: JpsGlobal, settings: GlobalSettings) = global.getContainer.setChild(GLOBAL_SETTINGS_ROLE, settings)

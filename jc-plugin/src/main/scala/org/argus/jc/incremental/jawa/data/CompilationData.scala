@@ -57,24 +57,25 @@ object CompilationData {
     val jawaOptions = noBootCp ++: compilerSettings.getCompilerOptions
     val order = compilerSettings.getCompileOrder
 
-    createOutputToCacheMap(context).map { outputToCacheMap =>
+    createOutputToCacheMap(context) match {
+      case Left(a) => Left(a)
+      case Right(outputToCacheMap) =>
+        val cacheFile = outputToCacheMap.getOrElse(output,
+          throw new RuntimeException("Unknown build target output directory: " + output))
 
-      val cacheFile = outputToCacheMap.getOrElse(output,
-        throw new RuntimeException("Unknown build target output directory: " + output))
+        val relevantOutputToCacheMap = (outputToCacheMap - output).filter(p => classpath.contains(p._1))
 
-      val relevantOutputToCacheMap = (outputToCacheMap - output).filter(p => classpath.contains(p._1))
+        val commonOptions = {
+          val encoding = context.getProjectDescriptor.getEncodingConfiguration.getPreferredModuleChunkEncoding(chunk)
+          Option(encoding).map(Seq("-encoding", _)).getOrElse(Seq.empty)
+        }
 
-      val commonOptions = {
-        val encoding = context.getProjectDescriptor.getEncodingConfiguration.getPreferredModuleChunkEncoding(chunk)
-        Option(encoding).map(Seq("-encoding", _)).getOrElse(Seq.empty)
-      }
+        val javaOptions = javaOptionsFor(context, chunk)
 
-      val javaOptions = javaOptionsFor(context, chunk)
+        val outputGroups = createOutputGroups(chunk)
 
-      val outputGroups = createOutputGroups(chunk)
-
-      CompilationData(sources, classpath, output, commonOptions ++ jawaOptions, commonOptions ++ javaOptions,
-        order, cacheFile, relevantOutputToCacheMap, outputGroups)
+        Right(CompilationData(sources, classpath, output, commonOptions ++ jawaOptions, commonOptions ++ javaOptions,
+          order, cacheFile, relevantOutputToCacheMap, outputGroups))
     }
   }
 

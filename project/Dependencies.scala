@@ -42,6 +42,6 @@ object DependencyGroups {
 //    sbtInterface
   )
 
-  val argus_cit_intellij = Seq(sfaLibrary, jawaCore, jawaCompiler)
+  val jawa = Seq(sfaLibrary, jawaCore, jawaCompiler)
 
 }

@@ -112,7 +112,7 @@ class CompileServerLauncher  extends ApplicationComponent {
           ApplicationManager.getApplication.saveSettings()
         }
 
-        val ngRunnerFqn = "org.jetbrains.plugins.scala.nailgun.NailgunRunner"
+        val ngRunnerFqn = "org.argus.cit.intellij.jawa.nailgun.NailgunRunner"
         val id = settings.COMPILE_SERVER_ID
 
         val shutdownDelay = settings.COMPILE_SERVER_SHUTDOWN_DELAY
@@ -173,24 +173,22 @@ object CompileServerLauncher {
   def instance: CompileServerLauncher = ApplicationManager.getApplication.getComponent(classOf[CompileServerLauncher])
 
   def compilerJars: Seq[File] = {
-    val jpsBuildersJar = new File(PathUtil.getJarPathForClass(classOf[BuilderService]))
+    val jcBuildersJar = new File(PathUtil.getJarPathForClass(classOf[BuilderService]))
     val utilJar = new File(PathUtil.getJarPathForClass(classOf[FileUtil]))
     val trove4jJar = new File(PathUtil.getJarPathForClass(classOf[TByteArrayList]))
 
     val pluginRoot = pluginPath
-    val jpsRoot = new File(pluginRoot, "jps")
+    val jcRoot = new File(pluginRoot, "jc")
 
     Seq(
-      jpsBuildersJar,
+      jcBuildersJar,
       utilJar,
       trove4jJar,
-      new File(pluginRoot, "scala-library.jar"),
-      new File(pluginRoot, "scala-nailgun-runner.jar"),
+      new File(pluginRoot, "jawa-nailgun-runner.jar"),
       new File(pluginRoot, "compiler-settings.jar"),
-      new File(jpsRoot, "nailgun.jar"),
-      new File(jpsRoot, "sbt-interface.jar"),
-      new File(jpsRoot, "incremental-compiler.jar"),
-      new File(jpsRoot, "scala-jps-plugin.jar")
+      new File(jcRoot, "nailgun.jar"),
+      new File(jcRoot, "incremental-compiler.jar"),
+      new File(jcRoot, "jawa-jc-plugin.jar")
     )
   }
 

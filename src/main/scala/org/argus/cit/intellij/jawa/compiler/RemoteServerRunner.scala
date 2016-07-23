@@ -13,6 +13,8 @@ package org.argus.cit.intellij.jawa.compiler
 import java.net.{ConnectException, InetAddress, UnknownHostException}
 
 import com.intellij.openapi.project.Project
+import org.argus.jc.incremental.jawa.Client
+import org.argus.jc.incremental.jawa.remote.RemoteResourceOwner
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
