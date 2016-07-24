@@ -10,18 +10,12 @@
 
 package org.argus.jc.incremental.jawa.local
 
-import java.io.File
-
 import org.argus.jc.incremental.jawa.Client
-import org.argus.jc.incremental.jawa.data.CompilerJars
-import sbt.compiler.AnalyzingCompiler
-import sbt.inc.AnalysisStore
+import org.argus.jc.incremental.jawa.data.CompilerData
 
 /**
  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
  */
 trait CompilerFactory {
-  def createCompiler(client: Client, fileToStore: File => AnalysisStore): Compiler
-
-  def getJawac(compilerJars: Option[CompilerJars], client: Client): Option[AnalyzingCompiler]
+  def createCompiler(compilerData: CompilerData, client: Client): Compiler
 }

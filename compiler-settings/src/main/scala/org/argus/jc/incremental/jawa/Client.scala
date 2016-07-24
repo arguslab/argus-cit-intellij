@@ -12,23 +12,24 @@ package org.argus.jc.incremental.jawa
 
 import java.io.File
 
+import org.argus.jawa.core.io.{NoSourceFile, SourceFile}
 import org.jetbrains.jps.incremental.messages.BuildMessage.Kind
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
 trait Client {
-  def message(kind: Kind, text: String, source: Option[File] = None, line: Option[Long] = None, column: Option[Long] = None)
+  def message(kind: Kind, text: String, source: SourceFile = NoSourceFile, line: Option[Long] = None, column: Option[Long] = None)
 
-  def error(text: String, source: Option[File] = None, line: Option[Long] = None, column: Option[Long] = None) {
+  def error(text: String, source: SourceFile = NoSourceFile, line: Option[Long] = None, column: Option[Long] = None) {
     message(Kind.ERROR, text, source, line, column)
   }
 
-  def warning(text: String, source: Option[File] = None, line: Option[Long] = None, column: Option[Long] = None) {
+  def warning(text: String, source: SourceFile = NoSourceFile, line: Option[Long] = None, column: Option[Long] = None) {
     message(Kind.WARNING, text, source, line, column)
   }
 
-  def info(text: String, source: Option[File] = None, line: Option[Long] = None, column: Option[Long] = None) {
+  def info(text: String, source: SourceFile = NoSourceFile, line: Option[Long] = None, column: Option[Long] = None) {
     message(Kind.INFO, text, source, line, column)
   }
 
@@ -38,9 +39,9 @@ trait Client {
 
   def debug(text: String)
 
-  def generated(source: File, module: File, name: String)
+  def generated(source: SourceFile, module: File, name: String)
 
-  def processed(source: File)
+  def processed(source: SourceFile)
 
   def deleted(module: File)
 

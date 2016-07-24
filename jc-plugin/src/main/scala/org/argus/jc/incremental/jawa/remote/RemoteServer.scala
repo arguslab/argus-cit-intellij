@@ -13,15 +13,15 @@ package remote
 
 import java.net.{ConnectException, InetAddress, UnknownHostException}
 
-import org.argus.jc.incremental.jawa.data.CompilationData
+import org.argus.jc.incremental.jawa.data.{CompilationData, CompilerData}
 import org.jetbrains.jps.incremental.ModuleLevelBuilder.ExitCode
 
 /**
  * @author Pavel Fatin
  */
 class RemoteServer(val address: InetAddress, val port: Int) extends Server with RemoteResourceOwner {
-  def compile(compilationData: CompilationData, client: Client): ExitCode = {
-    val arguments = Arguments(sbtData, compilerData, compilationData, Seq.empty).asStrings
+  def compile(compilerData: CompilerData, compilationData: CompilationData, client: Client): ExitCode = {
+    val arguments = Seq[String]()
 
     try {
       send(serverAlias, arguments, client)
@@ -33,7 +33,7 @@ class RemoteServer(val address: InetAddress, val port: Int) extends Server with 
         val message = s"$firstLine\n$secondLine"
         client.warning(message)
         client.debug(s"$firstLine\n${e.toString}\n${e.getStackTrace.mkString("\n")}")
-        JawaBuilder.localServer.compile(sbtData, compilerData, compilationData, client)
+        JawaBuilder.localServer.compile(compilerData, compilationData, client)
       case e: UnknownHostException =>
         val message = "Unknown IP address of compile server host: " + address.toString
         client.error(message)

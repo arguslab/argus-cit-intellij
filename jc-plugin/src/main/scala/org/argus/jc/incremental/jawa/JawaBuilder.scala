@@ -14,7 +14,7 @@ import _root_.java.io._
 import java.net.InetAddress
 
 import com.intellij.openapi.diagnostic.{Logger => JpsLogger}
-import org.argus.jc.incremental.jawa.data.CompilationData
+import org.argus.jc.incremental.jawa.data.{CompilationData, CompilerData}
 import org.argus.jc.incremental.jawa.local.LocalServer
 import org.argus.jc.incremental.jawa.remote.RemoteServer
 import org.jetbrains.jps.ModuleChunk
@@ -38,10 +38,11 @@ object JawaBuilder {
     context.processMessage(new ProgressMessage("Reading compilation settings..."))
 
     for {
+      compilerData <- CompilerData.from(context, chunk)
       compilationData <- CompilationData.from(sources, context, chunk)
     } yield {
       val server = getServer(context)
-      server.compile(compilationData, client)
+      server.compile(compilerData, compilationData, client)
     }
   }
 

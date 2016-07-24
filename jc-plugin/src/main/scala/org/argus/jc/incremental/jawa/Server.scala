@@ -10,12 +10,12 @@
 
 package org.argus.jc.incremental.jawa
 
-import org.argus.jc.incremental.jawa.data.CompilationData
+import org.argus.jc.incremental.jawa.data.{CompilationData, CompilerData}
 import org.jetbrains.jps.incremental.ModuleLevelBuilder.ExitCode
 
 /**
  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
  */
 trait Server {
-  def compile(compilationData: CompilationData, client: Client): ExitCode
+  def compile(compilerData: CompilerData, compilationData: CompilationData, client: Client): ExitCode
 }

@@ -10,12 +10,9 @@
 
 package org.argus.jc.incremental.jawa.local
 
-import java.io.File
-
 import org.argus.jc.incremental.jawa.{Client, Server}
-import org.argus.jc.incremental.jawa.data.CompilationData
+import org.argus.jc.incremental.jawa.data.{CompilationData, CompilerData}
 import org.jetbrains.jps.incremental.ModuleLevelBuilder.ExitCode
-import sbt.inc.{AnalysisStore, FileBasedStore}
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
@@ -24,12 +21,12 @@ class LocalServer extends Server {
   private var cachedCompilerFactory: Option[CompilerFactory] = None
   private val lock = new Object()
 
-  def compile(compilationData: CompilationData, client: Client): ExitCode = {
+  def compile(compilerData: CompilerData, compilationData: CompilationData, client: Client): ExitCode = {
     val compiler = lock.synchronized {
       val compilerFactory = compilerFactoryFrom()
 
       client.progress("Instantiating compiler...")
-      compilerFactory.createCompiler(compilerData, client, LocalServer.createAnalysisStore)
+      compilerFactory.createCompiler(compilerData, client)
     }
 
     if (!client.isCanceled) {
@@ -41,15 +38,8 @@ class LocalServer extends Server {
   }
 
   private def compilerFactoryFrom(): CompilerFactory = cachedCompilerFactory.getOrElse {
-    val factory = new CachingFactory(new CompilerFactoryImpl(), 5, 5, 5)
+    val factory = new CachingFactory(new CompilerFactoryImpl(), 5)
     cachedCompilerFactory = Some(factory)
     factory
-  }
-}
-
-object LocalServer {
-  private def createAnalysisStore(cacheFile: File): AnalysisStore = {
-    val store = FileBasedStore(cacheFile)
-    AnalysisStore.sync(AnalysisStore.cached(store))
   }
 }

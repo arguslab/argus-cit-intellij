@@ -15,19 +15,18 @@ import _root_.java.util
 
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.util.Processor
+import org.argus.jc.incremental.jawa.local.IdeClientIdea
 import org.argus.jc.incremental.jawa.model.CompileOrder
 import org.jetbrains.jps.ModuleChunk
 import org.jetbrains.jps.builders.java.{JavaBuilderUtil, JavaSourceRootDescriptor}
 import org.jetbrains.jps.builders.{DirtyFilesHolder, FileProcessor}
 import org.jetbrains.jps.incremental.ModuleLevelBuilder.ExitCode
-import org.jetbrains.jps.incremental.fs.CompilationRound
 import org.jetbrains.jps.incremental.messages.{BuildMessage, CompilerMessage, ProgressMessage}
 
 import _root_.scala.collection.JavaConverters._
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 import org.jetbrains.jps.incremental._
-import org.jetbrains.jps.incremental.fs.CompilationRound
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
@@ -72,13 +71,13 @@ class IdeaIncrementalBuilder(category: BuilderCategory) extends ModuleLevelBuild
 
     val jawaSources = sources.filter(_.getName.endsWith(".pilar")).asJava
 
-    compile(context, chunk, sources, modules, client) match {
+    JawaBuilder.compile(context, chunk, sources, modules, client) match {
       case Left(error) =>
         client.error(error)
         ExitCode.ABORT
       case _ if client.hasReportedErrors || client.isCanceled => ExitCode.ABORT
       case Right(code) =>
-        if (delta != null && JavaBuilderUtil.updateMappings(context, delta, dirtyFilesHolder, chunk, scalaSources, successfullyCompiled.asJava))
+        if (delta != null && JavaBuilderUtil.updateMappings(context, delta, dirtyFilesHolder, chunk, jawaSources, successfullyCompiled.asJava))
           ExitCode.ADDITIONAL_PASS_REQUIRED
         else {
           client.progress("Compilation completed", Some(1.0F))
@@ -90,7 +89,7 @@ class IdeaIncrementalBuilder(category: BuilderCategory) extends ModuleLevelBuild
   override def getCompilableFileExtensions: util.List[String] = util.Arrays.asList("pilar", "java")
 
   private def isDisabled(context: CompileContext, chunk: ModuleChunk): Boolean = {
-    val settings = projectSettings(context)
+    val settings = JawaBuilder.projectSettings(context)
     def wrongCompileOrder = settings.getCompilerSettings(chunk).getCompileOrder match {
       case CompileOrder.JAVA_THEN_JAWA => getCategory == BuilderCategory.SOURCE_PROCESSOR
       case (CompileOrder.JAWA_THEN_JAVA | CompileOrder.MIXED) => getCategory == BuilderCategory.OVERWRITING_TRANSLATOR
@@ -107,7 +106,7 @@ class IdeaIncrementalBuilder(category: BuilderCategory) extends ModuleLevelBuild
 
     val project = context.getProjectDescriptor
 
-    val compileOrder = projectSettings(context).getCompilerSettings(chunk).getCompileOrder
+    val compileOrder = JawaBuilder.projectSettings(context).getCompilerSettings(chunk).getCompileOrder
     val extensionsToCollect = compileOrder match {
       case CompileOrder.MIXED => List(".pilar", ".java")
       case _ => List(".pilar")

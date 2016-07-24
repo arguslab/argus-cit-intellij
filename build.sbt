@@ -55,7 +55,7 @@ lazy val jc_plugin  =
 lazy val compiler_settings =
   newProject("compiler-settings", file("compiler-settings"))
     .enablePlugins(SbtIdeaPlugin)
-    .settings(libraryDependencies += Dependencies.nailgun)
+    .settings(libraryDependencies ++= Seq(Dependencies.nailgun) ++ DependencyGroups.jawa)
 
 // Utility projects
 

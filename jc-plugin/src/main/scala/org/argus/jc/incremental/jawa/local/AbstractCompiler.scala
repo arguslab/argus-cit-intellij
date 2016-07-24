@@ -13,8 +13,13 @@ package local
 
 import java.io.File
 
+import org.argus.jawa.compiler.compile.CompileProgress
+import org.argus.jawa.compiler.log.{Problem, Severity}
+import org.argus.jawa.core.{DefaultReporter, Problem, Reporter, ReporterImpl}
+import org.argus.jawa.core.io.{AbstractFile, Position, SourceFile}
 import org.jetbrains.jps.incremental.messages.BuildMessage.Kind
-import org.slf4j.Logger
+import org.argus.jawa.compiler.log.Logger
+import org.sireum.util._
 
 /**
  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
@@ -23,35 +28,35 @@ abstract class AbstractCompiler extends Compiler {
 
   def getReporter(client: Client): Reporter = new ClientReporter(client)
 
-  def getLogger(client: Client): Logger = new ClientLogger(client) with JavacOutputParsing
+  def getLogger(client: Client): Logger = new ClientLogger(client)
 
-  def getProgress(client: Client): ExtendedCompileProgress = new ClientProgress(client)
+  def getProgress(client: Client): CompileProgress = new ClientProgress(client)
 
   private class ClientLogger(val client: Client) extends Logger {
-    def error(msg: F0[String]) {
-      client.error(msg())
+    override def error(msg: String) {
+      client.error(msg)
     }
 
-    def warn(msg: F0[String]) {
-      client.warning(msg())
+    override def warn(msg: String) {
+      client.warning(msg)
     }
 
-    def info(msg: F0[String]) {
-      client.progress(msg())
+    override def info(msg: String) {
+      client.progress(msg)
     }
 
-    def debug(msg: F0[String]) {
-      val lines = msg().trim.split('\n')
+    override def debug(msg: String) {
+      val lines = msg.trim.split('\n')
       client.debug("\n\n" + lines.mkString("\n") + "\n")
     }
 
-    def trace(exception: F0[Throwable]) {
-      client.trace(exception())
+    def trace(exception: Throwable) {
+      client.trace(exception)
     }
   }
 
-  private class ClientProgress(client: Client) extends ExtendedCompileProgress {
-    def generated(source: File, module: File, name: String) {
+  private class ClientProgress(client: Client) extends CompileProgress {
+    def generated(source: SourceFile, module: File, name: String) {
       client.progress("Generated " + module.getName)
       client.generated(source, module, name)
     }
@@ -60,9 +65,9 @@ abstract class AbstractCompiler extends Compiler {
       client.deleted(module)
     }
 
-    def startUnit(phase: String, unitPath: String) {
+    def startUnit(unitPath: String) {
       val unitName = new File(unitPath).getName
-      client.progress("Phase " + phase + " on " + unitName)
+      client.progress("Compile on " + unitName)
     }
 
     def advance(current: Int, total: Int) = {
@@ -71,20 +76,20 @@ abstract class AbstractCompiler extends Compiler {
     }
   }
 
-  private class ClientReporter(client: Client) extends Reporter {
-    private var entries: List[Problem] = Nil
+  private class ClientReporter(client: Client) extends DefaultReporter {
+    private val entries: MMap[AbstractFile, MSet[Problem]] = mmapEmpty
 
-    def reset() {
-      entries = Nil
+    override def reset() {
+      entries.clear()
     }
 
-    def hasErrors = entries.exists(_.severity == Severity.Error)
+    override def hasErrors = entries.exists(_.severity == Severity.Error)
 
-    def hasWarnings = entries.exists(_.severity == Severity.Warn)
+    override def hasWarnings = entries.exists(_.severity == Severity.Warn)
 
     def printSummary() {}
 
-    def problems = entries.reverse.toArray
+    override def problems = entries.reverse.toArray
 
     def log(pos: Position, msg: String, sev: Severity) {
       entries ::= new Problem {
@@ -100,21 +105,12 @@ abstract class AbstractCompiler extends Compiler {
         case Severity.Error => Kind.ERROR
       }
 
-      val source = toOption(pos.sourcePath).map(new File(_))
-      val line = toOption(pos.line).map(_.toLong)
-      val column = toOption(pos.pointer).map(_.toLong + 1L)
+      val source = pos.source
+      val line = (try Some(pos.line) catch {case e: UnsupportedOperationException => None}).map(_.toLong)
+      val column = (try Some(pos.column) catch {case e: UnsupportedOperationException => None}).map(_.toLong)
 
-      val messageWithLineAndPointer = {
-        val indent = toOption(pos.pointerSpace)
-        msg + "\n" + pos.lineContent + indent.map("\n" + _ + "^").getOrElse("")
-      }
-
-      client.message(kind, messageWithLineAndPointer, source, line, column)
+      client.message(kind, msg, source, line, column)
     }
-
-    def toOption[T](value: Maybe[T]): Option[T] = if (value.isDefined) Some(value.get) else None
-
-    def comment(p1: Position, p2: String) {} // TODO
   }
 
 }
