@@ -14,12 +14,11 @@ package local
 import java.io.File
 
 import org.argus.jawa.compiler.compile.CompileProgress
-import org.argus.jawa.compiler.log.{Problem, Severity}
-import org.argus.jawa.core.{DefaultReporter, Problem, Reporter, ReporterImpl}
-import org.argus.jawa.core.io.{AbstractFile, Position, SourceFile}
+import org.argus.jawa.compiler.log.Severity
+import org.argus.jawa.core.{DefaultReporter, Reporter}
+import org.argus.jawa.core.io.{Position, SourceFile}
 import org.jetbrains.jps.incremental.messages.BuildMessage.Kind
 import org.argus.jawa.compiler.log.Logger
-import org.sireum.util._
 
 /**
  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
@@ -77,28 +76,8 @@ abstract class AbstractCompiler extends Compiler {
   }
 
   private class ClientReporter(client: Client) extends DefaultReporter {
-    private val entries: MMap[AbstractFile, MSet[Problem]] = mmapEmpty
-
-    override def reset() {
-      entries.clear()
-    }
-
-    override def hasErrors = entries.exists(_.severity == Severity.Error)
-
-    override def hasWarnings = entries.exists(_.severity == Severity.Warn)
-
-    def printSummary() {}
-
-    override def problems = entries.reverse.toArray
 
     def log(pos: Position, msg: String, sev: Severity) {
-      entries ::= new Problem {
-        val category = ""
-        val position = pos
-        val message = msg
-        val severity = sev
-      }
-
       val kind = sev match {
         case Severity.Info => Kind.INFO
         case Severity.Warn => Kind.WARNING

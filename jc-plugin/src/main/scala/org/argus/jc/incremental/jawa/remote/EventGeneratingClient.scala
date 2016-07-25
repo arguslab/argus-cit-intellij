@@ -13,13 +13,14 @@ package remote
 
 import java.io.{File, PrintWriter, StringWriter}
 
+import org.argus.jawa.core.io.SourceFile
 import org.jetbrains.jps.incremental.messages.BuildMessage.Kind
 
 /**
  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
  */
 class EventGeneratingClient(listener: Event => Unit, canceled: => Boolean) extends Client {
-  def message(kind: Kind, text: String, source: Option[File], line: Option[Long], column: Option[Long]) {
+  def message(kind: Kind, text: String, source: SourceFile, line: Option[Long], column: Option[Long]) {
     listener(MessageEvent(kind, text, source, line, column))
   }
 
@@ -40,7 +41,7 @@ class EventGeneratingClient(listener: Event => Unit, canceled: => Boolean) exten
     listener(DebugEvent(text))
   }
 
-  def generated(source: File, module: File, name: String) {
+  def generated(source: SourceFile, module: File, name: String) {
     listener(GeneratedEvent(source, module, name))
   }
 
@@ -50,7 +51,7 @@ class EventGeneratingClient(listener: Event => Unit, canceled: => Boolean) exten
 
   def isCanceled = canceled
 
-  def processed(source: File) {
+  def processed(source: SourceFile) {
     listener(SourceProcessedEvent(source))
   }
 

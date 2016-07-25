@@ -11,11 +11,12 @@
 package org.argus.jc.incremental.jawa
 package remote
 
-import java.io.{File, PrintStream}
+import java.io.PrintStream
 import java.util.{Timer, TimerTask}
 
 import com.intellij.util.Base64Converter
 import com.martiansoftware.nailgun.NGContext
+import org.argus.jawa.core.io.SourceFile
 import org.argus.jc.incremental.jawa.local.LocalServer
 import org.jetbrains.jps.incremental.messages.BuildMessage.Kind
 
@@ -46,12 +47,12 @@ object Main {
         out.write((if (standalone && !encode.endsWith("=")) encode + "=" else encode).getBytes)
       }
       new EventGeneratingClient(eventHandler, out.checkError) {
-        override def error(text: String, source: Option[File], line: Option[Long], column: Option[Long]) {
+        override def error(text: String, source: SourceFile, line: Option[Long], column: Option[Long]) {
           hasErrors = true
           super.error(text, source, line, column)
         }
 
-        override def message(kind: Kind, text: String, source: Option[File], line: Option[Long], column: Option[Long]) {
+        override def message(kind: Kind, text: String, source: SourceFile, line: Option[Long], column: Option[Long]) {
           if (kind == Kind.ERROR) hasErrors = true
           super.message(kind, text, source, line, column)
         }

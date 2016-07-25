@@ -13,6 +13,7 @@ package org.argus.jc.incremental.jawa.remote
 import java.io._
 
 import com.intellij.openapi.util.io.FileUtil
+import org.argus.jawa.core.io.SourceFile
 import org.jetbrains.jps.incremental.messages.BuildMessage.Kind
 
 /**
@@ -43,7 +44,7 @@ object Event {
 }
 
 @SerialVersionUID(1317094340928824239L)
-case class MessageEvent(kind: Kind, text: String, source: Option[File], line: Option[Long], column: Option[Long]) extends Event
+case class MessageEvent(kind: Kind, text: String, source: SourceFile, line: Option[Long], column: Option[Long]) extends Event
 
 @SerialVersionUID(-6777609711619086870L)
 case class ProgressEvent(text: String, done: Option[Float]) extends Event
@@ -55,16 +56,13 @@ case class DebugEvent(text: String) extends Event
 case class TraceEvent(message: String, lines: Array[String]) extends Event
 
 @SerialVersionUID(-3155152113364817122L)
-case class GeneratedEvent(source: File, module: File, name: String) extends Event
+case class GeneratedEvent(source: SourceFile, module: File, name: String) extends Event
 
 @SerialVersionUID(-7935816100194567870L)
 case class DeletedEvent(module: File) extends Event
 
 @SerialVersionUID(3581751389645846347L)
-case class SourceProcessedEvent(source: File) extends Event
+case class SourceProcessedEvent(source: SourceFile) extends Event
 
 @SerialVersionUID(-2795117544723203396L)
 case class CompilationEndEvent() extends Event
-
-@SerialVersionUID(5572517354322649988L)
-case class WorksheetOutputEvent(text: String) extends Event

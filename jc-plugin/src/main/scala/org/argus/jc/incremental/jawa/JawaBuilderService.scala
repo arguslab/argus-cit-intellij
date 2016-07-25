@@ -22,10 +22,7 @@ import org.jetbrains.jps.model.module.JpsModule
   */
 class JawaBuilderService extends BuilderService {
   ResourcesBuilder.registerEnabler(new StandardResourceBuilderEnabler {
-    def isResourceProcessingEnabled(module: JpsModule): Boolean = {
-      val moduleType = module.getModuleType
-      moduleType != SbtModuleType.INSTANCE && moduleType != SharedSourcesModuleType.INSTANCE
-    }
+    def isResourceProcessingEnabled(module: JpsModule): Boolean = true
   })
 
   @NotNull
