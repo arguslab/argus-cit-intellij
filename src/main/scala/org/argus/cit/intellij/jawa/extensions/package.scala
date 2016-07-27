@@ -10,6 +10,9 @@
 
 package org.argus.cit.intellij.jawa
 
+import java.lang.reflect.InvocationTargetException
+import javax.swing.SwingUtilities
+
 import com.intellij.openapi.application.{ApplicationManager, Result}
 import com.intellij.openapi.command.{CommandProcessor, WriteCommandAction}
 import com.intellij.openapi.project.Project
@@ -18,6 +21,8 @@ import com.intellij.psi.{PsiClass, PsiMethod, PsiModifier, PsiNamedElement}
 import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.{JawaNamedElement, JawaTypeDefinition}
 import org.argus.jawa.core.JawaClass
 import org.jetbrains.annotations.NotNull
+
+import scala.runtime.NonLocalReturnControl
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
@@ -174,5 +179,30 @@ package object extensions {
         }
       )
     }
+  }
+
+  def invokeAndWait[T](body: => Unit) {
+    preservingControlFlow {
+      SwingUtilities.invokeAndWait(new Runnable {
+        def run() {
+          body
+        }
+      })
+    }
+  }
+
+  private def preservingControlFlow(body: => Unit) {
+    try {
+      body
+    } catch {
+      case e: InvocationTargetException => e.getTargetException match {
+        case control: NonLocalReturnControl[_] => throw control
+        case _ => throw e
+      }
+    }
+  }
+
+  implicit class PipedObject[T](val value: T) extends AnyVal {
+    def |>[R](f: T => R) = f(value)
   }
 }

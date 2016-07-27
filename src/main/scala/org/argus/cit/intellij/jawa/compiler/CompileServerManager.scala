@@ -125,7 +125,7 @@ class CompileServerManager(project: Project) extends ProjectComponent {
     }
   }
 
-  private def title = "Scala compile server"
+  private def title = "Jawa compile server"
 
   private def toggleList(e: MouseEvent) {
     val mnemonics = JBPopupFactory.ActionSelectionAid.MNEMONICS

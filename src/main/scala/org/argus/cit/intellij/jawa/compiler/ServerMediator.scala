@@ -13,7 +13,6 @@ package org.argus.cit.intellij.jawa.compiler
 import java.util.UUID
 
 import com.intellij.compiler.server.BuildManagerListener
-import com.intellij.notification.{Notification, NotificationType, Notifications}
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.compiler.{CompileContext, CompileTask, CompilerManager}
 import com.intellij.openapi.components.ProjectComponent
@@ -21,13 +20,13 @@ import com.intellij.openapi.module.{Module, ModuleManager}
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.{CompilerModuleExtension, ModuleRootManager}
 import com.intellij.openapi.ui.Messages
+import org.argus.cit.intellij.jawa.extensions._
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
 class ServerMediator(project: Project) extends ProjectComponent {
 
-  private def isJawaProject = project.hasJawa
   private val settings = JawaCompileServerSettings.getInstance
 
   private val connection = project.getMessageBus.connect
@@ -35,7 +34,7 @@ class ServerMediator(project: Project) extends ProjectComponent {
     override def beforeBuildProcessStarted(project: Project, uuid: UUID): Unit = {}
 
     override def buildStarted(project: Project, sessionId: UUID, isAutomake: Boolean): Unit = {
-      if (settings.COMPILE_SERVER_ENABLED && isJawaProject) {
+      if (settings.COMPILE_SERVER_ENABLED) {
         invokeAndWait {
           CompileServerManager.instance(project).configureWidget()
         }
@@ -59,10 +58,7 @@ class ServerMediator(project: Project) extends ProjectComponent {
 
   private val checkSettingsTask = new CompileTask {
     def execute(context: CompileContext): Boolean = {
-      if (isJawaProject) {
-        if (!checkCompilationSettings()) false
-        else true
-      }
+      if (!checkCompilationSettings()) false
       else true
     }
   }
@@ -75,7 +71,7 @@ class ServerMediator(project: Project) extends ProjectComponent {
   CompilerManager.getInstance(project).addBeforeTask(checkCompileServerDottyTask)
 
   private def checkCompilationSettings(): Boolean = {
-    def hasClashes(module: Module) = module.hasJawa && {
+    def hasClashes(module: Module) = {
       val extension = CompilerModuleExtension.getInstance(module)
       val production = extension.getCompilerOutputUrl
       val test = extension.getCompilerOutputUrlForTests

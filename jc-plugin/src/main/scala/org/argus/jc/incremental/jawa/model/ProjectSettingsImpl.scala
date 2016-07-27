@@ -13,15 +13,17 @@ package org.argus.jc.incremental.jawa.model
 import org.jetbrains.jps.ModuleChunk
 import org.jetbrains.jps.model.ex.JpsElementBase
 
+import collection.JavaConversions._
+
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
 class ProjectSettingsImpl(defaultSettings: CompilerSettingsImpl,
-                          profileToSettings: Map[String, CompilerSettingsImpl],
-                          moduleToProfile: Map[String, String]) extends JpsElementBase[ProjectSettingsImpl] with ProjectSettings {
+                          profileToSettings: java.util.Map[String, CompilerSettingsImpl],
+                          moduleToProfile: java.util.Map[String, String]) extends JpsElementBase[ProjectSettingsImpl] with ProjectSettings {
   override def createCopy(): ProjectSettingsImpl = {
     val myDefaultSettings: CompilerSettingsImpl = defaultSettings.createCopy()
-    val newProfileToSettings: Map[String, CompilerSettingsImpl] = profileToSettings.map{
+    val newProfileToSettings: java.util.Map[String, CompilerSettingsImpl] = profileToSettings.map{
       case (k, v) => k -> v.createCopy()
     }
     new ProjectSettingsImpl(myDefaultSettings, newProfileToSettings, moduleToProfile)
@@ -31,7 +33,7 @@ class ProjectSettingsImpl(defaultSettings: CompilerSettingsImpl,
 
   override def getCompilerSettings(chunk: ModuleChunk): CompilerSettings = {
     val module: String = chunk.representativeTarget.getModule.getName
-    moduleToProfile.get(module) match {
+    Option(moduleToProfile.get(module)) match {
       case Some(profile) => profileToSettings(profile)
       case None => defaultSettings
     }
@@ -39,5 +41,5 @@ class ProjectSettingsImpl(defaultSettings: CompilerSettingsImpl,
 }
 
 object ProjectSettingsImpl {
-  final val DEFAULT = new ProjectSettingsImpl(CompilerSettingsImpl.DEFAULT, Map(), Map())
+  final val DEFAULT = new ProjectSettingsImpl(CompilerSettingsImpl.DEFAULT, new java.util.HashMap[String, CompilerSettingsImpl](), new java.util.HashMap[String, String]())
 }

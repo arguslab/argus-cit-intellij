@@ -26,8 +26,10 @@ import gnu.trove.TByteArrayList
 import org.argus.cit.intellij.jawa.compiler.CompileServerLauncher.ConfigureLinkListener
 import org.jetbrains.jps.incremental.BuilderService
 import org.argus.cit.intellij.jawa.compiler.CompileServerLauncher._
+import org.argus.cit.intellij.jawa.extensions._
 
 import collection.JavaConverters._
+import scala.util.control.Exception._
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
@@ -97,11 +99,7 @@ class CompileServerLauncher  extends ApplicationComponent {
 
     compilerJars.partition(_.exists) match {
       case (presentFiles, Seq()) =>
-        val bootCp = bootClasspath(project)
-        val bootClassPathLibs = bootCp.map(_.getAbsolutePath)
-        val bootclasspathArg =
-          if (bootClassPathLibs.isEmpty) Nil
-          else Seq("-Xbootclasspath/a:" + bootClassPathLibs.mkString(File.pathSeparator))
+        val bootclasspathArg = Nil
         val classpath = (jdk.tools +: presentFiles).map(_.canonicalPath).mkString(File.pathSeparator)
         val settings = JawaCompileServerSettings.getInstance
 
@@ -133,7 +131,7 @@ class CompileServerLauncher  extends ApplicationComponent {
           .left.map(_.getMessage)
           .right.map { process =>
           val watcher = new ProcessWatcher(process, "jawaCompileServer")
-          serverInstance = Some(ServerInstance(watcher, freePort, builder.directory(), withTimestamps(bootCp)))
+          serverInstance = Some(ServerInstance(watcher, freePort, builder.directory()))
           watcher.startNotify()
           process
         }
@@ -197,10 +195,6 @@ object CompileServerLauncher {
     else new File(PathUtil.getJarPathForClass(getClass)).getParent
   }
 
-  private def withTimestamps(files: Seq[File]): Set[(File, Long)] = {
-    files.map(f => (f, f.lastModified())).toSet
-  }
-
   def jvmParameters: Seq[String] = {
     val settings = JawaCompileServerSettings.getInstance
     val xmx = settings.COMPILE_SERVER_MAXIMUM_HEAP_SIZE |> { size =>
@@ -231,7 +225,7 @@ object CompileServerLauncher {
       case Some(instance) =>
         val useProjectHome = JawaCompileServerSettings.getInstance().USE_PROJECT_HOME_AS_WORKING_DIR
         val workingDirChanged = useProjectHome && projectHome(project) != serverInstance.map(_.workingDir)
-        workingDirChanged || instance.bootClasspath != withTimestamps(bootClasspath(project))
+        workingDirChanged
     }
   }
 
@@ -264,7 +258,7 @@ object CompileServerLauncher {
   }
 }
 
-private case class ServerInstance(watcher: ProcessWatcher, port: Int, workingDir: File, bootClasspath: Set[(File, Long)]) {
+private case class ServerInstance(watcher: ProcessWatcher, port: Int, workingDir: File) {
   private var stopped = false
 
   def running: Boolean = !stopped && watcher.running

@@ -49,6 +49,13 @@
     <applicationService serviceInterface="org.argus.cit.intellij.jawa.compiler.JawaCompileServerSettings"
                         serviceImplementation="org.argus.cit.intellij.jawa.compiler.JawaCompileServerSettings"/>
 
+    <applicationConfigurable groupId="language" displayName="Jawa Compile Server" instance="org.argus.cit.intellij.jawa.compiler.JawaCompileServerForm"/>
+
+    <applicationService serviceInterface="org.argus.cit.intellij.jawa.compiler.JawaCompileServerSettings"
+                        serviceImplementation="org.argus.cit.intellij.jawa.compiler.JawaCompileServerSettings"/>
+    <projectService serviceImplementation="org.jetbrains.plugins.scala.project.settings.ScalaCompilerConfiguration"/>
+    <projectConfigurable id="Jawa Compiler" displayName="Jawa Compiler" parentId="project.propCompiler"
+                         instance="org.jetbrains.plugins.scala.project.settings.ScalaCompilerConfigurable" />
   </extensions>
 
   <application-components>
