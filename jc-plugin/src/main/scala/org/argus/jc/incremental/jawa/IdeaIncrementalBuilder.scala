@@ -15,6 +15,7 @@ import _root_.java.util
 
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.util.Processor
+import org.argus.jawa.core.io.SourceFile
 import org.argus.jc.incremental.jawa.local.IdeClientIdea
 import org.argus.jc.incremental.jawa.model.CompileOrder
 import org.jetbrains.jps.ModuleChunk
@@ -62,7 +63,7 @@ class IdeaIncrementalBuilder(category: BuilderCategory) extends ModuleLevelBuild
 
     val modules = chunk.getModules.asScala.toSet
 
-    val successfullyCompiled = mutable.Set[File]()
+    val successfullyCompiled = mutable.Set[SourceFile]()
 
     val compilerName = "jawac"
 
@@ -77,7 +78,7 @@ class IdeaIncrementalBuilder(category: BuilderCategory) extends ModuleLevelBuild
         ExitCode.ABORT
       case _ if client.hasReportedErrors || client.isCanceled => ExitCode.ABORT
       case Right(code) =>
-        if (delta != null && JavaBuilderUtil.updateMappings(context, delta, dirtyFilesHolder, chunk, jawaSources, successfullyCompiled.asJava))
+        if (delta != null && JavaBuilderUtil.updateMappings(context, delta, dirtyFilesHolder, chunk, jawaSources, successfullyCompiled.map(_.file.file).asJava))
           ExitCode.ADDITIONAL_PASS_REQUIRED
         else {
           client.progress("Compilation completed", Some(1.0F))
@@ -86,13 +87,13 @@ class IdeaIncrementalBuilder(category: BuilderCategory) extends ModuleLevelBuild
     }
   }
 
-  override def getCompilableFileExtensions: util.List[String] = util.Arrays.asList("pilar", "java")
+  override def getCompilableFileExtensions: util.List[String] = util.Arrays.asList("pilar", "plr", "java")
 
   private def isDisabled(context: CompileContext, chunk: ModuleChunk): Boolean = {
     val settings = JawaBuilder.projectSettings(context)
     def wrongCompileOrder = settings.getCompilerSettings(chunk).getCompileOrder match {
       case CompileOrder.JAVA_THEN_JAWA => getCategory == BuilderCategory.SOURCE_PROCESSOR
-      case (CompileOrder.JAWA_THEN_JAVA | CompileOrder.MIXED) => getCategory == BuilderCategory.OVERWRITING_TRANSLATOR
+      case CompileOrder.JAWA_THEN_JAVA => getCategory == BuilderCategory.OVERWRITING_TRANSLATOR
       case _ => false
     }
     wrongCompileOrder
@@ -106,11 +107,7 @@ class IdeaIncrementalBuilder(category: BuilderCategory) extends ModuleLevelBuild
 
     val project = context.getProjectDescriptor
 
-    val compileOrder = JawaBuilder.projectSettings(context).getCompilerSettings(chunk).getCompileOrder
-    val extensionsToCollect = compileOrder match {
-      case CompileOrder.MIXED => List(".pilar", ".java")
-      case _ => List(".pilar")
-    }
+    val extensionsToCollect = List(".pilar", ".plr")
 
     def checkAndCollectFile(file: File): Boolean = {
       val fileName = file.getName

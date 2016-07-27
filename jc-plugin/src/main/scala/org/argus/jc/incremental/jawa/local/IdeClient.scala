@@ -15,6 +15,7 @@ import java.io.File
 import java.util
 
 import com.intellij.openapi.util.io.FileUtil
+import org.argus.jawa.core.io.SourceFile
 import org.jetbrains.jps.incremental.CompileContext
 import org.jetbrains.jps.incremental.ModuleLevelBuilder.OutputConsumer
 import org.jetbrains.jps.incremental.messages.BuildMessage.Kind
@@ -30,23 +31,24 @@ abstract class IdeClient(compilerName: String,
 
   private var hasErrors = false
 
-  def message(kind: Kind, text: String, source: Option[File], line: Option[Long], column: Option[Long]) {
+  def message(kind: Kind, text: String, source: SourceFile, line: Option[Long], column: Option[Long]) {
     if (kind == Kind.ERROR) {
       hasErrors = true
     }
 
-    val name = if (source.isEmpty) compilerName else ""
+    val file = source.file.file
+    val name = compilerName
 
-    val sourcePath = source.map(file => file.getPath)
+    val sourcePath = file.getPath
 
     context.getProjectDescriptor.getProject.getName
     val withoutPointer =
-        if (sourcePath.isDefined && line.isDefined && column.isDefined) {
+        if (line.isDefined && column.isDefined) {
           val lines = text.split('\n')
           lines.filterNot(_.trim == "^").mkString("\n")
         }
         else text
-    context.processMessage(new CompilerMessage(name, kind, withoutPointer, sourcePath.orNull,
+    context.processMessage(new CompilerMessage(name, kind, withoutPointer, sourcePath,
       -1L, -1L, -1L, line.getOrElse(-1L), column.getOrElse(-1L)))
   }
 
