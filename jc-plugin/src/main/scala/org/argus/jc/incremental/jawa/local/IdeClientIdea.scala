@@ -15,6 +15,7 @@ import java.io.{File, IOException}
 import java.util.Collections
 
 import com.intellij.openapi.util.io.FileUtil
+import org.argus.jawa.core.io.SourceFile
 import org.jetbrains.jps.builders.java.dependencyView.Callbacks
 import org.jetbrains.jps.incremental.ModuleLevelBuilder.OutputConsumer
 import org.jetbrains.jps.incremental.messages.{BuildMessage, CompilerMessage}
@@ -31,21 +32,22 @@ class IdeClientIdea(compilerName: String,
                     modules: Seq[String],
                     consumer: OutputConsumer,
                     mappingsCallback: Callbacks.Backend,
-                    successfullyCompiled: mutable.Set[File])
+                    successfullyCompiled: mutable.Set[SourceFile])
   extends IdeClient(compilerName, context, modules, consumer) {
 
-  private val tempSuccessfullyCompiled = mutable.Set[File]()
+  private val tempSuccessfullyCompiled = mutable.Set[SourceFile]()
 
   //logic is taken from org.jetbrains.jps.incremental.java.OutputFilesSink.save
-  def generated(source: File, outputFile: File, name: String): Unit = {
+  def generated(source: SourceFile, outputFile: File, name: String): Unit = {
+    val file = source.file.file
     val compiledClass = new LazyCompiledClass(outputFile, source, name)
     val content = compiledClass.getContent
     var isTemp: Boolean = false
     val isClassFile = outputFile.getName.endsWith(".class")
 
     if (source != null && content != null) {
-      val sourcePath: String = FileUtil.toSystemIndependentName(source.getPath)
-      val rootDescriptor = context.getProjectDescriptor.getBuildRootIndex.findJavaRootDescriptor(context, source)
+      val sourcePath: String = FileUtil.toSystemIndependentName(file.getPath)
+      val rootDescriptor = context.getProjectDescriptor.getBuildRootIndex.findJavaRootDescriptor(context, file)
       if (rootDescriptor != null) {
         isTemp = rootDescriptor.isTemp
         if (!isTemp) {
@@ -77,7 +79,7 @@ class IdeClientIdea(compilerName: String,
   }
 
   //add source to successfullyCompiled only after the whole file is processed
-  def processed(source: File): Unit = {
+  def processed(source: SourceFile): Unit = {
     if (tempSuccessfullyCompiled(source)) {
       successfullyCompiled += source
       tempSuccessfullyCompiled -= source

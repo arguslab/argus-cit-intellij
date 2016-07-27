@@ -14,5 +14,5 @@ package org.argus.jc.incremental.jawa.model
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
 object CompileOrder extends Enumeration {
-  val MIXED, JAVA_THEN_JAWA, JAWA_THEN_JAVA = Value
+  val JAVA_THEN_JAWA, JAWA_THEN_JAVA = Value
 }

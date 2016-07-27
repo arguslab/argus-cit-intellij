@@ -35,7 +35,7 @@ class CompilerSettingsImpl(state: CompilerSettingsImpl.State) extends JpsElement
 object CompilerSettingsImpl {
   final val DEFAULT = new CompilerSettingsImpl(new State)
   class State {
-    var compileOrder = CompileOrder.MIXED
+    var compileOrder = CompileOrder.JAWA_THEN_JAVA
     var warnings = true
   }
 }

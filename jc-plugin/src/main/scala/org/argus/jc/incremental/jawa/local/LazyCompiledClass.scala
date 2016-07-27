@@ -13,13 +13,14 @@ package org.argus.jc.incremental.jawa.local
 import java.io.File
 
 import com.intellij.openapi.util.io.FileUtil
+import org.argus.jawa.core.io.SourceFile
 import org.jetbrains.jps.incremental.{BinaryContent, CompiledClass}
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
-class LazyCompiledClass(outputFile: File, sourceFile: File, className: String)
-  extends CompiledClass(outputFile, sourceFile, className, new BinaryContent(Array.empty)){
+class LazyCompiledClass(outputFile: File, sourceFile: SourceFile, className: String)
+  extends CompiledClass(outputFile, sourceFile.file.file, className, new BinaryContent(Array.empty)){
 
   private var loadedContent: Option[BinaryContent] = None
   private var contentIsSet = false
