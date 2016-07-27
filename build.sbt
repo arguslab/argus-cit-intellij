@@ -14,7 +14,7 @@ val argusSafSettings = Defaults.coreDefaultSettings ++ Seq(
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
 )
 
-lazy val sdkDirectory = SettingKey[File]("sdk-directory", "Path to SDK directory where unmanagedJars and IDEA are located")
+lazy val sdkDirectory = SettingKey[File]("sdk-directory", "Path to SDK directory where unmanaged Jars and IDEA are located")
 
 sdkDirectory in ThisBuild := baseDirectory.in(ThisBuild).value / "SDK"
 
