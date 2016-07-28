@@ -44,7 +44,7 @@ public class JawaSerializerService extends JpsModelSerializerExtension {
 
   private static class GlobalSettingsSerializer extends JpsGlobalExtensionSerializer {
     private GlobalSettingsSerializer() {
-      super("scala.xml", "ScalaSettings");
+      super("jawa.xml", "JawaSettings");
     }
 
     @Override
@@ -62,7 +62,7 @@ public class JawaSerializerService extends JpsModelSerializerExtension {
 
   private static class CompilerConfigurationSerializer extends JpsProjectExtensionSerializer {
     private CompilerConfigurationSerializer() {
-      super("scala_compiler.xml", "ScalaCompilerConfiguration");
+      super("jawa_compiler.xml", "JawaCompilerConfiguration");
     }
 
     @Override

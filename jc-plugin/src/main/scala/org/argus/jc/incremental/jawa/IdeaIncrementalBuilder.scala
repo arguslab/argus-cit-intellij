@@ -22,7 +22,7 @@ import org.jetbrains.jps.ModuleChunk
 import org.jetbrains.jps.builders.java.{JavaBuilderUtil, JavaSourceRootDescriptor}
 import org.jetbrains.jps.builders.{DirtyFilesHolder, FileProcessor}
 import org.jetbrains.jps.incremental.ModuleLevelBuilder.ExitCode
-import org.jetbrains.jps.incremental.messages.{BuildMessage, CompilerMessage, ProgressMessage}
+import org.jetbrains.jps.incremental.messages.ProgressMessage
 
 import _root_.scala.collection.JavaConverters._
 import scala.collection.mutable
@@ -41,19 +41,10 @@ class IdeaIncrementalBuilder(category: BuilderCategory) extends ModuleLevelBuild
                      dirtyFilesHolder: DirtyFilesHolder[JavaSourceRootDescriptor, ModuleBuildTarget],
                      outputConsumer: ModuleLevelBuilder.OutputConsumer): ModuleLevelBuilder.ExitCode = {
 
-    if (isDisabled(context, chunk) || ChunkExclusionService.isExcluded(chunk))
+    if (isDisabled(context, chunk))
       return ExitCode.NOTHING_DONE
 
     context.processMessage(new ProgressMessage("Searching for compilable files..."))
-
-    val sourceDependencies = SourceDependenciesProviderService.getSourceDependenciesFor(chunk)
-    if (sourceDependencies.nonEmpty) {
-      val message = "IDEA incremental compiler cannot handle shared source modules: " +
-        sourceDependencies.map(_.getName).mkString(", ") +
-        ".\nPlease enable SBT incremental compiler for the project."
-      context.processMessage(new CompilerMessage("jawa", BuildMessage.Kind.ERROR, message))
-      return ExitCode.ABORT
-    }
 
     val sources = collectSources(context, chunk, dirtyFilesHolder)
     if (sources.isEmpty) return ExitCode.NOTHING_DONE

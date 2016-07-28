@@ -1,6 +1,15 @@
 <component name="ArtifactManager">
   <artifact build-on-make="true" name="ArgusCitPlugin">
     <output-path>$PROJECT_DIR$/out/plugin/Argus-CIT</output-path>
+    <properties id="ant-postprocessing">
+      <options enabled="true">
+        <file>file://$PROJECT_DIR$/buildutils.xml</file>
+        <target>idea.postbuild</target>
+      </options>
+    </properties>
+    <properties id="ant-preprocessing">
+      <options enabled="true" />
+    </properties>
     <root id="root">
       <element id="directory" name="lib">
         <element id="library" level="project" name="SBT: com.carrotsearch:hppc:0.6.0:jar" />
@@ -36,6 +45,21 @@
         <element id="library" level="project" name="SBT: stax:stax-api:1.0.1:jar" />
         <element id="archive" name="argus-cit-plugin.jar">
           <element id="module-output" name="argus-cit-intellij" />
+        </element>
+        <element id="directory" name="jc">
+          <element id="archive" name="jawa-jc-plugin.jar">
+            <element id="module-output" name="jc-plugin" />
+          </element>
+          <element id="library" level="project" name="SBT: org.jetbrains:incremental-compiler:1.0.0:jar" />
+          <element id="library" level="project" name="SBT: org.jetbrains:jline:1.0.0:jar" />
+          <element id="library" level="project" name="SBT: org.jetbrains:nailgun-patched:1.0.0:jar" />
+          <element id="library" level="project" name="SBT: org.jetbrains:compiler-interface-sources:1.0.0:jar" />
+        </element>
+        <element id="archive" name="compiler-settings.jar">
+          <element id="module-output" name="compiler-settings" />
+        </element>
+        <element id="archive" name="jawa-nailgun-runner.jar">
+          <element id="module-output" name="nailgun-runners" />
         </element>
       </element>
     </root>

@@ -20,7 +20,6 @@ import com.intellij.util.IncorrectOperationException;
 import org.argus.cit.intellij.jawa.lang.psi.JawaAccessFlagAnnotation;
 import org.argus.cit.intellij.jawa.lang.psi.JawaStubBasedPsiElementBase;
 import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaAccessFlagStub;
-import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaStubElementTypes;
 import org.argus.jawa.core.AccessFlag;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -98,8 +97,7 @@ public abstract class JawaAccessFlagAnnotationImplMixin
 //    }
 
     public String[] getModifiersStrings() {
-        JawaAccessFlagAnnotation modifier = getStubOrPsiChild(JawaStubElementTypes.ACCESS_FLAG());
-        return modifier != null ? AccessFlag.toString(modifier.getModifiers()).split(" ") : new String[0];
+        return AccessFlag.toString(this.getModifiers()).split(" ");
     }
 
     public boolean hasExplicitModifiers() {

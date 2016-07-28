@@ -22,7 +22,7 @@ import java.net.UnknownHostException;
 public class NailgunRunner {
     private static final String SERVER_ALIAS = "compile-server";
     private static final String SERVER_DESCRIPTION = "Jawa compile server";
-    private static final String SERVER_CLASS_NAME = "org.argus.cit.jc.incremental.jawa.remote.Main";
+    private static final String SERVER_CLASS_NAME = "org.argus.jc.incremental.jawa.remote.Main";
 
     private static final String STOP_ALIAS_START = "stop_";
     private static final String STOP_CLASS_NAME = "com.martiansoftware.nailgun.builtins.NGStop";

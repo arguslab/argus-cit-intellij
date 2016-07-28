@@ -12,9 +12,8 @@ package org.argus.jc.incremental.jawa.data
 
 import java.io.{File, IOException}
 import java.util
-import java.util.Collections
 
-import org.argus.jc.incremental.jawa.{ChunkExclusionService, SettingsManager}
+import org.argus.jc.incremental.jawa.SettingsManager
 import org.argus.jc.incremental.jawa.model.CompileOrder
 import org.jetbrains.jps.builders.java.JavaModuleBuildTargetType
 import org.jetbrains.jps.incremental.java.JavaBuilder
@@ -156,10 +155,7 @@ object CompilationData {
   }
 
   private def targetsIn(context: CompileContext): Seq[ModuleBuildTarget] = {
-    def isExcluded(target: ModuleBuildTarget): Boolean = {
-      val chunk = new ModuleChunk(Collections.singleton(target))
-      ChunkExclusionService.isExcluded(chunk)
-    }
+    def isExcluded(target: ModuleBuildTarget): Boolean = false
 
     val buildTargetIndex = context.getProjectDescriptor.getBuildTargetIndex
     val targets = JavaModuleBuildTargetType.ALL_TYPES.asScala.flatMap(buildTargetIndex.getAllTargets(_).asScala)

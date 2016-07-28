@@ -91,21 +91,38 @@ lazy val packagedPluginDir = settingKey[File]("Path to packaged, but not yet com
 
 packagedPluginDir in ThisBuild := baseDirectory.in(ThisBuild).value / "out" / "plugin" / "Argus-CIT"
 
-lazy val pluginPackager =
+lazy val plugin_packager =
   newProject("plugin-packager")
     .settings(
       artifactPath := packagedPluginDir.value,
       dependencyClasspath <<= (
-        dependencyClasspath in (argus_cit_intellij, Compile)
-        ),
+        dependencyClasspath in (argus_cit_intellij, Compile),
+        dependencyClasspath in (jc_plugin, Compile)
+        ).map { (a,b) => a ++ b },
       mappings := {
         import Packaging.PackageEntry._
         val crossLibraries = List(Dependencies.sfaLibrary, Dependencies.jawaCore, Dependencies.jawaCompiler)
         val librariesToCopyAsIs = DependencyGroups.jawa.filterNot(lib =>
           crossLibraries.contains(lib))
+        val jc = Seq(
+          Artifact(pack.in(jc_plugin, Compile).value,
+            "lib/jc/jawa-jc-plugin.jar"),
+          Library(Dependencies.nailgun,
+            "lib/jc/nailgun.jar"),
+          Library(Dependencies.compilerInterfaceSources,
+            "lib/jc/compiler-interface-sources.jar"),
+          Library(Dependencies.incrementalCompiler,
+            "lib/jc/incremental-compiler.jar"),
+          Library(Dependencies.bundledJline,
+            "lib/jc/jline.jar")
+        )
         val lib = Seq(
           Artifact(pack.in(argus_cit_intellij, Compile).value,
-            "lib/argus-cit-plugin.jar")
+            "lib/argus-cit-plugin.jar"),
+          Artifact(pack.in(compiler_settings, Compile).value,
+            "lib/compiler-settings.jar"),
+          Artifact(pack.in(nailgun_runners, Compile).value,
+            "lib/jawa-nailgun-runner.jar")
         ) ++
         crossLibraries.map { lib =>
           Library(lib.copy(name = lib.name + "_2.11"), s"lib/${lib.name}.jar")
@@ -113,7 +130,7 @@ lazy val pluginPackager =
         librariesToCopyAsIs.map { lib =>
           Library(lib, s"lib/${lib.name}.jar")
         }
-        Packaging.convertEntriesToMappings(lib, dependencyClasspath.value)
+        Packaging.convertEntriesToMappings(jc ++ lib, dependencyClasspath.value)
       },
       pack := {
         Packaging.packagePlugin(mappings.value, artifactPath.value)
@@ -121,12 +138,12 @@ lazy val pluginPackager =
       }
     )
 
-lazy val pluginCompressor =
+lazy val plugin_compressor =
   newProject("plugin-compressor")
     .settings(
       artifactPath := baseDirectory.in(ThisBuild).value / "out" / "argus-cit-plugin.zip",
       pack := {
-        Packaging.compressPackagedPlugin(pack.in(pluginPackager).value, artifactPath.value)
+        Packaging.compressPackagedPlugin(pack.in(plugin_packager).value, artifactPath.value)
         artifactPath.value
       }
     )

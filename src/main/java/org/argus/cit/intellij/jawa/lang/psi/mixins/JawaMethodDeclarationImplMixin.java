@@ -162,7 +162,8 @@ public abstract class JawaMethodDeclarationImplMixin
 
     @Override
     public boolean hasModifierProperty(@PsiModifier.ModifierConstant @NonNls @NotNull String s) {
-        return getAccessFlagAnnotation().hasModifierProperty(s);
+        boolean mod = getAccessFlagAnnotation().hasModifierProperty(s);
+        return mod;
     }
 
     @NotNull
