@@ -46,16 +46,13 @@
     <methodHierarchyProvider language="Jawa" implementationClass="org.argus.cit.intellij.jawa.hierarchy.JawaMethodHierarchyProvider"/>
     <typeHierarchyProvider language="Jawa" implementationClass="org.argus.cit.intellij.jawa.hierarchy.JawaTypeHierarchyProvider"/>
 
-    <applicationService serviceInterface="org.argus.cit.intellij.jawa.compiler.JawaCompileServerSettings"
-                        serviceImplementation="org.argus.cit.intellij.jawa.compiler.JawaCompileServerSettings"/>
-
     <applicationConfigurable groupId="language" displayName="Jawa Compile Server" instance="org.argus.cit.intellij.jawa.compiler.JawaCompileServerForm"/>
 
     <applicationService serviceInterface="org.argus.cit.intellij.jawa.compiler.JawaCompileServerSettings"
                         serviceImplementation="org.argus.cit.intellij.jawa.compiler.JawaCompileServerSettings"/>
-    <projectService serviceImplementation="org.jetbrains.plugins.scala.project.settings.ScalaCompilerConfiguration"/>
-    <projectConfigurable id="Jawa Compiler" displayName="Jawa Compiler" parentId="project.propCompiler"
-                         instance="org.jetbrains.plugins.scala.project.settings.ScalaCompilerConfigurable" />
+    <!--<projectService serviceImplementation="org.jetbrains.plugins.scala.project.settings.ScalaCompilerConfiguration"/>-->
+    <!--<projectConfigurable id="Jawa Compiler" displayName="Jawa Compiler" parentId="project.propCompiler"-->
+                         <!--instance="org.jetbrains.plugins.scala.project.settings.ScalaCompilerConfigurable" />-->
   </extensions>
 
   <application-components>
@@ -69,6 +66,13 @@
 
   <project-components>
     <component>
+      <interface-class>org.argus.cit.intellij.jawa.util.JawaToolsFactory</interface-class>
+      <implementation-class>org.argus.cit.intellij.jawa.util.JawaToolsFactoryImpl</implementation-class>
+    </component>
+    <component>
+      <implementation-class>org.argus.cit.intellij.jawa.JawaLoader</implementation-class>
+    </component>
+    <component>
       <implementation-class>org.argus.cit.intellij.jawa.compiler.ServerMediator</implementation-class>
     </component>
     <component>
@@ -76,6 +80,9 @@
     </component>
     <component>
       <implementation-class>org.argus.cit.intellij.jawa.compiler.CompileServerManager</implementation-class>
+    </component>
+    <component>
+      <implementation-class>org.argus.cit.intellij.jawa.compiler.CompileServerLauncher</implementation-class>
     </component>
   </project-components>
 

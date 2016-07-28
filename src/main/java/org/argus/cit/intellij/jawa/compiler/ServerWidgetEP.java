@@ -18,7 +18,7 @@ import com.intellij.openapi.project.Project;
  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
  */
 public abstract class ServerWidgetEP {
-    public static ExtensionPointName<ServerWidgetEP> EP_NAME = ExtensionPointName.create("org.intellij.jawa.serverWidgetEP");
+    public static ExtensionPointName<ServerWidgetEP> EP_NAME = ExtensionPointName.create("org.arguslab.cit.intellij.serverWidgetEP");
 
     public static ServerWidgetEP[] getAllWidgetEps() {
         return EP_NAME.getExtensions();
