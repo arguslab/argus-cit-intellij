@@ -22,6 +22,8 @@ object CitVersions {
 object Dependencies {
   import CitVersions._
 
+  val scalaLibrary = "org.scala-lang" % "scala-library" % scalaVersion
+
   val sfaLibrary = "com.github.arguslab" %% "saf-library" % argusSafVersion
   val jawaCore = "com.github.arguslab" %% "jawa-core" % argusSafVersion
   val jawaCompiler = "com.github.arguslab" %% "jawa-compiler" % jawaCompilerVersion
@@ -42,6 +44,6 @@ object DependencyGroups {
 //    sbtInterface
   )
 
-  val jawa = Seq(sfaLibrary, jawaCore, jawaCompiler)
+  val jawa = Seq(sfaLibrary, jawaCore)
 
 }

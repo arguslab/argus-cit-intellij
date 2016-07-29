@@ -21,7 +21,7 @@ import org.jetbrains.jps.incremental.ModuleLevelBuilder.ExitCode
  */
 class RemoteServer(val address: InetAddress, val port: Int) extends Server with RemoteResourceOwner {
   def compile(compilerData: CompilerData, compilationData: CompilationData, client: Client): ExitCode = {
-    val arguments = Seq[String]()
+    val arguments = Arguments(compilerData, compilationData).asStrings
 
     try {
       send(serverAlias, arguments, client)

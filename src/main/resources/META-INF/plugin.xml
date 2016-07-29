@@ -27,7 +27,7 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <fileTypeFactory implementation="org.argus.cit.intellij.jawa.lang.JawaFileTypeFactory"/>
-    <compileServer.plugin classpath="compiler-settings.jar;jc/nailgun.jar;jc/jawa-jc-plugin.jar;jc/incremental-compiler.jar;jc/jline.jar"/>
+    <compileServer.plugin classpath="scala-library.jar;compiler-settings.jar;saf-library.jar;jawa-core.jar;jc/asm-all.jar;jc/jawa-compiler.jar;jc/nailgun.jar;jc/jawa-jc-plugin.jar;jc/incremental-compiler.jar;jc/jline.jar"/>
     <lang.parserDefinition language="Jawa" implementationClass="org.argus.cit.intellij.jawa.lang.parser.JawaParserDefinition"/>
     <lang.syntaxHighlighterFactory language="Jawa" implementationClass="org.argus.cit.intellij.jawa.highlighter.JawaSyntaxHighlighterFactory"/>
     <colorSettingsPage implementation="org.argus.cit.intellij.jawa.highlighter.JawaColorSettingsPage"/>

@@ -182,10 +182,15 @@ object CompileServerLauncher {
       jcBuildersJar,
       utilJar,
       trove4jJar,
+      new File(pluginRoot, "scala-library.jar"),
+      new File(pluginRoot, "saf-library.jar"),
+      new File(pluginRoot, "jawa-core.jar"),
       new File(pluginRoot, "jawa-nailgun-runner.jar"),
       new File(pluginRoot, "compiler-settings.jar"),
       new File(jcRoot, "nailgun.jar"),
       new File(jcRoot, "incremental-compiler.jar"),
+      new File(jcRoot, "asm-all.jar"),
+      new File(jcRoot, "jawa-compiler.jar"),
       new File(jcRoot, "jawa-jc-plugin.jar")
     )
   }

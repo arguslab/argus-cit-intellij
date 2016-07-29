@@ -49,7 +49,7 @@ lazy val jc_plugin  =
     .dependsOn(compiler_settings)
     .enablePlugins(SbtIdeaPlugin)
     .settings(
-      libraryDependencies ++= Seq(Dependencies.nailgun) ++ DependencyGroups.sbtBundled ++ DependencyGroups.jawa
+      libraryDependencies ++= Seq(Dependencies.nailgun) ++ DependencyGroups.sbtBundled ++ DependencyGroups.jawa ++ Seq(Dependencies.jawaCompiler)
     )
 
 lazy val compiler_settings =
@@ -114,7 +114,9 @@ lazy val plugin_packager =
           Library(Dependencies.incrementalCompiler,
             "lib/jc/incremental-compiler.jar"),
           Library(Dependencies.bundledJline,
-            "lib/jc/jline.jar")
+            "lib/jc/jline.jar"),
+          Library(Dependencies.jawaCompiler,
+            "lib/jc/jawa-compiler.jar")
         )
         val lib = Seq(
           Artifact(pack.in(argus_cit_intellij, Compile).value,
@@ -122,7 +124,13 @@ lazy val plugin_packager =
           Artifact(pack.in(compiler_settings, Compile).value,
             "lib/compiler-settings.jar"),
           Artifact(pack.in(nailgun_runners, Compile).value,
-            "lib/jawa-nailgun-runner.jar")
+            "lib/jawa-nailgun-runner.jar"),
+          Library(Dependencies.scalaLibrary,
+            "lib/scala-library.jar"),
+          Library(Dependencies.sfaLibrary,
+            "lib/saf-library.jar"),
+          Library(Dependencies.jawaCore,
+            "lib/jawa-core.jar")
         ) ++
         crossLibraries.map { lib =>
           Library(lib.copy(name = lib.name + "_2.11"), s"lib/${lib.name}.jar")

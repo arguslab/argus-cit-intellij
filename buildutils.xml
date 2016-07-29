@@ -10,6 +10,15 @@
 
 <project name="Production build" default="idea.postbuild">
 
+    <target name="rename.scala.library">
+        <move todir="out/plugin/Argus-CIT/lib">
+            <fileset dir="out/plugin/Argus-CIT/lib">
+                <include name="scala-library*.jar"/>
+            </fileset>
+            <mapper type="glob" from="*" to="scala-library.jar"/>
+        </move>
+    </target>
+
     <target name="rename.compiler-interface-sources">
         <move todir="out/plugin/Argus-CIT/lib/jc">
             <fileset dir="out/plugin/Argus-CIT/lib/jc">
@@ -46,6 +55,42 @@
         </move>
     </target>
 
+    <target name="rename.saf-library">
+        <move todir="out/plugin/Argus-CIT/lib">
+            <fileset dir="out/plugin/Argus-CIT/lib">
+                <include name="saf-library*.jar"/>
+            </fileset>
+            <mapper type="glob" from="*" to="saf-library.jar"/>
+        </move>
+    </target>
+
+    <target name="rename.jawa-core">
+        <move todir="out/plugin/Argus-CIT/lib">
+            <fileset dir="out/plugin/Argus-CIT/lib">
+                <include name="jawa-core*.jar"/>
+            </fileset>
+            <mapper type="glob" from="*" to="jawa-core.jar"/>
+        </move>
+    </target>
+
+    <target name="rename.asm-all">
+        <move todir="out/plugin/Argus-CIT/lib/jc">
+            <fileset dir="out/plugin/Argus-CIT/lib/jc">
+                <include name="asm-all*.jar"/>
+            </fileset>
+            <mapper type="glob" from="*" to="asm-all.jar"/>
+        </move>
+    </target>
+
+    <target name="rename.jawa-compiler">
+        <move todir="out/plugin/Argus-CIT/lib/jc">
+            <fileset dir="out/plugin/Argus-CIT/lib/jc">
+                <include name="jawa-compiler*.jar"/>
+            </fileset>
+            <mapper type="glob" from="*" to="jawa-compiler.jar"/>
+        </move>
+    </target>
+
     <target name="idea.postbuild"
-            depends="rename.compiler-interface-sources,rename.incremental-compiler,rename.jline,rename.nailgun"/>
+            depends="rename.scala.library,rename.compiler-interface-sources,rename.incremental-compiler,rename.jline,rename.nailgun,rename.saf-library,rename.jawa-core,rename.asm-all,rename.jawa-compiler"/>
 </project>
