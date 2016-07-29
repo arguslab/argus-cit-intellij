@@ -78,7 +78,7 @@ class IdeaIncrementalBuilder(category: BuilderCategory) extends ModuleLevelBuild
     }
   }
 
-  override def getCompilableFileExtensions: util.List[String] = util.Arrays.asList("pilar", "plr", "java")
+  override def getCompilableFileExtensions: util.List[String] = util.Arrays.asList("pilar", "java")
 
   private def isDisabled(context: CompileContext, chunk: ModuleChunk): Boolean = {
     val settings = JawaBuilder.projectSettings(context)
@@ -98,7 +98,7 @@ class IdeaIncrementalBuilder(category: BuilderCategory) extends ModuleLevelBuild
 
     val project = context.getProjectDescriptor
 
-    val extensionsToCollect = List(".pilar", ".plr")
+    val extensionsToCollect = List(".pilar")
 
     def checkAndCollectFile(file: File): Boolean = {
       val fileName = file.getName

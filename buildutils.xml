@@ -28,6 +28,15 @@
         </move>
     </target>
 
+    <target name="rename.jline">
+        <move todir="out/plugin/Argus-CIT/lib/jc">
+            <fileset dir="out/plugin/Argus-CIT/lib/jc">
+                <include name="jline*.jar"/>
+            </fileset>
+            <mapper type="glob" from="*" to="jline.jar"/>
+        </move>
+    </target>
+
     <target name="rename.nailgun">
         <move todir="out/plugin/Argus-CIT/lib/jc">
             <fileset dir="out/plugin/Argus-CIT/lib/jc">
@@ -38,5 +47,5 @@
     </target>
 
     <target name="idea.postbuild"
-            depends="rename.compiler-interface-sources,rename.incremental-compiler,rename.nailgun"/>
+            depends="rename.compiler-interface-sources,rename.incremental-compiler,rename.jline,rename.nailgun"/>
 </project>

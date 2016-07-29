@@ -27,8 +27,9 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <fileTypeFactory implementation="org.argus.cit.intellij.jawa.lang.JawaFileTypeFactory"/>
+    <compileServer.plugin classpath="compiler-settings.jar;jc/nailgun.jar;jc/jawa-jc-plugin.jar;jc/incremental-compiler.jar;jc/jline.jar"/>
     <lang.parserDefinition language="Jawa" implementationClass="org.argus.cit.intellij.jawa.lang.parser.JawaParserDefinition"/>
-    <lang.syntaxHighlighterFactory key="Jawa" implementationClass="org.argus.cit.intellij.jawa.highlighter.JawaSyntaxHighlighterFactory"/>
+    <lang.syntaxHighlighterFactory language="Jawa" implementationClass="org.argus.cit.intellij.jawa.highlighter.JawaSyntaxHighlighterFactory"/>
     <colorSettingsPage implementation="org.argus.cit.intellij.jawa.highlighter.JawaColorSettingsPage"/>
     <annotator language="Jawa" implementationClass="org.argus.cit.intellij.jawa.annotator.JawaHighlightingAnnotator"/>
     <lang.commenter language="Jawa" implementationClass="org.argus.cit.intellij.jawa.commenter.JawaCommenter"/>
@@ -57,6 +58,10 @@
 
   <application-components>
     <component>
+      <interface-class>org.argus.cit.intellij.jawa.util.JawaToolsFactory</interface-class>
+      <implementation-class>org.argus.cit.intellij.jawa.util.JawaToolsFactoryImpl</implementation-class>
+    </component>
+    <component>
       <implementation-class>org.argus.cit.intellij.jawa.JawaLoader</implementation-class>
     </component>
     <component>
@@ -66,13 +71,6 @@
 
   <project-components>
     <component>
-      <interface-class>org.argus.cit.intellij.jawa.util.JawaToolsFactory</interface-class>
-      <implementation-class>org.argus.cit.intellij.jawa.util.JawaToolsFactoryImpl</implementation-class>
-    </component>
-    <component>
-      <implementation-class>org.argus.cit.intellij.jawa.JawaLoader</implementation-class>
-    </component>
-    <component>
       <implementation-class>org.argus.cit.intellij.jawa.compiler.ServerMediator</implementation-class>
     </component>
     <component>
@@ -80,9 +78,6 @@
     </component>
     <component>
       <implementation-class>org.argus.cit.intellij.jawa.compiler.CompileServerManager</implementation-class>
-    </component>
-    <component>
-      <implementation-class>org.argus.cit.intellij.jawa.compiler.CompileServerLauncher</implementation-class>
     </component>
   </project-components>
 
