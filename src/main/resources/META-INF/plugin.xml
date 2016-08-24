@@ -47,8 +47,9 @@
     <methodHierarchyProvider language="Jawa" implementationClass="org.argus.cit.intellij.jawa.hierarchy.JawaMethodHierarchyProvider"/>
     <typeHierarchyProvider language="Jawa" implementationClass="org.argus.cit.intellij.jawa.hierarchy.JawaTypeHierarchyProvider"/>
 
-    <findUsagesHandlerFactory implementation="com.intellij.find.findUsages.JavaFindUsagesHandlerFactory" id="jawa"
-                              order="first"/>
+    <!--<findUsagesHandlerFactory implementation="com.intellij.find.findUsages.JavaFindUsagesHandlerFactory" id="jawa"-->
+                              <!--order="first"/>-->
+    <targetElementEvaluator language="Jawa" implementationClass="com.intellij.codeInsight.JavaTargetElementEvaluator"/>
 
     <applicationConfigurable groupId="language" displayName="Jawa Compile Server" instance="org.argus.cit.intellij.jawa.compiler.JawaCompileServerForm"/>
 
