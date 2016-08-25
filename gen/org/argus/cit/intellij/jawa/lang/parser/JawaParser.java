@@ -75,10 +75,10 @@ public class JawaParser implements PsiParser, LightPsiParser {
       r = ExceptionExpression(b, 0);
     }
     else if (t == EXPRESSION_LHS) {
-      r = Expression_LHS(b, 0);
+      r = Expression_Lhs(b, 0);
     }
     else if (t == EXPRESSION_RHS) {
-      r = Expression_RHS(b, 0);
+      r = Expression_Rhs(b, 0);
     }
     else if (t == EXTEND_AND_IMPLEMENT) {
       r = ExtendAndImplement(b, 0);
@@ -379,15 +379,15 @@ public class JawaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // Expression_LHS ':=' Expression_RHS KindAnnotation? TypeAnnotation?
+  // Expression_Lhs ':=' Expression_Rhs KindAnnotation? TypeAnnotation?
   public static boolean AssignmentStatement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AssignmentStatement")) return false;
     if (!nextTokenIs(b, "<assignment statement>", ID, STATIC_ID)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, ASSIGNMENT_STATEMENT, "<assignment statement>");
-    r = Expression_LHS(b, l + 1);
+    r = Expression_Lhs(b, l + 1);
     r = r && consumeToken(b, ASSIGN_OP);
-    r = r && Expression_RHS(b, l + 1);
+    r = r && Expression_Rhs(b, l + 1);
     r = r && AssignmentStatement_3(b, l + 1);
     r = r && AssignmentStatement_4(b, l + 1);
     exit_section_(b, l, m, r, false, null);
@@ -645,8 +645,8 @@ public class JawaParser implements PsiParser, LightPsiParser {
   // AccessExpression
   //                    |IndexingExpression
   //                    |NameExpression
-  public static boolean Expression_LHS(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "Expression_LHS")) return false;
+  public static boolean Expression_Lhs(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Expression_Lhs")) return false;
     if (!nextTokenIs(b, "<expression lhs>", ID, STATIC_ID)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, EXPRESSION_LHS, "<expression lhs>");
@@ -673,8 +673,8 @@ public class JawaParser implements PsiParser, LightPsiParser {
   //                    |IndexingExpression
   //                    |BinaryExpression
   //                    |NameExpression
-  public static boolean Expression_RHS(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "Expression_RHS")) return false;
+  public static boolean Expression_Rhs(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Expression_Rhs")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, EXPRESSION_RHS, "<expression rhs>");
     r = NewExpression(b, l + 1);

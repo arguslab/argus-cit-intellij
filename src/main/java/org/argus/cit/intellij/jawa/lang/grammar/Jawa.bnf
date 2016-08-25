@@ -126,6 +126,24 @@
   mixin("Param")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaParamImplMixin"
   stubClass("Param")="org.argus.cit.intellij.jawa.lang.psi.stubs.JawaParamStub"
 
+  implements("JwBody")="org.argus.cit.intellij.jawa.lang.psi.api.base.JawaCodeBlock"
+  mixin("JwBody")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaJwBodyImplMixin"
+
+  implements("Location")="org.argus.cit.intellij.jawa.lang.psi.api.base.JawaJwStatement"
+  mixin("Location")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaLocationImplMinxin"
+
+  implements("CallStatement")="org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaMethodCallExpression"
+  mixin("CallStatement")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaCallStatementImplMixin"
+
+  implements("ArgClause")="org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaExpressionList"
+  mixin("ArgClause")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaArgClauseImplMixin"
+
+  implements("VarSymbol")="org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaReferenceExpression"
+  mixin("VarSymbol")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaVarSymbolImplMixin"
+
+  implements("LocalVarDeclaration")="org.argus.cit.intellij.jawa.lang.psi.api.base.JawaLocalVariable"
+  mixin("LocalVarDeclaration")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaLocalVarDeclarationImplMixin"
+
 }
 
 CompilationUnit ::= ClassOrInterfaceDeclaration*
@@ -192,13 +210,13 @@ GotoStatement ::= 'goto' LocationSymbol
 
 MonitorStatement ::= '@' ('monitorenter'|'monitorexit') VarSymbol {pin=2}
 
-AssignmentStatement ::= Expression_LHS ':=' Expression_RHS KindAnnotation? TypeAnnotation?
+AssignmentStatement ::= Expression_Lhs ':=' Expression_Rhs KindAnnotation? TypeAnnotation?
 
-Expression_LHS ::= AccessExpression
+Expression_Lhs ::= AccessExpression
                    |IndexingExpression
                    |NameExpression
 
-Expression_RHS ::= NewExpression
+Expression_Rhs ::= NewExpression
                    |CmpExpression
                    |ExceptionExpression
                    |ConstClassExpression

@@ -15,6 +15,7 @@ import com.intellij.psi.*;
 import com.intellij.psi.impl.PsiImplUtil;
 import com.intellij.psi.impl.PsiSuperMethodImplUtil;
 import com.intellij.psi.javadoc.PsiDocComment;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.*;
 import com.intellij.util.IncorrectOperationException;
@@ -205,6 +206,10 @@ public abstract class JawaMethodDeclarationImplMixin
     public PsiClass getContainingClass() {
         PsiElement parent = getParent();
         return parent instanceof PsiClass ? (PsiClass)parent : PsiTreeUtil.getParentOfType(this, JawaTypeDefinition.class);
+    }
+
+    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
+        return PsiImplUtil.processDeclarationsInMethod(this, processor, state, lastParent, place);
     }
 
     @Override

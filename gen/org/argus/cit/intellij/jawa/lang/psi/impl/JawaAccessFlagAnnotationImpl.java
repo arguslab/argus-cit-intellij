@@ -10,6 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
 import org.argus.cit.intellij.jawa.lang.psi.mixins.JawaAccessFlagAnnotationImplMixin;
 import org.argus.cit.intellij.jawa.lang.psi.*;
+import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaAccessFlagStub;
 import com.intellij.psi.stubs.IStubElementType;
 
 public class JawaAccessFlagAnnotationImpl extends JawaAccessFlagAnnotationImplMixin implements JawaAccessFlagAnnotation {
@@ -18,7 +19,7 @@ public class JawaAccessFlagAnnotationImpl extends JawaAccessFlagAnnotationImplMi
     super(node);
   }
 
-  public JawaAccessFlagAnnotationImpl(org.argus.cit.intellij.jawa.lang.psi.stubs.JawaAccessFlagStub stub, IStubElementType nodeType) {
+  public JawaAccessFlagAnnotationImpl(JawaAccessFlagStub stub, IStubElementType nodeType) {
     super(stub, nodeType);
   }
 

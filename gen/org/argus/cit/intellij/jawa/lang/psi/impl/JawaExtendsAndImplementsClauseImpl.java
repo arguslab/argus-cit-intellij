@@ -10,16 +10,17 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
 import org.argus.cit.intellij.jawa.lang.psi.mixins.JawaExtendsAndImplementsClauseImplMixin;
 import org.argus.cit.intellij.jawa.lang.psi.*;
+import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaExtendsAndImplementsClauseStub;
 import com.intellij.psi.stubs.IStubElementType;
 
 public class JawaExtendsAndImplementsClauseImpl extends JawaExtendsAndImplementsClauseImplMixin implements JawaExtendsAndImplementsClause {
 
-  public JawaExtendsAndImplementsClauseImpl(ASTNode node) {
-    super(node);
+  public JawaExtendsAndImplementsClauseImpl(JawaExtendsAndImplementsClauseStub stub, IStubElementType nodeType) {
+    super(stub, nodeType);
   }
 
-  public JawaExtendsAndImplementsClauseImpl(org.argus.cit.intellij.jawa.lang.psi.stubs.JawaExtendsAndImplementsClauseStub stub, IStubElementType nodeType) {
-    super(stub, nodeType);
+  public JawaExtendsAndImplementsClauseImpl(ASTNode node) {
+    super(node);
   }
 
   public void accept(@NotNull JawaVisitor visitor) {

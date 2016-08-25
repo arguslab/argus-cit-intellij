@@ -10,16 +10,17 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
 import org.argus.cit.intellij.jawa.lang.psi.mixins.JawaMethodDeclarationImplMixin;
 import org.argus.cit.intellij.jawa.lang.psi.*;
+import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaMethodStub;
 import com.intellij.psi.stubs.IStubElementType;
 
 public class JawaMethodDeclarationImpl extends JawaMethodDeclarationImplMixin implements JawaMethodDeclaration {
 
-  public JawaMethodDeclarationImpl(ASTNode node) {
-    super(node);
+  public JawaMethodDeclarationImpl(JawaMethodStub stub, IStubElementType nodeType) {
+    super(stub, nodeType);
   }
 
-  public JawaMethodDeclarationImpl(org.argus.cit.intellij.jawa.lang.psi.stubs.JawaMethodStub stub, IStubElementType nodeType) {
-    super(stub, nodeType);
+  public JawaMethodDeclarationImpl(ASTNode node) {
+    super(node);
   }
 
   public void accept(@NotNull JawaVisitor visitor) {

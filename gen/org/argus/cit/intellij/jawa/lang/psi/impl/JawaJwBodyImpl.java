@@ -8,10 +8,10 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import org.argus.cit.intellij.jawa.lang.psi.mixins.JawaJwBodyImplMixin;
 import org.argus.cit.intellij.jawa.lang.psi.*;
 
-public class JawaJwBodyImpl extends ASTWrapperPsiElement implements JawaJwBody {
+public class JawaJwBodyImpl extends JawaJwBodyImplMixin implements JawaJwBody {
 
   public JawaJwBodyImpl(ASTNode node) {
     super(node);

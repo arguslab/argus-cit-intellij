@@ -11,16 +11,17 @@ import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
 import org.argus.cit.intellij.jawa.lang.psi.mixins.JawaTypeSymbolImplMixin;
 import org.argus.cit.intellij.jawa.lang.psi.*;
 import org.argus.jawa.core.JawaType;
+import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaTypeSymbolStub;
 import com.intellij.psi.stubs.IStubElementType;
 
 public class JawaTypeSymbolImpl extends JawaTypeSymbolImplMixin implements JawaTypeSymbol {
 
-  public JawaTypeSymbolImpl(ASTNode node) {
-    super(node);
+  public JawaTypeSymbolImpl(JawaTypeSymbolStub stub, IStubElementType nodeType) {
+    super(stub, nodeType);
   }
 
-  public JawaTypeSymbolImpl(org.argus.cit.intellij.jawa.lang.psi.stubs.JawaTypeSymbolStub stub, IStubElementType nodeType) {
-    super(stub, nodeType);
+  public JawaTypeSymbolImpl(ASTNode node) {
+    super(node);
   }
 
   public void accept(@NotNull JawaVisitor visitor) {

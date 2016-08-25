@@ -8,10 +8,10 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import org.argus.cit.intellij.jawa.lang.psi.mixins.JawaArgClauseImplMixin;
 import org.argus.cit.intellij.jawa.lang.psi.*;
 
-public class JawaArgClauseImpl extends ASTWrapperPsiElement implements JawaArgClause {
+public class JawaArgClauseImpl extends JawaArgClauseImplMixin implements JawaArgClause {
 
   public JawaArgClauseImpl(ASTNode node) {
     super(node);

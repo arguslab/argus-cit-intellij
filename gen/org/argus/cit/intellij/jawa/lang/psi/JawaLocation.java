@@ -4,8 +4,9 @@ package org.argus.cit.intellij.jawa.lang.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaJwStatement;
 
-public interface JawaLocation extends PsiElement {
+public interface JawaLocation extends JawaJwStatement {
 
   @NotNull
   JawaLocationDefSymbol getLocationDefSymbol();

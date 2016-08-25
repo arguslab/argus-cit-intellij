@@ -8,10 +8,10 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import org.argus.cit.intellij.jawa.lang.psi.mixins.JawaVarSymbolImplMixin;
 import org.argus.cit.intellij.jawa.lang.psi.*;
 
-public class JawaVarSymbolImpl extends ASTWrapperPsiElement implements JawaVarSymbol {
+public class JawaVarSymbolImpl extends JawaVarSymbolImplMixin implements JawaVarSymbol {
 
   public JawaVarSymbolImpl(ASTNode node) {
     super(node);
