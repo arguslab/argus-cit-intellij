@@ -8,10 +8,10 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import org.argus.cit.intellij.jawa.lang.psi.mixins.JawaMethodNameSymbolImplMixin;
 import org.argus.cit.intellij.jawa.lang.psi.*;
 
-public class JawaMethodNameSymbolImpl extends ASTWrapperPsiElement implements JawaMethodNameSymbol {
+public class JawaMethodNameSymbolImpl extends JawaMethodNameSymbolImplMixin implements JawaMethodNameSymbol {
 
   public JawaMethodNameSymbolImpl(ASTNode node) {
     super(node);

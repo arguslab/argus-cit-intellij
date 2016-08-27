@@ -15,10 +15,10 @@ import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaTypeElement;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaLocalVariable;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaJwStatement;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaPsiMethod;
+import org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaReferenceExpression;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaParameter;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaParameterList;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaReference;
-import org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaReferenceExpression;
 
 public class JawaVisitor extends PsiElementVisitor {
 
@@ -187,7 +187,7 @@ public class JawaVisitor extends PsiElementVisitor {
   }
 
   public void visitMethodNameSymbol(@NotNull JawaMethodNameSymbol o) {
-    visitPsiElement(o);
+    visitReferenceExpression(o);
   }
 
   public void visitMonitorStatement(@NotNull JawaMonitorStatement o) {

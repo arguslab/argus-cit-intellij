@@ -16,7 +16,6 @@ import com.intellij.navigation.ItemPresentationProviders;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.ElementPresentationUtil;
 import com.intellij.psi.impl.PsiImplUtil;
-import com.intellij.psi.impl.ResolveScopeManager;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.search.LocalSearchScope;
 import com.intellij.psi.search.SearchScope;
@@ -97,12 +96,12 @@ public abstract class JawaLocalVarDeclarationImplMixin extends JawaExpressionPsi
 
     @Override
     public String name() {
-        return getVarDefSymbol().getText();
+        return getName();
     }
 
     @Override
     public String getName() {
-        return name();
+        return getNameIdentifier().getText();
     }
 
     @Override
@@ -129,25 +128,24 @@ public abstract class JawaLocalVarDeclarationImplMixin extends JawaExpressionPsi
     }
 
     public String toString() {
-        return "PsiLocalVariable:" + getName();
+        return "JawaLocalVarDeclaration:" + getName();
     }
 
     @Override
     @NotNull
     public SearchScope getUseScope() {
-        final PsiElement parentElement = getParent();
-        if (parentElement instanceof PsiDeclarationStatement) {
-            return new LocalSearchScope(parentElement.getParent());
-        }
-        else {
-            return ResolveScopeManager.getElementUseScope(this);
-        }
+        return new LocalSearchScope(getParent());
     }
 
     @Override
     public Icon getElementIcon(final int flags) {
         final RowIcon baseIcon = ElementPresentationUtil.createLayeredIcon(PlatformIcons.VARIABLE_ICON, this, false);
         return ElementPresentationUtil.addVisibilityIcon(this, flags, baseIcon);
+    }
+
+    @Override
+    public int getTextOffset() {
+        return getNameIdentifier().getTextOffset();
     }
 
     @Override

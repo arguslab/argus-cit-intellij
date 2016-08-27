@@ -11,10 +11,14 @@
 package org.argus.cit.intellij.jawa.lang.psi;
 
 import com.intellij.extapi.psi.StubBasedPsiElementBase;
+import com.intellij.ide.util.PsiNavigationSupport;
 import com.intellij.lang.ASTNode;
+import com.intellij.lang.Language;
+import com.intellij.pom.Navigatable;
 import com.intellij.psi.impl.source.tree.CompositeElement;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubElement;
+import org.argus.cit.intellij.jawa.lang.JawaLanguage;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -45,6 +49,36 @@ public class JawaStubBasedPsiElementBase<T extends StubElement> extends StubBase
 
     protected CompositeElement calcTreeElement() {
         return (CompositeElement)getNode();
+    }
+
+    @NotNull
+    @Override
+    public Language getLanguage() {
+        return JawaLanguage.Instance;
+    }
+
+    @Override
+    public int getTextOffset() {
+        return this.calcTreeElement().getTextOffset();
+    }
+
+    @Override
+    public void navigate(boolean requestFocus) {
+        Navigatable navigatable = PsiNavigationSupport.getInstance().getDescriptor(this);
+        if(navigatable != null) {
+            navigatable.navigate(requestFocus);
+        }
+
+    }
+
+    @Override
+    public boolean canNavigate() {
+        return PsiNavigationSupport.getInstance().canNavigate(this);
+    }
+
+    @Override
+    public boolean canNavigateToSource() {
+        return this.canNavigate();
     }
 
 //    @Override

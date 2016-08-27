@@ -58,6 +58,7 @@
     <!--<projectService serviceImplementation="org.jetbrains.plugins.scala.project.settings.ScalaCompilerConfiguration"/>-->
     <!--<projectConfigurable id="Jawa Compiler" displayName="Jawa Compiler" parentId="project.propCompiler"-->
                          <!--instance="org.jetbrains.plugins.scala.project.settings.ScalaCompilerConfigurable" />-->
+    <lang.documentationProvider language="Jawa" implementationClass="com.intellij.lang.java.JavaDocumentationProvider"/>
   </extensions>
 
   <application-components>

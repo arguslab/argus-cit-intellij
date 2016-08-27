@@ -144,6 +144,9 @@
   implements("LocalVarDeclaration")="org.argus.cit.intellij.jawa.lang.psi.api.base.JawaLocalVariable"
   mixin("LocalVarDeclaration")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaLocalVarDeclarationImplMixin"
 
+
+  implements("MethodNameSymbol")="org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaReferenceExpression"
+  mixin("MethodNameSymbol")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaMethodNameSymbolImplMixin"
 }
 
 CompilationUnit ::= ClassOrInterfaceDeclaration*

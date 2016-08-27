@@ -40,8 +40,6 @@ import org.argus.cit.intellij.jawa.lang.psi.JawaVarSymbol;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -55,7 +53,6 @@ public abstract class JawaVarSymbolImplMixin extends JawaExpressionPsiElement im
 
     private static final Logger LOG = Logger.getInstance("#org.argus.cit.intellij.jawa.lang.psi.mixins.JawaVarSymbolImplMixin");
 
-    private volatile String myCachedQName;
     private volatile String myCachedNormalizedText;
 
     @Nullable
@@ -247,7 +244,7 @@ public abstract class JawaVarSymbolImplMixin extends JawaExpressionPsiElement im
 
     @Override
     public TextRange getRangeInElement() {
-        return new TextRange(getStartOffsetInParent(), getTextLength());
+        return new TextRange(getId().getStartOffsetInParent(), getTextLength());
     }
 
     @Nullable
@@ -333,6 +330,11 @@ public abstract class JawaVarSymbolImplMixin extends JawaExpressionPsiElement im
     @Override
     public boolean isSoft() {
         return false;
+    }
+
+    @Override
+    public PsiReference getReference() {
+        return this;
     }
 
     @NotNull

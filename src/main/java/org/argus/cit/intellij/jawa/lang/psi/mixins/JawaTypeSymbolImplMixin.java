@@ -276,6 +276,11 @@ public abstract class JawaTypeSymbolImplMixin
         return getApostropheId();
     }
 
+    @Override
+    public String toString() {
+        return "JawaTypeSymbol:" + getText();
+    }
+
     private PsiSubstitutor updateSubstitutor(PsiSubstitutor subst, PsiClass psiClass) {
         PsiType[] parameters = this.getTypeParameters();
         if(psiClass != null) {

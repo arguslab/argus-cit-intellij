@@ -11,10 +11,18 @@
 package org.argus.cit.intellij.jawa.lang.psi.mixins;
 
 import com.intellij.lang.ASTNode;
+import com.intellij.navigation.ItemPresentation;
+import com.intellij.navigation.ItemPresentationProviders;
 import com.intellij.psi.*;
+import com.intellij.psi.impl.ElementPresentationUtil;
+import com.intellij.psi.impl.PsiImplUtil;
+import com.intellij.psi.search.LocalSearchScope;
+import com.intellij.psi.search.SearchScope;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.ui.RowIcon;
 import com.intellij.util.IncorrectOperationException;
+import com.intellij.util.PlatformIcons;
 import org.argus.cit.intellij.jawa.lang.psi.JawaParam;
 import org.argus.cit.intellij.jawa.lang.psi.JawaStubBasedPsiElementBase;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaPsiMethod;
@@ -24,6 +32,8 @@ import org.argus.cit.intellij.jawa.lang.psi.types.JawaTypeSystem;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import javax.swing.*;
 
 /**
  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
@@ -43,7 +53,7 @@ public abstract class JawaParamImplMixin
     @NotNull
     @Override
     public PsiElement getDeclarationScope() {
-        return PsiTreeUtil.getParentOfType(this, JawaPsiMethod.class);
+        return getParent().getParent();
     }
 
     @Override
@@ -91,9 +101,16 @@ public abstract class JawaParamImplMixin
         return new JavaIdentifier(nameId());
     }
 
-    @Override
-    public PsiElement setName(@NonNls @NotNull String s) {
-        throw new IncorrectOperationException("cannot set name");
+    @NotNull
+    public final String getName() {
+        JawaParamStub stub = getStub();
+        if(stub != null) return stub.getName();
+        else return getVarDefSymbol().getId().getText();
+    }
+
+    public final PsiElement setName(@NotNull String name) throws IncorrectOperationException {
+        PsiImplUtil.setName(this.getNameIdentifier(), name);
+        return this;
     }
 
     @Nullable
@@ -109,13 +126,44 @@ public abstract class JawaParamImplMixin
 
     @Override
     public String name() {
-        JawaParamStub stub = getStub();
-        if(stub != null) return stub.getName();
-        else return getVarDefSymbol().getId().getText();
+        return getName();
     }
 
     @Override
     public PsiElement nameId() {
-        return getVarDefSymbol().getId();
+        return getVarDefSymbol();
+    }
+
+    @Override
+    public ItemPresentation getPresentation() {
+        return ItemPresentationProviders.getItemPresentation(this);
+    }
+
+    @Override
+    public int getTextOffset() {
+        return getNameIdentifier().getTextOffset();
+    }
+
+    @Override
+    public Icon getElementIcon(int flags) {
+        RowIcon baseIcon = createLayeredIcon(this, PlatformIcons.PARAMETER_ICON, 0);
+        return ElementPresentationUtil.addVisibilityIcon(this, flags, baseIcon);
+    }
+
+    @Override
+    protected boolean isVisibilitySupported() {
+        return true;
+    }
+
+    @Override
+    @NotNull
+    public SearchScope getUseScope() {
+        PsiElement declarationScope = this.getDeclarationScope();
+        return new LocalSearchScope(declarationScope);
+    }
+
+    @Override
+    public String toString() {
+        return "JawaParam:" + this.getName();
     }
 }

@@ -118,7 +118,6 @@ public abstract class JawaJwBodyImplMixin extends JawaExpressionPsiElement imple
 
     @Override
     public boolean shouldChangeModificationCount(PsiElement psiElement) {
-        PsiElement parent = getParent();
-        return !(parent instanceof PsiMethod);
+        return false;
     }
 }

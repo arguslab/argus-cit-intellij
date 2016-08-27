@@ -12,8 +12,10 @@ package org.argus.cit.intellij.jawa.lang.psi.mixins;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.*;
+import com.intellij.psi.impl.source.tree.java.PsiReferenceParameterListImpl;
 import org.argus.cit.intellij.jawa.lang.psi.JawaCallStatement;
 import org.argus.cit.intellij.jawa.lang.psi.JawaExpressionPsiElement;
+import org.argus.cit.intellij.jawa.lang.psi.types.JawaTypeSystem;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,13 +49,13 @@ public abstract class JawaCallStatementImplMixin extends JawaExpressionPsiElemen
     @NotNull
     @Override
     public PsiReferenceExpression getMethodExpression() {
-        return null;
+        return getMethodNameSymbol();
     }
 
     @NotNull
     @Override
     public PsiReferenceParameterList getTypeArgumentList() {
-        return null;
+        return new PsiReferenceParameterListImpl();
     }
 
     @NotNull
@@ -65,6 +67,11 @@ public abstract class JawaCallStatementImplMixin extends JawaExpressionPsiElemen
     @Nullable
     @Override
     public PsiType getType() {
-        return null;
+        return JawaTypeSystem.toPsiType(getSignatureAnnotation().getSignatureSymbol().getSignature().getReturnType(), getProject(), getResolveScope());
+    }
+
+    @Override
+    public String toString() {
+        return "JawaCallStatement:" + this.getText();
     }
 }
