@@ -40,8 +40,8 @@ import com.intellij.util.Function;
 import com.intellij.util.IncorrectOperationException;
 import com.intellij.util.NullableFunction;
 import gnu.trove.THashSet;
-import org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaMethodCallExpression;
 import org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaReferenceExpression;
+import org.argus.cit.intellij.jawa.lang.psi.impl.source.resolve.LocationResolverProcessor;
 import org.argus.jawa.core.JavaKnowledge$;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -290,7 +290,7 @@ public abstract class JawaReferenceExpressionPsiElement extends JawaExpressionPs
     private PsiElement renameDirectly(String newElementName) throws IncorrectOperationException {
         PsiElement oldIdentifier = this;
         final String oldRefName = oldIdentifier.getText();
-        if (PsiKeyword.THIS.equals(oldRefName) || PsiKeyword.SUPER.equals(oldRefName) || Comparing.strEqual(oldRefName, newElementName)) return this;
+        if (Comparing.strEqual(oldRefName, newElementName)) return this;
         PsiIdentifier identifier = JavaPsiFacade.getInstance(getProject()).getElementFactory().createIdentifier(newElementName);
         oldIdentifier.replace(identifier);
         return this;
@@ -328,11 +328,13 @@ public abstract class JawaReferenceExpressionPsiElement extends JawaExpressionPs
     }
 
     @NotNull
-    private JavaResolveResult[] resolve(IElementType parentType, @NotNull PsiFile containingFile) {
+    private JavaResolveResult[] resolve(IElementType myType, IElementType parentType, @NotNull PsiFile containingFile) {
         if (parentType == JawaElementTypes.CALL_STATEMENT) {
             return resolveToMethod(containingFile);
         }
-
+        if (myType == JawaElementTypes.LOCATION_SYMBOL) {
+            return resolveToLocation(containingFile);
+        }
         return resolveToVariable(containingFile);
     }
 
@@ -356,6 +358,13 @@ public abstract class JawaReferenceExpressionPsiElement extends JawaExpressionPs
         return processor.getResult();
     }
 
+    @NotNull
+    private JavaResolveResult[] resolveToLocation(@NotNull PsiFile containingFile) {
+        final LocationResolverProcessor processor = new LocationResolverProcessor(this, containingFile);
+        PsiScopesUtil.resolveAndWalk(processor, this, null);
+        return processor.getResult();
+    }
+
     private static final class OurGenericsResolver implements ResolveCache.PolyVariantContextResolver<PsiJavaReference> {
         static final OurGenericsResolver INSTANCE = new OurGenericsResolver();
 
@@ -365,7 +374,7 @@ public abstract class JawaReferenceExpressionPsiElement extends JawaExpressionPs
             JawaReferenceExpressionPsiElement expression = (JawaReferenceExpressionPsiElement)ref;
             PsiElement parent = expression.getParent();
             IElementType parentType = parent == null ? null : parent.getNode().getElementType();
-            JavaResolveResult[] result = expression.resolve(parentType, containingFile);
+            JavaResolveResult[] result = expression.resolve(expression.getNode().getElementType(), parentType, containingFile);
             JavaResolveUtil.substituteResults(expression, result);
             return result;
         }

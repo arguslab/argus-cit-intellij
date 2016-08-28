@@ -11,6 +11,9 @@
 package org.argus.cit.intellij.jawa.lang.psi.mixins;
 
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import org.argus.cit.intellij.jawa.lang.psi.JawaExpressionPsiElement;
 import org.argus.cit.intellij.jawa.lang.psi.JawaLocation;
 import org.jetbrains.annotations.NotNull;
@@ -22,4 +25,5 @@ public abstract class JawaLocationImplMinxin extends JawaExpressionPsiElement im
     public JawaLocationImplMinxin(@NotNull ASTNode node) {
         super(node);
     }
+
 }

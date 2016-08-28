@@ -14,8 +14,9 @@ import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaCodeBlock;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaTypeElement;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaLocalVariable;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaJwStatement;
-import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaPsiMethod;
+import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.JawaNamedElement;
 import org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaReferenceExpression;
+import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaPsiMethod;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaParameter;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaParameterList;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaReference;
@@ -171,11 +172,11 @@ public class JawaVisitor extends PsiElementVisitor {
   }
 
   public void visitLocationDefSymbol(@NotNull JawaLocationDefSymbol o) {
-    visitPsiElement(o);
+    visitNamedElement(o);
   }
 
   public void visitLocationSymbol(@NotNull JawaLocationSymbol o) {
-    visitPsiElement(o);
+    visitReferenceExpression(o);
   }
 
   public void visitMethodDeclaration(@NotNull JawaMethodDeclaration o) {
@@ -323,6 +324,10 @@ public class JawaVisitor extends PsiElementVisitor {
   }
 
   public void visitModifierList(@NotNull JawaModifierList o) {
+    visitPsiElement(o);
+  }
+
+  public void visitNamedElement(@NotNull JawaNamedElement o) {
     visitPsiElement(o);
   }
 

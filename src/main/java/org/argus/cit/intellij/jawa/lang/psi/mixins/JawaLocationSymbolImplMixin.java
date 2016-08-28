@@ -13,7 +13,7 @@ package org.argus.cit.intellij.jawa.lang.psi.mixins;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
-import org.argus.cit.intellij.jawa.lang.psi.JawaMethodNameSymbol;
+import org.argus.cit.intellij.jawa.lang.psi.JawaLocationSymbol;
 import org.argus.cit.intellij.jawa.lang.psi.JawaReferenceExpressionPsiElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -21,24 +21,24 @@ import org.jetbrains.annotations.Nullable;
 /**
  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
  */
-public abstract class JawaMethodNameSymbolImplMixin extends JawaReferenceExpressionPsiElement implements JawaMethodNameSymbol {
-    public JawaMethodNameSymbolImplMixin(@NotNull ASTNode node) {
+public abstract class JawaLocationSymbolImplMixin extends JawaReferenceExpressionPsiElement implements JawaLocationSymbol {
+    public JawaLocationSymbolImplMixin(@NotNull ASTNode node) {
         super(node);
     }
 
     @Nullable
     @Override
     public PsiElement getReferenceNameElement() {
-        return getApostropheId();
+        return getId();
     }
 
     @Override
     public TextRange getRangeInElement() {
-        return new TextRange(getApostropheId().getStartOffsetInParent(), getTextLength());
+        return new TextRange(getId().getStartOffsetInParent(), getTextLength());
     }
 
     @Override
     public String toString() {
-        return "JawaMethodNameSymbol:" + getText();
+        return "JawaLocationSymbol:" + getText();
     }
 }

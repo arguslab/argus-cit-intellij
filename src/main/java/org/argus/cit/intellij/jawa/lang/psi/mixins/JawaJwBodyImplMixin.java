@@ -11,9 +11,9 @@
 package org.argus.cit.intellij.jawa.lang.psi.mixins;
 
 import com.intellij.lang.ASTNode;
+import com.intellij.openapi.util.Couple;
 import com.intellij.openapi.util.Ref;
 import com.intellij.psi.*;
-import com.intellij.psi.scope.BaseScopeProcessor;
 import com.intellij.psi.scope.ElementClassHint;
 import com.intellij.psi.scope.NameHint;
 import com.intellij.psi.scope.PsiScopeProcessor;
@@ -27,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -70,14 +71,17 @@ public abstract class JawaJwBodyImplMixin extends JawaExpressionPsiElement imple
     }
 
     private volatile Set<String> myVariablesSet;
+    private volatile Set<String> myLocationSet;
     private volatile boolean myConflict;
 
     @Nullable
-    private Set<String> buildMaps() {
-        Set<String> set = myVariablesSet;
+    private Couple<Set<String>> buildMaps() {
+        Set<String> varSet = myVariablesSet;
+        Set<String> locSet = myLocationSet;
         boolean wasConflict = myConflict;
-        if (set == null) {
+        if (varSet == null || locSet == null) {
             final Set<String> localsSet = new THashSet<>();
+            final Set<String> locationsSet = new THashSet<>();
             final Ref<Boolean> conflict = new Ref<>(Boolean.FALSE);
             getLocalVarDeclarationList().forEach(lvd -> {
                 final String name = lvd.getName();
@@ -86,10 +90,22 @@ public abstract class JawaJwBodyImplMixin extends JawaExpressionPsiElement imple
                     localsSet.clear();
                 }
             });
-            myVariablesSet = set = localsSet.isEmpty() ? Collections.emptySet() : localsSet;
+            getLocationList().forEach(ld -> {
+                String loc = ld.getLocationDefSymbol().getLocationId().getText();
+                if(!loc.equals("#.")) {
+                    loc = loc.substring(1, loc.length() - 1);
+                    if (!locationsSet.add(loc)) {
+                        conflict.set(Boolean.TRUE);
+                        locationsSet.clear();
+                    }
+                }
+
+            });
+            myVariablesSet = varSet = localsSet.isEmpty() ? Collections.emptySet() : localsSet;
+            myLocationSet = locSet = locationsSet.isEmpty() ? Collections.emptySet() : locationsSet;
             myConflict = wasConflict = conflict.get();
         }
-        return wasConflict ? null : set;
+        return wasConflict ? null : Couple.of(varSet, locSet);
     }
 
     @Override
@@ -99,14 +115,19 @@ public abstract class JawaJwBodyImplMixin extends JawaExpressionPsiElement imple
             // Parent element should not see our vars
             return true;
         }
-        Set<String> set = buildMaps();
+        Couple<Set<String>> set = buildMaps();
         boolean conflict = set == null;
-        final Set<String> variablesSet = conflict ? null : set;
+        final Set<String> variablesSet = conflict ? null : set.first;
+        final Set<String> locationsSet = conflict ? null : set.second;
         final NameHint hint = processor.getHint(NameHint.KEY);
         if (hint != null && !conflict) {
             final ElementClassHint elementClassHint = processor.getHint(ElementClassHint.KEY);
             final String name = hint.getName(state);
             if ((elementClassHint == null || elementClassHint.shouldProcess(ElementClassHint.DeclarationKind.VARIABLE)) && variablesSet.contains(name)) {
+                return PsiScopesUtil.walkChildrenScopes(this, processor, state, lastParent, place);
+            }
+            // Use ENUM_CONST as represent for Location
+            if ((elementClassHint == null || elementClassHint.shouldProcess(ElementClassHint.DeclarationKind.ENUM_CONST)) && locationsSet.contains(name)) {
                 return PsiScopesUtil.walkChildrenScopes(this, processor, state, lastParent, place);
             }
         }

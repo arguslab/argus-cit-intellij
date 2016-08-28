@@ -144,9 +144,14 @@
   implements("LocalVarDeclaration")="org.argus.cit.intellij.jawa.lang.psi.api.base.JawaLocalVariable"
   mixin("LocalVarDeclaration")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaLocalVarDeclarationImplMixin"
 
-
   implements("MethodNameSymbol")="org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaReferenceExpression"
   mixin("MethodNameSymbol")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaMethodNameSymbolImplMixin"
+
+  implements("LocationDefSymbol")="org.argus.cit.intellij.jawa.lang.psi.api.toplevel.JawaNamedElement"
+  mixin("LocationDefSymbol")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaLocationDefSymbolImplMixin"
+
+  implements("LocationSymbol")="org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaReferenceExpression"
+  mixin("LocationSymbol")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaLocationSymbolImplMixin"
 }
 
 CompilationUnit ::= ClassOrInterfaceDeclaration*

@@ -8,10 +8,10 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import org.argus.cit.intellij.jawa.lang.psi.mixins.JawaLocationDefSymbolImplMixin;
 import org.argus.cit.intellij.jawa.lang.psi.*;
 
-public class JawaLocationDefSymbolImpl extends ASTWrapperPsiElement implements JawaLocationDefSymbol {
+public class JawaLocationDefSymbolImpl extends JawaLocationDefSymbolImplMixin implements JawaLocationDefSymbol {
 
   public JawaLocationDefSymbolImpl(ASTNode node) {
     super(node);
