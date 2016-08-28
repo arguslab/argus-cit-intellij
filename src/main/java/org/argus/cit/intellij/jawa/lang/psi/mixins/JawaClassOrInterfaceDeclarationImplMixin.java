@@ -298,10 +298,6 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
 
     @Override
     public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
-//        if (isEnum()) {
-//            if (!PsiClassImplUtil.processDeclarationsInEnum(processor, state, myInnersCache)) return false;
-//        }
-
         LanguageLevel level = PsiUtil.getLanguageLevel(place);
         return PsiClassImplUtil.processDeclarationsInClass(this, processor, state, null, lastParent, place, level, false);
     }

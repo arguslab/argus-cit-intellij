@@ -37,4 +37,9 @@ public abstract class JawaVarSymbolImplMixin extends JawaReferenceExpressionPsiE
     public TextRange getRangeInElement() {
         return new TextRange(getId().getStartOffsetInParent(), getTextLength());
     }
+
+    @Override
+    public String toString() {
+        return "JawaVarSymbol:" + getText();
+    }
 }

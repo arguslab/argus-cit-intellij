@@ -30,6 +30,7 @@ import com.intellij.psi.scope.MethodProcessorSetupFailedException;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.scope.processor.FilterScopeProcessor;
 import com.intellij.psi.scope.processor.MethodResolverProcessor;
+import com.intellij.psi.scope.processor.MethodsProcessor;
 import com.intellij.psi.scope.util.PsiScopesUtil;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiUtil;
@@ -39,7 +40,9 @@ import com.intellij.util.Function;
 import com.intellij.util.IncorrectOperationException;
 import com.intellij.util.NullableFunction;
 import gnu.trove.THashSet;
+import org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaMethodCallExpression;
 import org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaReferenceExpression;
+import org.argus.jawa.core.JavaKnowledge$;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -159,7 +162,7 @@ public abstract class JawaReferenceExpressionPsiElement extends JawaExpressionPs
 
     @Override
     public boolean isQualified() {
-        return getQualifier() != null;
+        return true;
     }
 
     @Override
@@ -335,10 +338,10 @@ public abstract class JawaReferenceExpressionPsiElement extends JawaExpressionPs
 
     @NotNull
     private JavaResolveResult[] resolveToMethod(@NotNull PsiFile containingFile) {
-        final PsiMethodCallExpression methodCall = (PsiMethodCallExpression)getParent();
+        final JawaCallStatement methodCall = (JawaCallStatement)getParent();
         final MethodResolverProcessor processor = new MethodResolverProcessor(methodCall, containingFile);
         try {
-            PsiScopesUtil.setupAndRunProcessor(processor, methodCall, false);
+            setupAndRunProcessor(processor, methodCall);
         }
         catch (MethodProcessorSetupFailedException e) {
             return JavaResolveResult.EMPTY_ARRAY;
@@ -366,5 +369,24 @@ public abstract class JawaReferenceExpressionPsiElement extends JawaExpressionPs
             JavaResolveUtil.substituteResults(expression, result);
             return result;
         }
+    }
+
+    private static void setupAndRunProcessor(@NotNull MethodsProcessor processor,
+                                             @NotNull JawaCallStatement methodCall)
+            throws MethodProcessorSetupFailedException {
+        String methodName = methodCall.getSignatureAnnotation().getSignatureSymbol().getSignature().methodName();
+        boolean isConstructor = JavaKnowledge$.MODULE$.isJawaConstructor(methodName);
+        PsiJavaCodeReferenceElement classRef = methodCall.getTypeAnnotation().getTypeExpression().getJwType().getTypeSymbol();
+        final JavaResolveResult result = classRef.advancedResolve(false);
+        PsiClass aClass = (PsiClass)result.getElement();
+        if (aClass == null) {
+            throw new MethodProcessorSetupFailedException("Cant resolve class in call expression");
+        }
+        processor.setIsConstructor(isConstructor);
+        if(!isConstructor) processor.setName(methodName);
+        processor.setAccessClass(aClass);
+        processor.setArgumentList(methodCall.getArgumentList());
+        processor.obtainTypeArguments(methodCall);
+        aClass.processDeclarations(processor, ResolveState.initial().put(PsiSubstitutor.KEY, result.getSubstitutor()), null, methodCall);
     }
 }
