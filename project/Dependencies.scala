@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. Fengguo Wei and others.
+ * Copyright (c) 2016. Fengguo (Hugo) Wei and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,9 +13,9 @@ import sbt._
 object CitVersions {
   val scalaVersion = "2.11.8"
   val sbtVersion = "0.13.9"
-  val ideaVersion = "162.1447.7"
+  val ideaVersion = "163.3094.26"
   val sbtStructureVersion = "5.1.2"
-  val argusSafVersion = "1.0.3"
+  val argusSafVersion = "1.0.6"
   val jawaCompilerVersion = "0.0.2"
 }
 

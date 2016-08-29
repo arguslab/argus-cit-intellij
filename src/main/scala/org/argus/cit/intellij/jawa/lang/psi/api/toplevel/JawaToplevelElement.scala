@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. Fengguo Wei and others.
+ * Copyright (c) 2016. Fengguo (Hugo) Wei and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.impl.source.PsiFileImpl
 import com.intellij.psi.stubs.StubElement
 import org.argus.cit.intellij.jawa.JavaArrayFactoryUtil
-import org.argus.cit.intellij.jawa.lang.lexer.JawaTokenTypes
 import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaStubElementTypes
 import org.argus.cit.intellij.jawa.lang.psi.{JawaClassOrInterfaceDeclaration, JawaPsiElement}
 import org.sireum.util._

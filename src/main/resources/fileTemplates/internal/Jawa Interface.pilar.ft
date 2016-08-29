@@ -1,0 +1,2 @@
+record `${PACKAGE_NAME}.${NAME}` @kind interface @AccessFlag PUBLIC_INTERFACE {
+}

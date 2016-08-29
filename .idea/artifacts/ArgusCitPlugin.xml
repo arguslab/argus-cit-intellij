@@ -16,8 +16,6 @@
         <element id="library" level="project" name="SBT: com.fasterxml.jackson.core:jackson-annotations:2.2.3:jar" />
         <element id="library" level="project" name="SBT: com.fasterxml.jackson.core:jackson-core:2.2.3:jar" />
         <element id="library" level="project" name="SBT: com.fasterxml.jackson.core:jackson-databind:2.2.3:jar" />
-        <element id="library" level="project" name="SBT: com.github.arguslab:jawa-core_2.11:1.0.3:jar" />
-        <element id="library" level="project" name="SBT: com.github.arguslab:saf-library_2.11:1.0.3:jar" />
         <element id="library" level="project" name="SBT: com.google.guava:guava:19.0:jar" />
         <element id="library" level="project" name="SBT: com.tinkerpop.blueprints:blueprints-core:2.6.0:jar" />
         <element id="library" level="project" name="SBT: commons-beanutils:commons-beanutils:1.7.0:jar" />
@@ -61,6 +59,8 @@
         <element id="archive" name="jawa-nailgun-runner.jar">
           <element id="module-output" name="nailgun-runners" />
         </element>
+        <element id="library" level="project" name="SBT: com.github.arguslab:jawa-core_2.11:1.0.6:jar" />
+        <element id="library" level="project" name="SBT: com.github.arguslab:saf-library_2.11:1.0.6:jar" />
       </element>
     </root>
   </artifact>

@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2016. Fengguo Wei and others.
+  ~ Copyright (c) 2016. Fengguo (Hugo) Wei and others.
   ~ All rights reserved. This program and the accompanying materials
   ~ are made available under the terms of the Eclipse Public License v1.0
   ~ which accompanies this distribution, and is available at
@@ -20,6 +20,8 @@
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
   <!--<depends>com.intellij.modules.lang</depends>-->
+
+  <resource-bundle xmlns="">org.argus.cit.intellij.jawa.JawaBundle</resource-bundle>
 
   <extensionPoints>
     <extensionPoint name="serverWidgetEP" interface="org.argus.cit.intellij.jawa.compiler.ServerWidgetEP"/>
@@ -59,6 +61,10 @@
     <!--<projectConfigurable id="Jawa Compiler" displayName="Jawa Compiler" parentId="project.propCompiler"-->
                          <!--instance="org.jetbrains.plugins.scala.project.settings.ScalaCompilerConfigurable" />-->
     <lang.documentationProvider language="Jawa" implementationClass="com.intellij.lang.java.JavaDocumentationProvider"/>
+
+    <internalFileTemplate name="Jawa Class"/>
+    <internalFileTemplate name="Jawa Interface"/>
+    <defaultTemplatePropertiesProvider implementation="org.argus.cit.intellij.jawa.actions.JawaDefaultTemplatePropertiesProvider"/>
   </extensions>
 
   <application-components>
@@ -87,7 +93,10 @@
   </project-components>
 
   <actions>
-    <!-- Add your actions here -->
+    <action id="Jawa.NewClass" class="org.argus.cit.intellij.jawa.actions.NewJawaClassAction"
+            text="Jawa Class" description="Create new Jawa class">
+      <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewGroup1"/>
+    </action>
   </actions>
 
 </idea-plugin>

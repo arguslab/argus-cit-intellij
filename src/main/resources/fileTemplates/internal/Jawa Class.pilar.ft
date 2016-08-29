@@ -1,0 +1,2 @@
+record `${PACKAGE_NAME}.${NAME}` @kind class @AccessFlag PUBLIC {
+}
