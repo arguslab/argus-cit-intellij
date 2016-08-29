@@ -20,7 +20,6 @@
     SEMI=';'
     COMMA=','
     AT='@'
-    STATIC_PREFIX='@@'
     HAT='^'
     BAR='|'
     ASSIGN_OP=':='
@@ -83,8 +82,8 @@
     USHR='^>>'
 
     ID='regexp:(\p{Alpha}([\w]|[$])*)'
-    APOSTROPHE_ID="regexp:(`[^`]+`)"
-    STATIC_ID="regexp:(`@@([^`]|[^@])+`)"
+    APOSTROPHE_ID="regexp:(`[^`@]+`)"
+    STATIC_ID="regexp:(`@@[^`@]+`)"
     LOCATION_ID="regexp:(#[\w]*\.)"
     number='regexp:\d+(\.\d*)?'
     STRING_LITERAL="regexp:('([^'\\]|\\.)*'|\"([^\"\\]|\\.)*\")"
@@ -130,7 +129,7 @@
   mixin("JwBody")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaJwBodyImplMixin"
 
   implements("Location")="org.argus.cit.intellij.jawa.lang.psi.api.base.JawaJwStatement"
-  mixin("Location")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaLocationImplMinxin"
+  mixin("Location")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaLocationImplMixin"
 
   implements("CallStatement")="org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaMethodCallExpression"
   mixin("CallStatement")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaCallStatementImplMixin"
@@ -147,11 +146,17 @@
   implements("MethodNameSymbol")="org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaReferenceExpression"
   mixin("MethodNameSymbol")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaMethodNameSymbolImplMixin"
 
-  implements("LocationDefSymbol")="org.argus.cit.intellij.jawa.lang.psi.api.toplevel.JawaNamedElement"
+  implements("LocationDefSymbol")="org.argus.cit.intellij.jawa.lang.psi.api.base.JawaLocalVariable"
   mixin("LocationDefSymbol")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaLocationDefSymbolImplMixin"
 
   implements("LocationSymbol")="org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaReferenceExpression"
   mixin("LocationSymbol")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaLocationSymbolImplMixin"
+
+  implements("FieldNameSymbol")="org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaReferenceExpression"
+  mixin("FieldNameSymbol")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaFieldNameSymbolImplMixin"
+
+  implements("StaticFieldNameSymbol")="org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaReferenceExpression"
+  mixin("StaticFieldNameSymbol")="org.argus.cit.intellij.jawa.lang.psi.mixins.JawaStaticFieldNameSymbolImplMixin"
 }
 
 CompilationUnit ::= ClassOrInterfaceDeclaration*
@@ -288,9 +293,9 @@ VarDefSymbol ::= ID
 VarSymbol ::= ID
 
 FieldDefSymbol ::= APOSTROPHE_ID
-FieldNameSymbol ::= APOSTROPHE_ID
+FieldNameSymbol ::= APOSTROPHE_ID {methods=[getFQN]}
 StaticFieldDefSymbol ::= STATIC_ID
-StaticFieldNameSymbol ::= STATIC_ID
+StaticFieldNameSymbol ::= STATIC_ID {methods=[getFQN]}
 
 MethodDefSymbol ::= APOSTROPHE_ID
 MethodNameSymbol ::= APOSTROPHE_ID

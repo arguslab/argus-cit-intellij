@@ -41,8 +41,9 @@ import com.intellij.util.IncorrectOperationException;
 import com.intellij.util.NullableFunction;
 import gnu.trove.THashSet;
 import org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaReferenceExpression;
-import org.argus.cit.intellij.jawa.lang.psi.impl.source.resolve.LocationResolverProcessor;
+import org.argus.cit.intellij.jawa.lang.psi.types.JawaTypeSystem;
 import org.argus.jawa.core.JavaKnowledge$;
+import org.argus.jawa.core.JawaType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -328,12 +329,12 @@ public abstract class JawaReferenceExpressionPsiElement extends JawaExpressionPs
     }
 
     @NotNull
-    private JavaResolveResult[] resolve(IElementType myType, IElementType parentType, @NotNull PsiFile containingFile) {
+    private JavaResolveResult[] resolve(IElementType parentType, @NotNull PsiFile containingFile) {
         if (parentType == JawaElementTypes.CALL_STATEMENT) {
             return resolveToMethod(containingFile);
         }
-        if (myType == JawaElementTypes.LOCATION_SYMBOL) {
-            return resolveToLocation(containingFile);
+        if (getNode().getElementType() == JawaElementTypes.FIELD_NAME_SYMBOL || getNode().getElementType() == JawaElementTypes.STATIC_FIELD_NAME_SYMBOL) {
+            return resolveToField(containingFile);
         }
         return resolveToVariable(containingFile);
     }
@@ -359,9 +360,19 @@ public abstract class JawaReferenceExpressionPsiElement extends JawaExpressionPs
     }
 
     @NotNull
-    private JavaResolveResult[] resolveToLocation(@NotNull PsiFile containingFile) {
-        final LocationResolverProcessor processor = new LocationResolverProcessor(this, containingFile);
-        PsiScopesUtil.resolveAndWalk(processor, this, null);
+    private JavaResolveResult[] resolveToField(@NotNull PsiFile containingFile) {
+        String fqn;
+        if(this instanceof JawaFieldNameSymbol) {
+            final JawaFieldNameSymbol fieldNameSym = (JawaFieldNameSymbol) this;
+            fqn = fieldNameSym.getFQN();
+        } else {
+            final JawaStaticFieldNameSymbol fieldNameSym = (JawaStaticFieldNameSymbol) this;
+            fqn = fieldNameSym.getFQN();
+        }
+        JawaType jtype = JavaKnowledge$.MODULE$.getClassTypeFromFieldFQN(fqn);
+        PsiType type = JawaTypeSystem.toPsiType(jtype, getProject(), getResolveScope());
+        final VariableResolverProcessor processor = new VariableResolverProcessor(this, containingFile);
+        PsiScopesUtil.processTypeDeclarations(type, this, processor);
         return processor.getResult();
     }
 
@@ -374,7 +385,7 @@ public abstract class JawaReferenceExpressionPsiElement extends JawaExpressionPs
             JawaReferenceExpressionPsiElement expression = (JawaReferenceExpressionPsiElement)ref;
             PsiElement parent = expression.getParent();
             IElementType parentType = parent == null ? null : parent.getNode().getElementType();
-            JavaResolveResult[] result = expression.resolve(expression.getNode().getElementType(), parentType, containingFile);
+            JavaResolveResult[] result = expression.resolve(parentType, containingFile);
             JavaResolveUtil.substituteResults(expression, result);
             return result;
         }

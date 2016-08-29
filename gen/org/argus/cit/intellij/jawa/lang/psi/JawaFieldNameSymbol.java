@@ -4,10 +4,13 @@ package org.argus.cit.intellij.jawa.lang.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaReferenceExpression;
 
-public interface JawaFieldNameSymbol extends PsiElement {
+public interface JawaFieldNameSymbol extends JawaReferenceExpression {
 
   @NotNull
   PsiElement getApostropheId();
+
+  String getFQN();
 
 }

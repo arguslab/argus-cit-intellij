@@ -27,7 +27,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -126,8 +125,7 @@ public abstract class JawaJwBodyImplMixin extends JawaExpressionPsiElement imple
             if ((elementClassHint == null || elementClassHint.shouldProcess(ElementClassHint.DeclarationKind.VARIABLE)) && variablesSet.contains(name)) {
                 return PsiScopesUtil.walkChildrenScopes(this, processor, state, lastParent, place);
             }
-            // Use ENUM_CONST as represent for Location
-            if ((elementClassHint == null || elementClassHint.shouldProcess(ElementClassHint.DeclarationKind.ENUM_CONST)) && locationsSet.contains(name)) {
+            if ((elementClassHint == null || elementClassHint.shouldProcess(ElementClassHint.DeclarationKind.VARIABLE)) && locationsSet.contains(name)) {
                 return PsiScopesUtil.walkChildrenScopes(this, processor, state, lastParent, place);
             }
         }

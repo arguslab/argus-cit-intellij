@@ -137,7 +137,6 @@ public interface JawaElementTypes {
   IElementType SIGNATURE_KEY = new JawaTokenType("@signature");
   IElementType STATIC_FIELD = new JawaTokenType("global");
   IElementType STATIC_ID = new JawaTokenType("STATIC_ID");
-  IElementType STATIC_PREFIX = new JawaTokenType("@@");
   IElementType STRING_LITERAL = new JawaTokenType("STRING_LITERAL");
   IElementType SUB = new JawaTokenType("-");
   IElementType SWITCH = new JawaTokenType("switch");

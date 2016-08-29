@@ -8,10 +8,10 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
-import org.argus.cit.intellij.jawa.lang.psi.mixins.JawaLocationImplMinxin;
+import org.argus.cit.intellij.jawa.lang.psi.mixins.JawaLocationImplMixin;
 import org.argus.cit.intellij.jawa.lang.psi.*;
 
-public class JawaLocationImpl extends JawaLocationImplMinxin implements JawaLocation {
+public class JawaLocationImpl extends JawaLocationImplMixin implements JawaLocation {
 
   public JawaLocationImpl(ASTNode node) {
     super(node);

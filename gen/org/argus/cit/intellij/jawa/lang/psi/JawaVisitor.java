@@ -10,12 +10,11 @@ import org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaMethodCallExpression;
 import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.JawaTypeDefinition;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaPsiReferenceList;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaPsiField;
+import org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaReferenceExpression;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaCodeBlock;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaTypeElement;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaLocalVariable;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaJwStatement;
-import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.JawaNamedElement;
-import org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaReferenceExpression;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaPsiMethod;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaParameter;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaParameterList;
@@ -116,7 +115,7 @@ public class JawaVisitor extends PsiElementVisitor {
   }
 
   public void visitFieldNameSymbol(@NotNull JawaFieldNameSymbol o) {
-    visitPsiElement(o);
+    visitReferenceExpression(o);
   }
 
   public void visitGotoStatement(@NotNull JawaGotoStatement o) {
@@ -172,7 +171,7 @@ public class JawaVisitor extends PsiElementVisitor {
   }
 
   public void visitLocationDefSymbol(@NotNull JawaLocationDefSymbol o) {
-    visitNamedElement(o);
+    visitLocalVariable(o);
   }
 
   public void visitLocationSymbol(@NotNull JawaLocationSymbol o) {
@@ -244,7 +243,7 @@ public class JawaVisitor extends PsiElementVisitor {
   }
 
   public void visitStaticFieldNameSymbol(@NotNull JawaStaticFieldNameSymbol o) {
-    visitPsiElement(o);
+    visitReferenceExpression(o);
   }
 
   public void visitSwitchCase(@NotNull JawaSwitchCase o) {
@@ -324,10 +323,6 @@ public class JawaVisitor extends PsiElementVisitor {
   }
 
   public void visitModifierList(@NotNull JawaModifierList o) {
-    visitPsiElement(o);
-  }
-
-  public void visitNamedElement(@NotNull JawaNamedElement o) {
     visitPsiElement(o);
   }
 

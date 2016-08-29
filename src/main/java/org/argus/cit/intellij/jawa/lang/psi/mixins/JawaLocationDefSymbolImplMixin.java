@@ -11,14 +11,15 @@
 package org.argus.cit.intellij.jawa.lang.psi.mixins;
 
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.ResolveState;
+import com.intellij.psi.*;
 import com.intellij.psi.impl.PsiImplUtil;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.search.LocalSearchScope;
 import com.intellij.psi.search.SearchScope;
+import com.intellij.util.IncorrectOperationException;
 import org.argus.cit.intellij.jawa.lang.psi.JawaExpressionPsiElement;
 import org.argus.cit.intellij.jawa.lang.psi.JawaLocationDefSymbol;
+import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.synthetic.FakeTypeElement;
 import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.synthetic.JavaIdentifier;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -40,7 +41,9 @@ public abstract class JawaLocationDefSymbolImplMixin extends JawaExpressionPsiEl
 
     @Override
     public String getName() {
-        return getNameIdentifier().getText();
+        String loc = getNameIdentifier().getText();
+        loc = loc.substring(1, loc.length() - 1);
+        return loc;
     }
 
     @Override
@@ -81,7 +84,57 @@ public abstract class JawaLocationDefSymbolImplMixin extends JawaExpressionPsiEl
 
     @Nullable
     @Override
-    public PsiElement getNameIdentifier() {
+    public PsiIdentifier getNameIdentifier() {
         return new JavaIdentifier(nameId());
+    }
+
+    @Override
+    public void setInitializer(@Nullable PsiExpression psiExpression) throws IncorrectOperationException {
+
+    }
+
+    @NotNull
+    @Override
+    public PsiType getType() {
+        return getTypeElement().getType();
+    }
+
+    @NotNull
+    @Override
+    public PsiTypeElement getTypeElement() {
+        return new FakeTypeElement(getLocationId().getNode());
+    }
+
+    @Nullable
+    @Override
+    public PsiExpression getInitializer() {
+        return null;
+    }
+
+    @Override
+    public boolean hasInitializer() {
+        return false;
+    }
+
+    @Override
+    public void normalizeDeclaration() throws IncorrectOperationException {
+
+    }
+
+    @Nullable
+    @Override
+    public Object computeConstantValue() {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public PsiModifierList getModifierList() {
+        return null;
+    }
+
+    @Override
+    public boolean hasModifierProperty(@PsiModifier.ModifierConstant @NonNls @NotNull String s) {
+        return false;
     }
 }

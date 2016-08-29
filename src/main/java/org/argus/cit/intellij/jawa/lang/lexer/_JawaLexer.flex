@@ -1,7 +1,7 @@
-package org.argus.cit.intellij.core.lang.lexer;
+package org.argus.cit.intellij.jawa.lang.lexer;
 import com.intellij.lexer.*;
 import com.intellij.psi.tree.IElementType;
-import static org.argus.cit.intellij.core.lang.psi.JawaTypes.*;
+import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
 
 %%
 
@@ -23,8 +23,8 @@ LINE_WS=[\ \t\f]
 WHITE_SPACE=({LINE_WS}|{EOL})+
 
 ID=([:letter:]([\w]|[$])*)
-APOSTROPHE_ID=(`[^`]+`)
-STATIC_ID=(`@@([^`]|[^@])+`)
+APOSTROPHE_ID=(`[^`@]+`)
+STATIC_ID=(`@@[^`@]+`)
 NUMBER=[0-9]+(\.[0-9]*)?
 LOCATION_ID=(#[\w]*\.)
 STRING_LITERAL=('([^'\\]|\\.)*'|\"([^\"\\]|\\.)*\")
@@ -40,7 +40,6 @@ END_OF_LINE_COMMENT="/""/"[^\r\n]*
   ";"                     { return SEMI; }
   ","                     { return COMMA; }
   "@"                     { return AT; }
-  "@@"                    { return STATIC_PREFIX; }
   "^"                     { return HAT; }
   "|"                     { return BAR; }
   ":="                    { return ASSIGN_OP; }

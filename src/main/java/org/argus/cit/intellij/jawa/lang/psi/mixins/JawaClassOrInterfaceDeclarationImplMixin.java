@@ -403,4 +403,9 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
     public ItemPresentation getPresentation() {
         return ItemPresentationProviders.getItemPresentation(this);
     }
+
+    @Override
+    public int getTextOffset() {
+        return getNameIdentifier().getTextOffset();
+    }
 }

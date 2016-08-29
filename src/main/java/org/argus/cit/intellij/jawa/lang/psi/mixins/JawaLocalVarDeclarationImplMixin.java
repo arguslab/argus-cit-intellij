@@ -46,7 +46,7 @@ public abstract class JawaLocalVarDeclarationImplMixin extends JawaExpressionPsi
     @NotNull
     @Override
     public PsiType getType() {
-        return getJwType().getType();
+        return getTypeElement().getType();
     }
 
     @NotNull

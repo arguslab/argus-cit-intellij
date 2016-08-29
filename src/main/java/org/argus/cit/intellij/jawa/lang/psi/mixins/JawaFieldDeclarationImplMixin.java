@@ -152,4 +152,9 @@ public abstract class JawaFieldDeclarationImplMixin extends JawaStubBasedPsiElem
     public Icon getIcon(int flags) {
         return Icons.Field();
     }
+
+    @Override
+    public int getTextOffset() {
+        return getNameIdentifier().getTextOffset();
+    }
 }

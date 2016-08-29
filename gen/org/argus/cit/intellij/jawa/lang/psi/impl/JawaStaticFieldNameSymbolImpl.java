@@ -8,10 +8,10 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import org.argus.cit.intellij.jawa.lang.psi.mixins.JawaStaticFieldNameSymbolImplMixin;
 import org.argus.cit.intellij.jawa.lang.psi.*;
 
-public class JawaStaticFieldNameSymbolImpl extends ASTWrapperPsiElement implements JawaStaticFieldNameSymbol {
+public class JawaStaticFieldNameSymbolImpl extends JawaStaticFieldNameSymbolImplMixin implements JawaStaticFieldNameSymbol {
 
   public JawaStaticFieldNameSymbolImpl(ASTNode node) {
     super(node);
@@ -30,6 +30,10 @@ public class JawaStaticFieldNameSymbolImpl extends ASTWrapperPsiElement implemen
   @NotNull
   public PsiElement getStaticId() {
     return notNullChild(findChildByType(STATIC_ID));
+  }
+
+  public String getFQN() {
+    return JawaPsiImplUtil.getFQN(this);
   }
 
 }

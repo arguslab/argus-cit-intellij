@@ -163,8 +163,7 @@ public abstract class JawaMethodDeclarationImplMixin
 
     @Override
     public boolean hasModifierProperty(@PsiModifier.ModifierConstant @NonNls @NotNull String s) {
-        boolean mod = getAccessFlagAnnotation().hasModifierProperty(s);
-        return mod;
+        return getAccessFlagAnnotation().hasModifierProperty(s);
     }
 
     @NotNull
@@ -209,7 +208,20 @@ public abstract class JawaMethodDeclarationImplMixin
     }
 
     public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
-        return PsiImplUtil.processDeclarationsInMethod(this, processor, state, lastParent, place);
+        boolean result = PsiImplUtil.processDeclarationsInMethod(this, processor, state, lastParent, place);
+        if(result) {
+            boolean fromBody = lastParent instanceof PsiCodeBlock;
+            if(fromBody) {
+                List<JawaParam> list = getParamClause().getParamList();
+                if(list.size() > 0) {
+                    PsiParameter parameter = list.get(0);
+                    if(!processor.execute(parameter, state)) {
+                        result = false;
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     @Override
