@@ -25,4 +25,6 @@ object Icons {
   final val Field = IconLoader.getIcon("/nodes/field.png")
 
   final val COMPILE_SERVER = IconLoader.getIcon("/org/argus/cit/intellij/images/compileServer.png")
+
+  final val ARGUS = IconLoader.getIcon("/org/argus/cit/intellij/images/argus.png")
 }

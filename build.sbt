@@ -36,7 +36,21 @@ lazy val argus_cit_intellij: Project =
     .enablePlugins(SbtIdeaPlugin)
     .settings(argusSafSettings)
     .settings(
-      libraryDependencies ++= DependencyGroups.jawa,
+      libraryDependencies ++= DependencyGroups.amandroid,
+      ideaInternalPlugins := Seq(
+        "copyright",
+        "gradle",
+        "Groovy",
+        "IntelliLang",
+        "java-i18n",
+        "android",
+        "maven",
+        "junit",
+        "properties"
+      ),
+      ideaInternalPluginsJars <<= ideaInternalPluginsJars.map { classpath =>
+        classpath.filterNot(_.data.getName.contains("lucene-core"))
+      },
       aggregate.in(updateIdea) := false
     )
 
@@ -61,7 +75,7 @@ lazy val compiler_settings =
 
 lazy val idea_runner =
   newProject("idea-runner", file("idea-runner"))
-    .dependsOn(Seq(argus_cit_intellij).map(_ % Provided): _*)
+    .dependsOn(Seq(compiler_settings, argus_cit_intellij, jc_plugin, nailgun_runners).map(_ % Provided): _*)
     .settings(
       autoScalaLibrary := false,
       unmanagedJars in Compile := ideaMainJars.in(argus_cit_intellij).value,
@@ -130,7 +144,9 @@ lazy val plugin_packager =
           Library(Dependencies.sfaLibrary,
             "lib/saf-library.jar"),
           Library(Dependencies.jawaCore,
-            "lib/jawa-core.jar")
+            "lib/jawa-core.jar"),
+          Library(Dependencies.amandroidCore,
+            "lib/amandroid-core.jar")
         ) ++
         crossLibraries.map { lib =>
           Library(lib.copy(name = lib.name + "_2.11"), s"lib/${lib.name}.jar")

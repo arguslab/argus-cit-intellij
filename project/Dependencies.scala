@@ -26,6 +26,7 @@ object Dependencies {
 
   val sfaLibrary = "com.github.arguslab" %% "saf-library" % argusSafVersion
   val jawaCore = "com.github.arguslab" %% "jawa-core" % argusSafVersion
+  val amandroidCore = "com.github.arguslab" %% "amandroid-core" % argusSafVersion
   val jawaCompiler = "com.github.arguslab" %% "jawa-compiler" % jawaCompilerVersion
 
   val nailgun = "org.jetbrains" % "nailgun-patched" % "1.0.0"
@@ -45,5 +46,7 @@ object DependencyGroups {
   )
 
   val jawa = Seq(sfaLibrary, jawaCore)
+
+  val amandroid = jawa ++ Seq(amandroidCore)
 
 }

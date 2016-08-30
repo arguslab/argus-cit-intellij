@@ -14,7 +14,9 @@
   <version>VERSION</version>
   <vendor url="http://www.arguslab.org/">Argus Laboratory: Fengguo Wei</vendor>
 
-  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <depends>org.jetbrains.android</depends>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
   <idea-version since-build="145.0"/>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
@@ -65,6 +67,8 @@
     <internalFileTemplate name="Jawa Class"/>
     <internalFileTemplate name="Jawa Interface"/>
     <defaultTemplatePropertiesProvider implementation="org.argus.cit.intellij.jawa.actions.JawaDefaultTemplatePropertiesProvider"/>
+
+    <moduleBuilder builderClass="org.argus.cit.intellij.android.newProject.ArgusCitWizardWrapper"/>
   </extensions>
 
   <application-components>
