@@ -15,6 +15,7 @@ import com.android.tools.idea.wizard.WizardConstants;
 import com.android.tools.idea.wizard.dynamic.DynamicWizardStepWithHeaderAndDescription;
 import com.android.tools.idea.wizard.dynamic.ScopedStateStore;
 import com.intellij.openapi.Disposable;
+import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserFactory;
 import com.intellij.openapi.fileChooser.FileSaverDescriptor;
 import com.intellij.openapi.project.Project;
@@ -22,8 +23,10 @@ import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileWrapper;
+import org.argus.amandroid.core.Apk$;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.sireum.util.FileUtil$;
 
 import javax.swing.*;
 import java.io.File;
@@ -36,29 +39,28 @@ public class ConfigureArgusProjectStep extends DynamicWizardStepWithHeaderAndDes
     private TextFieldWithBrowseButton myProjectLocation;
     private TextFieldWithBrowseButton myAppPath;
     private JPanel myPanel;
-    private JLabel myPackageName;
 
     public ConfigureArgusProjectStep(@NotNull Disposable disposable) {
-        this("Configure your new project", disposable);
+        this("Configure your new analysis", disposable);
     }
 
 
     public ConfigureArgusProjectStep(String title, Disposable parentDisposable) {
-        super(title, null, parentDisposable);
+        super(title, "", parentDisposable);
         setBodyComponent(myPanel);
     }
 
     @Override
     public void init() {
         register(WizardConstants.APPLICATION_NAME_KEY, myAppPath);
-        register(WizardConstants.PACKAGE_NAME_KEY, myPackageName);
         register(WizardConstants.PROJECT_LOCATION_KEY, myProjectLocation);
         registerValueDeriver(WizardConstants.PROJECT_LOCATION_KEY, myProjectLocationDeriver);
 
-        FileSaverDescriptor apkFileSaverDescriptor = new FileSaverDescriptor("Apk Path", "Please choose an APK");
-        myAppPath.addActionListener(e -> browseForFile(myAppPath, apkFileSaverDescriptor));
+        FileChooserDescriptor apkFileChooserDescriptor = new FileChooserDescriptor(false, false, true, false, false, false);
+        myAppPath.addBrowseFolderListener("Apk Path", "Please choose an APK", null, apkFileChooserDescriptor);
         FileSaverDescriptor projectlocationFileSaverDescriptor = new FileSaverDescriptor("Project Location", "Please choose a location for your project");
         myProjectLocation.addActionListener(e -> browseForFile(myProjectLocation, projectlocationFileSaverDescriptor));
+        super.init();
     }
 
     @Override
@@ -66,7 +68,19 @@ public class ConfigureArgusProjectStep extends DynamicWizardStepWithHeaderAndDes
         if (!myPath.validate()) return false;
         WizardUtils.ValidationResult locationValidationResult = WizardUtils.validateLocation(myState.get(WizardConstants.PROJECT_LOCATION_KEY));
         setErrorHtml(locationValidationResult.isOk() ? "" : locationValidationResult.getFormattedMessage());
-        return !locationValidationResult.isError();
+
+        boolean validApk = true;
+        String errormessage = "";
+        String path = myState.get(WizardConstants.APPLICATION_NAME_KEY);
+        if(path == null || path.equals("")) {
+            return false;
+        }
+        if(!Apk$.MODULE$.isValidApk(FileUtil$.MODULE$.toUri(path))) {
+            validApk = false;
+            errormessage = "Given APK is not valid. It maybe not an apk file, or don't have AndroidManifest.xml or *.dex files.";
+        }
+        setErrorHtml(validApk ? "" : errormessage);
+        return !locationValidationResult.isError() && validApk;
     }
 
     private void browseForFile(TextFieldWithBrowseButton button, FileSaverDescriptor saver) {
@@ -95,8 +109,9 @@ public class ConfigureArgusProjectStep extends DynamicWizardStepWithHeaderAndDes
         @Nullable
         @Override
         public String deriveValue(@NotNull ScopedStateStore state, @Nullable ScopedStateStore.Key changedKey, @Nullable String currentValue) {
-            String name = state.get(WizardConstants.APPLICATION_NAME_KEY);
-            name = name == null ? "" : name;
+            String path = state.get(WizardConstants.APPLICATION_NAME_KEY);
+            if(path == null || path.equals("")) return "";
+            String name = new File(path).getName().substring(0, new File(path).getName().lastIndexOf("."));
             name = name.replaceAll(WizardConstants.INVALID_FILENAME_CHARS, "");
             name = name.replaceAll("\\s", "");
             File baseDirectory = WizardUtils.getProjectLocationParent();

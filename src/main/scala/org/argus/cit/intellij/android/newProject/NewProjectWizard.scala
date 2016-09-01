@@ -12,6 +12,7 @@ package org.argus.cit.intellij.android.newProject
 
 import java.io.{File, IOException}
 import java.util
+import javax.swing.Icon
 
 import com.android.SdkConstants
 import com.android.tools.idea.gradle.project.GradleProjectImporter
@@ -36,6 +37,7 @@ import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.pom.java.LanguageLevel
 import com.intellij.util.containers.HashSet
 import com.intellij.util.ui.UIUtil
+import org.argus.cit.intellij.jawa.icons.Icons
 import org.jetbrains.android.sdk.AndroidSdkUtils
 import org.sireum.util._
 
@@ -103,7 +105,10 @@ class NewProjectWizard(project: Project, module: Module, host: DynamicWizardHost
     } catch {
       case e: IOException => LOG.warn("Failed to update Gradle wrapper file", e)
     }
-    val projectName = Option(getState.get(WizardConstants.APPLICATION_NAME_KEY)).getOrElse("Unnamed Project")
+    val projectName = Option(getState.get(WizardConstants.APPLICATION_NAME_KEY)) match {
+      case Some(path) => new File(path).getName.substring(0, new File(path).getName.lastIndexOf("."))
+      case None => "Unnamed Project"
+    }
 
     var initialLanguageLevel: LanguageLevel = null
     val iterator = FormFactor.iterator()
@@ -157,9 +162,10 @@ class NewProjectWizard(project: Project, module: Module, host: DynamicWizardHost
 
   override def doFinish(): Unit = {
     val location = myState.get(WizardConstants.PROJECT_LOCATION_KEY)
-    val name = myState.get(WizardConstants.APPLICATION_NAME_KEY)
-    assert(location != null && name != null)
+    val path = myState.get(WizardConstants.APPLICATION_NAME_KEY)
+    assert(location != null && path != null)
     new MyAction(location).execute()
+    val name = new File(path).getName.substring(0, new File(path).getName.lastIndexOf("."))
     myProject = UIUtil.invokeAndWaitIfNeeded(new Computable[Project] {
       override def compute(): Project = ProjectManager.getInstance().createProject(name, location)
     })
@@ -171,6 +177,8 @@ class NewProjectWizard(project: Project, module: Module, host: DynamicWizardHost
       VfsUtil.createDirectoryIfMissing(location)
     }
   }
+
+  override def getIcon: Icon = Icons.ARGUS_TITLE
 
   override def getProject: Project = myProject
 }
