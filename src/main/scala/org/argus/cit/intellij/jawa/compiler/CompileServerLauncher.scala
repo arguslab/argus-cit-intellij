@@ -100,7 +100,7 @@ class CompileServerLauncher  extends ApplicationComponent {
     compilerJars.partition(_.exists) match {
       case (presentFiles, Seq()) =>
         val bootclasspathArg = Nil
-        val classpath = (jdk.tools +: presentFiles).map(_.canonicalPath).mkString(File.pathSeparator)
+        val classpath = (jdk.tools +: presentFiles).map(_.canonicalPath).mkString(File.separator)
         val settings = JawaCompileServerSettings.getInstance
 
         val freePort = CompileServerLauncher.findFreePort

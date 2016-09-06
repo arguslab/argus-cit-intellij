@@ -91,8 +91,8 @@ lazy val idea_runner =
         "-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005",
         "-Didea.is.internal=true",
         "-Didea.debug.mode=true",
-        "-Didea.system.path=$USER_HOME$/.IdeaData/IDEA-14/scala/system",
-        "-Didea.config.path=$USER_HOME$/.IdeaData/IDEA-14/scala/config",
+        "-Didea.system.path=$USER_HOME$/.IdeaData/IDEA-15/scala/system",
+        "-Didea.config.path=$USER_HOME$/.IdeaData/IDEA-15/scala/config",
         "-Dapple.laf.useScreenMenuBar=true",
         s"-Dplugin.path=${baseDirectory.value.getParentFile}/out/plugin",
         "-Didea.ProcessCanceledException=disabled"
@@ -146,7 +146,8 @@ lazy val plugin_packager =
           Library(Dependencies.jawaCore,
             "lib/jawa-core.jar"),
           Library(Dependencies.amandroidCore,
-            "lib/amandroid-core.jar")
+            "lib/amandroid-core.jar"),
+          Directory(baseDirectory.in(ThisBuild).value / "templates", "lib/templates")
         ) ++
         crossLibraries.map { lib =>
           Library(lib.copy(name = lib.name + "_2.11"), s"lib/${lib.name}.jar")

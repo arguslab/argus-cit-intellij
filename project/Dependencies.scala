@@ -15,7 +15,7 @@ object CitVersions {
   val sbtVersion = "0.13.9"
   val ideaVersion = "163.3094.26"
   val sbtStructureVersion = "5.1.2"
-  val argusSafVersion = "1.0.6"
+  val argusSafVersion = "1.1.1"
   val jawaCompilerVersion = "0.0.2"
 }
 

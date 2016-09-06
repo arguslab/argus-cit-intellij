@@ -39,6 +39,8 @@ public class ConfigureArgusProjectStep extends DynamicWizardStepWithHeaderAndDes
     private TextFieldWithBrowseButton myProjectLocation;
     private TextFieldWithBrowseButton myAppPath;
     private JPanel myPanel;
+    private JLabel appName;
+    private JLabel packageName;
 
     public ConfigureArgusProjectStep(@NotNull Disposable disposable) {
         this("Configure your new analysis", disposable);
@@ -52,7 +54,11 @@ public class ConfigureArgusProjectStep extends DynamicWizardStepWithHeaderAndDes
 
     @Override
     public void init() {
-        register(WizardConstants.APPLICATION_NAME_KEY, myAppPath);
+        register(NewProjectWizard.APK_LOCATION_KEY(), myAppPath);
+        register(WizardConstants.APPLICATION_NAME_KEY, appName);
+        registerValueDeriver(WizardConstants.APPLICATION_NAME_KEY, myAppNameDeriver);
+        register(WizardConstants.PACKAGE_NAME_KEY, packageName);
+        registerValueDeriver(WizardConstants.PACKAGE_NAME_KEY, myPackageNameDeriver);
         register(WizardConstants.PROJECT_LOCATION_KEY, myProjectLocation);
         registerValueDeriver(WizardConstants.PROJECT_LOCATION_KEY, myProjectLocationDeriver);
 
@@ -70,16 +76,16 @@ public class ConfigureArgusProjectStep extends DynamicWizardStepWithHeaderAndDes
         setErrorHtml(locationValidationResult.isOk() ? "" : locationValidationResult.getFormattedMessage());
 
         boolean validApk = true;
-        String errormessage = "";
-        String path = myState.get(WizardConstants.APPLICATION_NAME_KEY);
+        String errorMessage = "";
+        String path = myState.get(NewProjectWizard.APK_LOCATION_KEY());
         if(path == null || path.equals("")) {
             return false;
         }
         if(!Apk$.MODULE$.isValidApk(FileUtil$.MODULE$.toUri(path))) {
             validApk = false;
-            errormessage = "Given APK is not valid. It maybe not an apk file, or don't have AndroidManifest.xml or *.dex files.";
+            errorMessage = "Given APK is not valid. It maybe not an apk file, or don't have AndroidManifest.xml or *.dex files.";
         }
-        setErrorHtml(validApk ? "" : errormessage);
+        setErrorHtml(validApk ? "" : errorMessage);
         return !locationValidationResult.isError() && validApk;
     }
 
@@ -99,17 +105,50 @@ public class ConfigureArgusProjectStep extends DynamicWizardStepWithHeaderAndDes
         }
     }
 
-    private static final ValueDeriver<String> myProjectLocationDeriver = new ValueDeriver<String>() {
+    private static final ValueDeriver<String> myAppNameDeriver = new ValueDeriver<String>() {
         @Nullable
         @Override
         public Set<ScopedStateStore.Key<?>> getTriggerKeys() {
-            return makeSetOf(WizardConstants.APPLICATION_NAME_KEY);
+            return makeSetOf(NewProjectWizard.APK_LOCATION_KEY());
         }
 
         @Nullable
         @Override
         public String deriveValue(@NotNull ScopedStateStore state, @Nullable ScopedStateStore.Key changedKey, @Nullable String currentValue) {
-            String path = state.get(WizardConstants.APPLICATION_NAME_KEY);
+            String path = state.get(NewProjectWizard.APK_LOCATION_KEY());
+            if(path == null || path.equals("")) return "";
+            return new File(path).getName().substring(0, new File(path).getName().lastIndexOf("."));
+        }
+    };
+
+    private static final ValueDeriver<String> myPackageNameDeriver = new ValueDeriver<String>() {
+        @Nullable
+        @Override
+        public Set<ScopedStateStore.Key<?>> getTriggerKeys() {
+            return makeSetOf(NewProjectWizard.APK_LOCATION_KEY());
+        }
+
+        @Nullable
+        @Override
+        public String deriveValue(@NotNull ScopedStateStore state, @Nullable ScopedStateStore.Key changedKey, @Nullable String currentValue) {
+            String path = state.get(NewProjectWizard.APK_LOCATION_KEY());
+            if(path == null || path.equals("")) return "";
+            if(!Apk$.MODULE$.isValidApk(FileUtil$.MODULE$.toUri(path))) return "";
+            return NewProjectWizard.loadPackageNameFromManifestFile(new File(path));
+        }
+    };
+
+    private static final ValueDeriver<String> myProjectLocationDeriver = new ValueDeriver<String>() {
+        @Nullable
+        @Override
+        public Set<ScopedStateStore.Key<?>> getTriggerKeys() {
+            return makeSetOf(NewProjectWizard.APK_LOCATION_KEY());
+        }
+
+        @Nullable
+        @Override
+        public String deriveValue(@NotNull ScopedStateStore state, @Nullable ScopedStateStore.Key changedKey, @Nullable String currentValue) {
+            String path = state.get(NewProjectWizard.APK_LOCATION_KEY());
             if(path == null || path.equals("")) return "";
             String name = new File(path).getName().substring(0, new File(path).getName().lastIndexOf("."));
             name = name.replaceAll(WizardConstants.INVALID_FILENAME_CHARS, "");
@@ -140,5 +179,9 @@ public class ConfigureArgusProjectStep extends DynamicWizardStepWithHeaderAndDes
     @Override
     protected WizardStepHeaderSettings getStepHeader() {
         return ConfigureArgusProjectPath$.MODULE$.buildConfigurationHeader();
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
     }
 }

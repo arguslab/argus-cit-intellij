@@ -29,7 +29,6 @@
         <element id="library" level="project" name="SBT: org.jgrapht:jgrapht-core:0.9.2:jar" />
         <element id="library" level="project" name="SBT: org.jgrapht:jgrapht-ext:0.9.2:jar" />
         <element id="library" level="project" name="SBT: org.scala-lang.modules:scala-parser-combinators_2.11:1.0.4:jar" />
-        <element id="library" level="project" name="SBT: org.scala-lang.modules:scala-xml_2.11:1.0.4:jar" />
         <element id="library" level="project" name="SBT: org.scala-lang:scala-compiler:2.11.8:jar" />
         <element id="library" level="project" name="SBT: org.scala-lang:scala-library:2.11.8:jar" />
         <element id="library" level="project" name="SBT: org.scala-lang:scala-reflect:2.11.8:jar" />
@@ -59,9 +58,12 @@
         <element id="archive" name="jawa-nailgun-runner.jar">
           <element id="module-output" name="nailgun-runners" />
         </element>
-        <element id="library" level="project" name="SBT: com.github.arguslab:jawa-core_2.11:1.0.6:jar" />
-        <element id="library" level="project" name="SBT: com.github.arguslab:saf-library_2.11:1.0.6:jar" />
-        <element id="library" level="project" name="SBT: com.github.arguslab:amandroid-core_2.11:1.0.6:jar" />
+        <element id="library" level="project" name="SBT: com.github.arguslab:saf-library_2.11:1.1.1:jar" />
+        <element id="library" level="project" name="SBT: com.github.arguslab:jawa-core_2.11:1.1.1:jar" />
+        <element id="library" level="project" name="SBT: com.github.arguslab:amandroid-core_2.11:1.1.1:jar" />
+        <element id="directory" name="templates">
+          <element id="dir-copy" path="$PROJECT_DIR$/templates" />
+        </element>
       </element>
     </root>
   </artifact>

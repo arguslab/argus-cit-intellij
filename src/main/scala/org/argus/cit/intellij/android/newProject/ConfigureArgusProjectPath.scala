@@ -10,23 +10,32 @@
 
 package org.argus.cit.intellij.android.newProject
 
-import java.io.File
+import java.io.{File, IOException}
 
 import com.android.tools.idea.npw.ConfigureAndroidProjectPath
 import com.android.tools.idea.sdk.VersionCheck
+import com.android.tools.idea.templates.Template
+import com.android.tools.idea.templates.recipe.RenderingContext
 import com.android.tools.idea.wizard.WizardConstants
-import com.android.tools.idea.wizard.dynamic.DynamicWizardPath
+import com.android.tools.idea.wizard.dynamic.{DynamicWizardPath, ScopedStateStore}
 import com.android.tools.idea.wizard.dynamic.DynamicWizardStepWithHeaderAndDescription.WizardStepHeaderSettings
+import com.android.tools.idea.wizard.dynamic.ScopedStateStore.Scope
 import com.intellij.openapi.Disposable
+import com.intellij.openapi.application.PathManager
 import com.intellij.openapi.diagnostic.Logger
-import org.argus.amandroid.core.decompile.ApkDecompiler
+import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.SystemInfo
+import com.intellij.openapi.vfs.{LocalFileSystem, VfsUtilCore}
+import org.argus.amandroid.core.decompile.{ApkDecompiler, DecompileLayout, DecompilerSettings}
 import org.jetbrains.android.sdk.AndroidSdkUtils
+import org.sireum.util.FileUtil
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
 class ConfigureArgusProjectPath(parentDisposable: Disposable) extends DynamicWizardPath {
-  final val LOG = Logger.getInstance(classOf[ConfigureArgusProjectPath])
+  import ConfigureArgusProjectPath._
+
   override def init() = {
     ConfigureAndroidProjectPath.putSdkDependentParams(myState)
     addStep(new ConfigureArgusProjectStep(parentDisposable))
@@ -43,23 +52,103 @@ class ConfigureArgusProjectPath(parentDisposable: Disposable) extends DynamicWiz
 
   override def getPathName: String = "Configure Argus-Cit Project"
 
-  override def canPerformFinishingActions: Boolean = performFinishingActions()
+  override def canPerformFinishingActions: Boolean = performFinishingOperation(true)
 
   override def performFinishingActions(): Boolean = {
-    val path = myState.get(WizardConstants.APPLICATION_NAME_KEY)
-    val output = myState.get(WizardConstants.PROJECT_LOCATION_KEY)
     try {
-      ApkDecompiler.decompile(new File(path), new File(output), None, dexLog = false, debugMode = false, removeSupportGen = true, forceDelete = true, None, createFolder = false)
+      if (!performFinishingOperation(false)) {
+        return false
+      }
+      val project = getProject
+      assert(project != null)
+
+      val projectRoot = VfsUtilCore.virtualToIoFile(project.getBaseDir)
+      setGradleWrapperExecutable(projectRoot)
       true
-    } catch {
-      case e: Exception =>
-        setErrorHtml("<html>Your APK cannot be decompiled. Error message: " + e.getMessage + "</html>")
+    }
+    catch {
+      case e: IOException =>
         LOG.error(e)
         false
     }
   }
+
+  private def performFinishingOperation(dryRun: Boolean): Boolean = {
+
+    val path = myState.get(NewProjectWizard.APK_LOCATION_KEY)
+    val module = myState.get(NewProjectWizard.MODULE_LOCATION_KEY)
+    try {
+      val main = module + File.separator + "src" + File.separator + "main"
+      val layout = DecompileLayout(FileUtil.toUri(main), createFolder = false, "java", createSeparateFolderForDexes = false)
+      val settings = DecompilerSettings(None, dexLog = false, debugMode = false, removeSupportGen = true, forceDelete = true, None, layout)
+      ApkDecompiler.decompile(FileUtil.toUri(path), settings)
+      this.myState.put(WizardConstants.IS_LIBRARY_KEY, Boolean.box(false))
+      this.myState.put(SRC_DIR_KEY, "src/main/java")
+      this.myState.put(RES_DIR_KEY, "src/main/res")
+      this.myState.put(MANIFEST_DIR_KEY, "src/main")
+    } catch {
+      case e: Exception =>
+        setErrorHtml("<html>Your APK cannot be decompiled. Error message: " + e.getMessage + "</html>")
+        LOG.error(e)
+        return false
+    }
+
+    val project: Project = this.getProject
+
+    assert(project != null)
+
+    val templateRoot: File = getTemplateRootFolder
+    if(templateRoot == null) return false
+    val projectTemplate: Template = Template.createFromPath(templateRoot)
+    val context: RenderingContext = RenderingContext.Builder.newContext(projectTemplate, project)
+      .withCommandName("New Project")
+      .withDryRun(dryRun)
+      .withShowErrors(true)
+      .withParams(myState.flatten())
+      .intoTargetFiles(myState.get(WizardConstants.TARGET_FILES_KEY))
+      .build()
+    projectTemplate.render(context)
+  }
+
+  def getTemplateRootFolder: File = {
+    val homePath = com.intellij.openapi.util.io.FileUtil.toSystemIndependentName(PathManager.getHomePath)
+    // Release build?
+    var root = LocalFileSystem.getInstance().findFileByPath(com.intellij.openapi.util.io.FileUtil.toSystemIndependentName(homePath + "/plugins/Argus-CIT/lib/templates/NewArgusProject"))
+    if (root == null) {
+      // Development build?
+      root = LocalFileSystem.getInstance().findFileByPath(com.intellij.openapi.util.io.FileUtil.toSystemIndependentName(homePath + "/../../../out/plugin/Argus-CIT/lib/templates/NewArgusProject"))
+    }
+    if (root != null) {
+      VfsUtilCore.virtualToIoFile(root)
+    } else null
+  }
+
 }
 
 object ConfigureArgusProjectPath {
+  final val LOG = Logger.getInstance(classOf[ConfigureArgusProjectPath])
+
   protected def buildConfigurationHeader = WizardStepHeaderSettings.createTitleOnlyHeader("New Analysis")
+
+  final val RES_DIR_KEY: ScopedStateStore.Key[String] = ScopedStateStore.createKey("resDir", Scope.PATH, classOf[String])
+  final val SRC_DIR_KEY: ScopedStateStore.Key[String] = ScopedStateStore.createKey("srcDir", Scope.PATH, classOf[String])
+  final val MANIFEST_DIR_KEY: ScopedStateStore.Key[String] = ScopedStateStore.createKey("manifestDir", Scope.PATH, classOf[String])
+
+  /**
+    * Set the executable bit on the 'gradlew' wrapper script on Mac/Linux
+    * On Windows, we use a separate gradlew.bat file which does not need an
+    * executable bit.
+    *
+    */
+  def setGradleWrapperExecutable(projectRoot: File) = {
+    if (SystemInfo.isUnix) {
+      val gradlewFile = new File(projectRoot, "gradlew")
+      if (!gradlewFile.isFile) {
+        LOG.error("Could not find gradle wrapper. Command line builds may not work properly.")
+      }
+      else {
+        com.intellij.openapi.util.io.FileUtil.setExecutableAttribute(gradlewFile.getPath, true)
+      }
+    }
+  }
 }
