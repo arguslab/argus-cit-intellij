@@ -76,9 +76,14 @@ class ConfigureArgusProjectPath(parentDisposable: Disposable) extends DynamicWiz
   private def performFinishingOperation(dryRun: Boolean): Boolean = {
 
     val path = myState.get(NewProjectWizard.APK_LOCATION_KEY)
-    val module = myState.get(NewProjectWizard.MODULE_LOCATION_KEY)
+    val projectLocation = myState.get(WizardConstants.PROJECT_LOCATION_KEY)
+    assert(projectLocation != null)
+    val projectRoot = new File(projectLocation)
+    val moduleRootPath = myState.get(NewProjectWizard.MODULE_LOCATION_KEY)
+    assert(moduleRootPath != null)
+    val moduleRoot = new File(moduleRootPath)
     try {
-      val main = module + File.separator + "src" + File.separator + "main"
+      val main = moduleRootPath + File.separator + "src" + File.separator + "main"
       val layout = DecompileLayout(FileUtil.toUri(main), createFolder = false, "java", createSeparateFolderForDexes = false)
       val settings = DecompilerSettings(None, dexLog = false, debugMode = false, removeSupportGen = true, forceDelete = true, None, layout)
       ApkDecompiler.decompile(FileUtil.toUri(path), settings)
@@ -99,15 +104,20 @@ class ConfigureArgusProjectPath(parentDisposable: Disposable) extends DynamicWiz
 
     val templateRoot: File = getTemplateRootFolder
     if(templateRoot == null) return false
-    val projectTemplate: Template = Template.createFromPath(templateRoot)
-    val context: RenderingContext = RenderingContext.Builder.newContext(projectTemplate, project)
+    val template: Template = Template.createFromPath(templateRoot)
+    val context = RenderingContext.Builder.newContext(template, project)
       .withCommandName("New Project")
       .withDryRun(dryRun)
       .withShowErrors(true)
+      .withOutputRoot(projectRoot)
+      .withModuleRoot(moduleRoot)
       .withParams(myState.flatten())
+      .withGradleSync(true)
       .intoTargetFiles(myState.get(WizardConstants.TARGET_FILES_KEY))
+      .intoOpenFiles(myState.get(WizardConstants.FILES_TO_OPEN_KEY))
+      .intoDependencies(myState.get(WizardConstants.DEPENDENCIES_KEY))
       .build()
-    projectTemplate.render(context)
+    template.render(context)
   }
 
   def getTemplateRootFolder: File = {

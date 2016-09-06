@@ -100,7 +100,7 @@ class CompileServerLauncher  extends ApplicationComponent {
     compilerJars.partition(_.exists) match {
       case (presentFiles, Seq()) =>
         val bootclasspathArg = Nil
-        val classpath = (jdk.tools +: presentFiles).map(_.canonicalPath).mkString(File.separator)
+        val classpath = (jdk.tools +: presentFiles).map(_.canonicalPath).mkString(File.pathSeparator)
         val settings = JawaCompileServerSettings.getInstance
 
         val freePort = CompileServerLauncher.findFreePort
@@ -185,6 +185,7 @@ object CompileServerLauncher {
       new File(pluginRoot, "scala-library.jar"),
       new File(pluginRoot, "saf-library.jar"),
       new File(pluginRoot, "jawa-core.jar"),
+      new File(pluginRoot, "amandroid-core.jar"),
       new File(pluginRoot, "jawa-nailgun-runner.jar"),
       new File(pluginRoot, "compiler-settings.jar"),
       new File(jcRoot, "nailgun.jar"),

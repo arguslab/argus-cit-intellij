@@ -1,33 +1,7 @@
-<#if !(perModuleRepositories??) || perModuleRepositories>
-buildscript {
-    repositories {
-        jcenter()
-<#if mavenUrl != "mavenCentral">
-        maven {
-            url '${mavenUrl}'
-        }
-</#if>
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:${gradlePluginVersion}'
-    }
-}
-</#if>
 <#if isLibraryProject?? && isLibraryProject>
 apply plugin: 'com.android.library'
 <#else>
 apply plugin: 'com.android.application'
-</#if>
-<#if !(perModuleRepositories??) || perModuleRepositories>
-
-repositories {
-        jcenter()
-<#if mavenUrl != "mavenCentral">
-        maven {
-            url '${mavenUrl}'
-        }
-</#if>
-}
 </#if>
 
 android {
@@ -68,11 +42,4 @@ dependencies {
     </#list>
     </#if>
     compile fileTree(dir: 'libs', include: ['*.jar'])
-<#if WearprojectName?has_content && NumberOfEnabledFormFactors?has_content && NumberOfEnabledFormFactors gt 1 && Wearincluded>
-    wearApp project(':${WearprojectName}')
-    compile 'com.google.android.gms:play-services:+'
-</#if>
-<#if unitTestsSupported>
-    testCompile 'junit:junit:${junitVersion}'
-</#if>
 }
