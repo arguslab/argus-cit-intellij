@@ -88,7 +88,7 @@ public class JawaCompileServerForm implements Configurable {
 
     @Nls
     public String getDisplayName() {
-        return "Scala";
+        return "Jawa";
     }
 
     @Nullable

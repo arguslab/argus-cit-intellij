@@ -122,7 +122,7 @@ class IdeaIncrementalBuilder(category: BuilderCategory) extends ModuleLevelBuild
     }
 
 
-    //if no scala files to compile, return empty seq
+    //if no jawa files to compile, return empty seq
     if (!result.exists(_.getName.endsWith(".pilar"))) Seq.empty
     else result
   }

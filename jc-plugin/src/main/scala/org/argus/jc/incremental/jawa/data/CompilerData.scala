@@ -21,14 +21,15 @@ import org.jetbrains.jps.model.module.JpsModule
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
-case class CompilerData(javaHome: Option[File])
+case class CompilerData(javaVersion: String, javaHome: Option[File])
 
 object CompilerData {
   def from(context: CompileContext, chunk: ModuleChunk): Either[String, CompilerData] = {
     val target = chunk.representativeTarget
     val module = target.getModule
 
-    javaHome(context, module).map(CompilerData(_))
+    val javaVersion = System.getProperty("java.class.version")
+    javaHome(context, module).map(CompilerData(javaVersion, _))
   }
 
   def javaHome(context: CompileContext, module: JpsModule): Either[String, Option[File]] = {
@@ -39,8 +40,7 @@ object CompilerData {
       .toRight("No JDK in module " + module.getName)
       .flatMap { moduleJdk =>
 
-        val globalSettings = SettingsManager.getGlobalSettings(model.getGlobal)
-
+//        val globalSettings = SettingsManager.getGlobalSettings(model.getGlobal)
         val jvmSdk = Option(model.getProject.getSdkReferencesTable.getSdkReference(JpsJavaSdkType.INSTANCE))
           .flatMap(references => Option(references.resolve)).map(_.getProperties)
 

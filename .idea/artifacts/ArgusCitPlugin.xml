@@ -49,8 +49,8 @@
           <element id="library" level="project" name="SBT: org.jetbrains:jline:1.0.0:jar" />
           <element id="library" level="project" name="SBT: org.jetbrains:nailgun-patched:1.0.0:jar" />
           <element id="library" level="project" name="SBT: org.jetbrains:compiler-interface-sources:1.0.0:jar" />
-          <element id="library" level="project" name="SBT: com.github.arguslab:jawa-compiler_2.11:0.0.2:jar" />
           <element id="library" level="project" name="SBT: org.ow2.asm:asm-all:5.1:jar" />
+          <element id="library" level="project" name="SBT: com.github.arguslab:jawa-compiler_2.11:1.0.3:jar" />
         </element>
         <element id="archive" name="compiler-settings.jar">
           <element id="module-output" name="compiler-settings" />

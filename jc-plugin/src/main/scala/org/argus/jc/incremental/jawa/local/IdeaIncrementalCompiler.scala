@@ -17,13 +17,14 @@ import org.argus.jc.incremental.jawa.data.CompilationData
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
-class IdeaIncrementalCompiler extends AbstractCompiler {
+class IdeaIncrementalCompiler(javaVersion: String) extends AbstractCompiler {
   def compile(compilationData: CompilationData, client: Client): Unit = {
     val progress = getProgress(client)
     val reporter = getReporter(client)
     val logger = getLogger(client)
+    logger.error(javaVersion)
 
-    new JawaCompiler().compile(compilationData.sources.toList, Seq(compilationData.output), reporter, logger, progress)
+    new JawaCompiler(javaVersion).compile(compilationData.sources.toArray, Seq(compilationData.output).toArray, reporter, logger, progress)
   }
 
 }

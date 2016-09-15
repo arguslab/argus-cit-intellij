@@ -28,9 +28,12 @@ case class Arguments(compilerData: CompilerData, compilationData: CompilationDat
 
     val (sourceRoots, outputDirs) = compilationData.outputGroups.unzip
 
+    val javaVersion = compilerData.javaVersion
+
     val javaHomePath = compilerData.javaHome.map(fileToPath)
 
     Seq(
+      javaVersion,
       optionToString(javaHomePath),
       filesToPaths(compilationData.sources),
       filesToPaths(compilationData.classpath),
@@ -52,11 +55,12 @@ object Arguments {
 
   def from(strings: Seq[String]): Arguments = strings match {
     case Seq(
+    javaVersion,
     StringToOption(javaHomePath),
     PathsToFiles(sources),
     PathsToFiles(classpath),
     PathToFile(output),
-    StringToSequence(scalaOptions),
+    StringToSequence(jawaOptions),
     StringToSequence(javaOptions),
     order,
     PathToFile(cacheFile),
@@ -69,13 +73,13 @@ object Arguments {
         case PathToFile(file) => file
       }
 
-      val compilerData = CompilerData(javaHome)
+      val compilerData = CompilerData(javaVersion, javaHome)
 
       val outputToCacheMap = outputs.zip(caches).toMap
 
       val outputGroups = sourceRoots zip outputDirs
 
-      val compilationData = CompilationData(sources, classpath, output, scalaOptions, javaOptions,
+      val compilationData = CompilationData(sources, classpath, output, jawaOptions, javaOptions,
         CompileOrder.withName(order), cacheFile, outputToCacheMap, outputGroups)
 
       Arguments(compilerData, compilationData)

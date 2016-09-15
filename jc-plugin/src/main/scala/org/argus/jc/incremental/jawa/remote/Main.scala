@@ -72,7 +72,6 @@ object Main {
         }
         Arguments.from(strings)
       }
-      
       Server.compile(args.compilerData, args.compilationData, client)
     } catch {
       case e: Throwable => 

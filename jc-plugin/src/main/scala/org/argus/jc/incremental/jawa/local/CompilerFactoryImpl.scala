@@ -19,6 +19,6 @@ import org.argus.jc.incremental.jawa.data.CompilerData
   */
 class CompilerFactoryImpl extends CompilerFactory {
   def createCompiler(compilerData: CompilerData, client: Client): Compiler = {
-    new IdeaIncrementalCompiler()
+    new IdeaIncrementalCompiler(compilerData.javaVersion)
   }
 }
