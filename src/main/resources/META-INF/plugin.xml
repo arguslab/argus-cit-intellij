@@ -69,6 +69,10 @@
     <defaultTemplatePropertiesProvider implementation="org.argus.cit.intellij.jawa.actions.JawaDefaultTemplatePropertiesProvider"/>
 
     <moduleBuilder builderClass="org.argus.cit.intellij.android.newProject.ArgusCitWizardWrapper"/>
+
+    <xdebugger.breakpointType implementation="org.argus.cit.intellij.jawa.debugger.breakpoints.JawaLineBreakpointType"/>
+    <debugger.javaBreakpointHandlerFactory implementation="org.argus.cit.intellij.jawa.debugger.breakpoints.JawaBreakpointHandlerFactory"/>
+    <debuggerEditorTextProvider language="Jawa" implementationClass="com.intellij.debugger.impl.JavaEditorTextProviderImpl"/>
   </extensions>
 
   <application-components>

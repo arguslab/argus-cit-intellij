@@ -22,7 +22,6 @@ class IdeaIncrementalCompiler(javaVersion: String) extends AbstractCompiler {
     val progress = getProgress(client)
     val reporter = getReporter(client)
     val logger = getLogger(client)
-    logger.error(javaVersion)
 
     new JawaCompiler(javaVersion).compile(compilationData.sources.toArray, Seq(compilationData.output).toArray, reporter, logger, progress)
   }
