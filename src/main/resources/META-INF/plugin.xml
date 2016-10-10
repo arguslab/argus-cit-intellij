@@ -73,6 +73,11 @@
     <xdebugger.breakpointType implementation="org.argus.cit.intellij.jawa.debugger.breakpoints.JawaLineBreakpointType"/>
     <debugger.javaBreakpointHandlerFactory implementation="org.argus.cit.intellij.jawa.debugger.breakpoints.JawaBreakpointHandlerFactory"/>
     <debuggerEditorTextProvider language="Jawa" implementationClass="com.intellij.debugger.impl.JavaEditorTextProviderImpl"/>
+
+    <projectService serviceInterface="org.argus.cit.intellij.android.infoViewer.ApkInfoView"
+                    serviceImplementation="org.argus.cit.intellij.android.infoViewer.ApkInfoView"/>
+    <toolWindow id="ApkInfo" anchor="bottom" icon="/org/argus/cit/intellij/images/apkinfo.png"
+                factoryClass="org.argus.cit.intellij.android.infoViewer.ApkInfoToolWindowFactory" canCloseContents="true"/>
   </extensions>
 
   <application-components>
