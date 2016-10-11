@@ -2,6 +2,7 @@
 apply plugin: 'com.android.library'
 <#else>
 apply plugin: 'com.android.application'
+apply plugin: 'org.argus.android-jawa'
 </#if>
 
 android {

@@ -10,8 +10,9 @@
 
 package org.argus.cit.intellij.android.newProject
 
-import java.io.{File, FileInputStream, IOException, InputStream}
+import java.io._
 import java.util
+import java.util.Properties
 import java.util.zip.{ZipEntry, ZipInputStream}
 import javax.swing.Icon
 
@@ -109,7 +110,7 @@ class NewProjectWizard(project: Project, module: Module, host: DynamicWizardHost
     val rootLocation = new File(rootPath)
     val wrapperPropertiesFilePath = GradleUtil.getGradleWrapperPropertiesFilePath(rootLocation)
     try {
-      GradleUtil.updateGradleDistributionUrl(SdkConstants.GRADLE_LATEST_VERSION, wrapperPropertiesFilePath)
+      GradleUtil.updateGradleDistributionUrl("2.13", wrapperPropertiesFilePath)
     } catch {
       case e: IOException => LOG.warn("Failed to update Gradle wrapper file", e)
     }
@@ -146,6 +147,7 @@ class NewProjectWizard(project: Project, module: Module, host: DynamicWizardHost
       assert(filesToOpen != null)
       val listener = new ArgusReformattingGradleSyncListener(targetFiles, filesToOpen)
       projectImporter.importNewlyCreatedProject(projectName, rootLocation, listener, myProject, initialLanguageLevel)
+      createArgusCitProperties()
     } catch {
       case e: IOException =>
         Messages.showErrorDialog(e.getMessage, ERROR_MSG_TITLE)
@@ -154,6 +156,19 @@ class NewProjectWizard(project: Project, module: Module, host: DynamicWizardHost
         Messages.showErrorDialog(e.getMessage, ERROR_MSG_TITLE)
         LOG.error(e)
     }
+  }
+
+  private def createArgusCitProperties() = {
+    val location = myState.get(WizardConstants.PROJECT_LOCATION_KEY)
+    val moduleLocation = myState.get(MODULE_LOCATION_KEY)
+    val apkPath = myState.get(NewProjectWizard.APK_LOCATION_KEY)
+    val properties = new Properties()
+    properties.put("apk.path", apkPath)
+    properties.put("decompile.output", moduleLocation)
+    val propFile = new File(location, "argus_cit.properties")
+    val writer = new FileWriter(propFile)
+    properties.store(writer, this.getClass.getName)
+    writer.close()
   }
 
   override def getProgressTitle: ResourceUri = "Creating project..."
@@ -181,18 +196,6 @@ class NewProjectWizard(project: Project, module: Module, host: DynamicWizardHost
     myProject = UIUtil.invokeAndWaitIfNeeded(new Computable[Project] {
       override def compute(): Project = ProjectManager.getInstance().createProject(name, location)
     })
-//    val module_vf = getProject.getBaseDir.findFileByRelativePath("app")
-//    val depModule: Module = ApplicationManager.getApplication.runWriteAction(new Computable[Module]() {
-//      def compute: Module = {
-//        val depModule: Module = ModuleManager.getInstance(myProject).newModule(module_vf.getPath + File.separator + module_vf.getName + ".iml", StdModuleTypes.JAVA.getId)
-//        val model: ModifiableRootModel = ModuleRootManager.getInstance(depModule).getModifiableModel
-//        model.addContentEntry(module_vf)
-//        model.commit()
-//        depModule
-//      }
-//    })
-//    if (AndroidFacet.getInstance(depModule) == null) AndroidUtils.addAndroidFacetInWriteAction(depModule, module_vf, true)
-//    AndroidSdkUtils.setupAndroidPlatformIfNecessary(depModule, false)
     super.doFinish()
   }
 

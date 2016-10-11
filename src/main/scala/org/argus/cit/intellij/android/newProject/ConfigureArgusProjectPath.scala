@@ -84,11 +84,11 @@ class ConfigureArgusProjectPath(parentDisposable: Disposable) extends DynamicWiz
     val moduleRoot = new File(moduleRootPath)
     try {
       val main = moduleRootPath + File.separator + "src" + File.separator + "main"
-      val layout = DecompileLayout(FileUtil.toUri(main), createFolder = false, "java", createSeparateFolderForDexes = false)
+      val layout = DecompileLayout(FileUtil.toUri(main), createFolder = false, "jawa", createSeparateFolderForDexes = false)
       val settings = DecompilerSettings(None, dexLog = false, debugMode = false, removeSupportGen = true, forceDelete = true, None, layout)
       ApkDecompiler.decompile(FileUtil.toUri(path), settings)
       this.myState.put(WizardConstants.IS_LIBRARY_KEY, Boolean.box(false))
-      this.myState.put(SRC_DIR_KEY, "src/main/java")
+      this.myState.put(SRC_DIR_KEY, "src/main/jawa")
       this.myState.put(RES_DIR_KEY, "src/main/res")
       this.myState.put(MANIFEST_DIR_KEY, "src/main")
     } catch {

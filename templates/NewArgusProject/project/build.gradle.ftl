@@ -2,7 +2,10 @@
 
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
 <#if mavenUrl != "mavenCentral">
         maven {
             url '${mavenUrl}'
@@ -11,6 +14,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:${gradlePluginVersion}'
+        classpath 'gradle.plugin.com.github.arguslab:gradle-android-jawa-plugin:${androidJawaPluginVersion}'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

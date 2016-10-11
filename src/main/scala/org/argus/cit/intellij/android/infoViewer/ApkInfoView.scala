@@ -12,11 +12,13 @@ package org.argus.cit.intellij.android.infoViewer
 
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.components.{PersistentStateComponent, State, Storage, StoragePathMacros}
+import com.intellij.openapi.progress.{ProgressIndicator, ProgressManager, Task}
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.ui.content.{ContentFactory, ContentManager}
 import com.intellij.util.xmlb.annotations.Attribute
+import org.argus.amandroid.core.Apk
 import org.argus.cit.intellij.jawa.JawaBundle
 import org.jetbrains.annotations.NotNull
 import org.sireum.util._
@@ -53,7 +55,20 @@ class ApkInfoView(@NotNull project: Project) extends PersistentStateComponent[Ap
     basicInfoContent.setComponent(basicInfoPanel)
     Disposer.register(this, basicInfoPanel)
 
-    basicInfoPanel.setText("Hello Apk Info")
+    ProgressManager.getInstance().run(new Task.Backgroundable(project, "Collecting APK Information...") {
+//      private var apk: Apk = _
+      private var errorMessage: String = _
+//      private var errorTitle = _
+
+      override def run(progressIndicator: ProgressIndicator): Unit = {
+        errorMessage = project.getBasePath
+      }
+
+      override def onSuccess(): Unit = {
+        if (project.isDisposed) return
+        basicInfoPanel.setText(errorMessage)
+      }
+    })
 
     this.myContentManager = toolWindow.getContentManager
     this.myContentManager.addContent(basicInfoContent)
