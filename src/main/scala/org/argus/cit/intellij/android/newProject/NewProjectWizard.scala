@@ -162,13 +162,20 @@ class NewProjectWizard(project: Project, module: Module, host: DynamicWizardHost
     val location = myState.get(WizardConstants.PROJECT_LOCATION_KEY)
     val moduleLocation = myState.get(MODULE_LOCATION_KEY)
     val apkPath = myState.get(NewProjectWizard.APK_LOCATION_KEY)
+    val outputOffset = myState.get(NewProjectWizard.MANIFEST_DIR_KEY)
+    val src = myState.get(NewProjectWizard.SRC_DIR_KEY)
     val properties = new Properties()
     properties.put("apk.path", apkPath)
-    properties.put("decompile.output", moduleLocation)
+    properties.put("output.path", moduleLocation + File.separator + outputOffset)
+    if(src.startsWith(outputOffset)) properties.put("output.src", src.replaceFirst(outputOffset + File.separator, ""))
+    else properties.put("output.src", src)
     val propFile = new File(location, "argus_cit.properties")
     val writer = new FileWriter(propFile)
-    properties.store(writer, this.getClass.getName)
-    writer.close()
+    try {
+      properties.store(writer, this.getClass.getName)
+    } finally {
+      writer.close()
+    }
   }
 
   override def getProgressTitle: ResourceUri = "Creating project..."
@@ -216,6 +223,8 @@ object NewProjectWizard {
   final val APK_LOCATION_KEY: ScopedStateStore.Key[String] = ScopedStateStore.createKey("apkLocation", Scope.WIZARD, classOf[String])
   final val MODULE_LOCATION_KEY: ScopedStateStore.Key[String] = ScopedStateStore.createKey(TemplateMetadata.ATTR_PROJECT_OUT, Scope.WIZARD, classOf[String])
   final val PROJECT_NAME_KEY: ScopedStateStore.Key[String] = ScopedStateStore.createKey("projectName", Scope.WIZARD, classOf[String])
+  final val SRC_DIR_KEY: ScopedStateStore.Key[String] = ScopedStateStore.createKey("srcDir", Scope.WIZARD, classOf[String])
+  final val MANIFEST_DIR_KEY: ScopedStateStore.Key[String] = ScopedStateStore.createKey("manifestDir", Scope.WIZARD, classOf[String])
 
   def loadPackageNameFromManifestFile(apk: File): String = {
 

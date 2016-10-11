@@ -64,6 +64,7 @@
         <element id="directory" name="templates">
           <element id="dir-copy" path="$PROJECT_DIR$/templates" />
         </element>
+        <element id="library" level="project" name="SBT: org.ini4j:ini4j:0.5.4:jar" />
       </element>
     </root>
   </artifact>

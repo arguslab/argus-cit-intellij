@@ -88,9 +88,9 @@ class ConfigureArgusProjectPath(parentDisposable: Disposable) extends DynamicWiz
       val settings = DecompilerSettings(None, dexLog = false, debugMode = false, removeSupportGen = true, forceDelete = true, None, layout)
       ApkDecompiler.decompile(FileUtil.toUri(path), settings)
       this.myState.put(WizardConstants.IS_LIBRARY_KEY, Boolean.box(false))
-      this.myState.put(SRC_DIR_KEY, "src/main/jawa")
+      this.myState.put(NewProjectWizard.SRC_DIR_KEY, "src/main/jawa")
       this.myState.put(RES_DIR_KEY, "src/main/res")
-      this.myState.put(MANIFEST_DIR_KEY, "src/main")
+      this.myState.put(NewProjectWizard.MANIFEST_DIR_KEY, "src/main")
     } catch {
       case e: Exception =>
         setErrorHtml("<html>Your APK cannot be decompiled. Error message: " + e.getMessage + "</html>")
@@ -141,8 +141,6 @@ object ConfigureArgusProjectPath {
   protected def buildConfigurationHeader = WizardStepHeaderSettings.createTitleOnlyHeader("New Analysis")
 
   final val RES_DIR_KEY: ScopedStateStore.Key[String] = ScopedStateStore.createKey("resDir", Scope.PATH, classOf[String])
-  final val SRC_DIR_KEY: ScopedStateStore.Key[String] = ScopedStateStore.createKey("srcDir", Scope.PATH, classOf[String])
-  final val MANIFEST_DIR_KEY: ScopedStateStore.Key[String] = ScopedStateStore.createKey("manifestDir", Scope.PATH, classOf[String])
 
   /**
     * Set the executable bit on the 'gradlew' wrapper script on Mac/Linux
