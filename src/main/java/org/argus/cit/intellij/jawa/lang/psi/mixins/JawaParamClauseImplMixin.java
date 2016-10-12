@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
@@ -41,12 +42,13 @@ public abstract class JawaParamClauseImplMixin
     @Override
     public PsiParameter[] getParameters() {
         List<JawaParam> list = getParamList();
-        list.stream().filter(jawaParam -> {
+        List<JawaParam> thises = list.stream().filter(jawaParam -> {
             String kind = "";
             if(jawaParam.getKindAnnotation() != null)
                 kind = jawaParam.getKindAnnotation().getId().getText();
             return kind.equals("this");
-        }).forEach(list::remove);
+        }).collect(Collectors.toList());
+        list.removeAll(thises);
         return list.toArray(new JawaParam[list.size()]);
     }
 

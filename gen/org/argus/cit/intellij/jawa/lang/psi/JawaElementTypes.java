@@ -1,13 +1,3 @@
-/*
- * Copyright (c) 2016. Fengguo (Hugo) Wei and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Detailed contributors are listed in the CONTRIBUTOR.md
- */
-
 // This is a generated file. Not intended for manual editing.
 package org.argus.cit.intellij.jawa.lang.psi;
 
@@ -34,6 +24,7 @@ public interface JawaElementTypes {
   IElementType CLASS_OR_INTERFACE_DECLARATION = JawaElementTypeFactory.getElementType("CLASS_OR_INTERFACE_DECLARATION");
   IElementType CMP = JawaElementTypeFactory.getElementType("CMP");
   IElementType CMP_EXPRESSION = JawaElementTypeFactory.getElementType("CMP_EXPRESSION");
+  IElementType COND_BINARY_EXPRESSION = JawaElementTypeFactory.getElementType("COND_BINARY_EXPRESSION");
   IElementType CONST_CLASS_EXPRESSION = JawaElementTypeFactory.getElementType("CONST_CLASS_EXPRESSION");
   IElementType EXCEPTION_EXPRESSION = JawaElementTypeFactory.getElementType("EXCEPTION_EXPRESSION");
   IElementType EXPRESSION_LHS = JawaElementTypeFactory.getElementType("EXPRESSION_LHS");
@@ -109,11 +100,14 @@ public interface JawaElementTypes {
   IElementType DIV = new JawaTokenType("/");
   IElementType DOT = new JawaTokenType(".");
   IElementType ELSE = new JawaTokenType("else");
+  IElementType EQ = new JawaTokenType("==");
   IElementType EXCEPTION = new JawaTokenType("Exception");
   IElementType EXTENDS_AND_IMPLEMENTS = new JawaTokenType("extends");
   IElementType FCMPG = new JawaTokenType("fcmpg");
   IElementType FCMPL = new JawaTokenType("fcmpl");
+  IElementType GE = new JawaTokenType(">=");
   IElementType GOTO = new JawaTokenType("goto");
+  IElementType GT = new JawaTokenType(">");
   IElementType HAT = new JawaTokenType("^");
   IElementType ID = new JawaTokenType("ID");
   IElementType IF = new JawaTokenType("if");
@@ -122,14 +116,18 @@ public interface JawaElementTypes {
   IElementType LBRACE = new JawaTokenType("{");
   IElementType LBRACKET = new JawaTokenType("[");
   IElementType LCMP = new JawaTokenType("lcmp");
+  IElementType LE = new JawaTokenType("<=");
   IElementType LENGTH = new JawaTokenType("length");
   IElementType LOCATION_ID = new JawaTokenType("LOCATION_ID");
   IElementType LPAREN = new JawaTokenType("(");
+  IElementType LT = new JawaTokenType("<");
   IElementType METHOD = new JawaTokenType("procedure");
   IElementType MONITOR_ENTER = new JawaTokenType("monitorenter");
   IElementType MONITOR_EXIT = new JawaTokenType("monitorexit");
   IElementType MUL = new JawaTokenType("*");
   IElementType NEW = new JawaTokenType("new");
+  IElementType NOT = new JawaTokenType("~");
+  IElementType NQ = new JawaTokenType("!=");
   IElementType NULL_LITERAL = new JawaTokenType("null");
   IElementType NUMBER = new JawaTokenType("number");
   IElementType OR = new JawaTokenType("^|");
@@ -203,6 +201,9 @@ public interface JawaElementTypes {
       }
       else if (type == CMP_EXPRESSION) {
         return new JawaCmpExpressionImpl(node);
+      }
+      else if (type == COND_BINARY_EXPRESSION) {
+        return new JawaCondBinaryExpressionImpl(node);
       }
       else if (type == CONST_CLASS_EXPRESSION) {
         return new JawaConstClassExpressionImpl(node);

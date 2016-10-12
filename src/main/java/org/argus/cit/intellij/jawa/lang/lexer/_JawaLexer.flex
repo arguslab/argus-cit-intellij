@@ -1,4 +1,5 @@
 package org.argus.cit.intellij.jawa.lang.lexer;
+
 import com.intellij.lexer.*;
 import com.intellij.psi.tree.IElementType;
 import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
@@ -18,24 +19,19 @@ import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
 %type IElementType
 %unicode
 
-EOL="\r"|"\n"|"\r\n"
-LINE_WS=[\ \t\f]
-WHITE_SPACE=({LINE_WS}|{EOL})+
+EOL=\R
+WHITE_SPACE=\s
 
 ID=([:letter:]([\w]|[$])*)
 APOSTROPHE_ID=(`[^`@]+`)
 STATIC_ID=(`@@[^`@]+`)
-NUMBER=[0-9]+(\.[0-9]*)?
 LOCATION_ID=(#[\w]*\.)
+NUMBER=[0-9]+(\.[0-9]*)?
 STRING_LITERAL=('([^'\\]|\\.)*'|\"([^\"\\]|\\.)*\")
-
-END_OF_LINE_COMMENT="/""/"[^\r\n]*
 
 %%
 <YYINITIAL> {
   {WHITE_SPACE}           { return com.intellij.psi.TokenType.WHITE_SPACE; }
-
-  {END_OF_LINE_COMMENT}   { return JawaTokenTypes.LINE_COMMENT(); }
 
   ";"                     { return SEMI; }
   ","                     { return COMMA; }
@@ -96,6 +92,13 @@ END_OF_LINE_COMMENT="/""/"[^\r\n]*
   "^<"                    { return SHL; }
   "^>"                    { return SHR; }
   "^>>"                   { return USHR; }
+  "=="                    { return EQ; }
+  "!="                    { return NQ; }
+  "<"                     { return LT; }
+  ">="                    { return GE; }
+  ">"                     { return GT; }
+  "<="                    { return LE; }
+  "~"                     { return NOT; }
 
   {ID}                    { return ID; }
   {APOSTROPHE_ID}         { return APOSTROPHE_ID; }
@@ -104,14 +107,6 @@ END_OF_LINE_COMMENT="/""/"[^\r\n]*
   {NUMBER}                { return NUMBER; }
   {STRING_LITERAL}        { return STRING_LITERAL; }
 
-  [^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
 }
 
-
-"/**" ("*"? [^\/])* "*/" { //for comments in interpolated strings
-    return JawaTokenTypes.DOC_COMMENT();
-}
-
-"/*" ("*"? [^\/])* "*/" { //for comments in interpolated strings
-    return JawaTokenTypes.BLOCK_COMMENT();
-}
+[^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }

@@ -24,8 +24,9 @@ import com.intellij.ui.content.{ContentFactory, ContentManager}
 import com.intellij.util.xmlb.annotations.Attribute
 import org.argus.amandroid.core.{AndroidGlobalConfig, Apk}
 import org.argus.amandroid.core.appInfo.AppInfoCollector
+import org.argus.amandroid.core.util.AndroidLibraryAPISummary
 import org.argus.cit.intellij.jawa.JawaBundle
-import org.argus.jawa.core.{Global, MsgLevel, PrintReporter}
+import org.argus.jawa.core.{Constants, Global, MsgLevel, PrintReporter}
 import org.jetbrains.annotations.NotNull
 import org.sireum.util._
 
@@ -104,6 +105,7 @@ class ApkInfoView(@NotNull project: Project) extends PersistentStateComponent[Ap
             val reporter = new PrintReporter(MsgLevel.ERROR)
             global = new Global(apkUri, reporter)
             global.setJavaLib(AndroidGlobalConfig.settings.lib_files)
+            global.load(FileUtil.toUri(FileUtil.toFilePath(outputUri) + File.separator + src), Constants.PILAR_FILE_EXT, AndroidLibraryAPISummary)
             AppInfoCollector.collectInfo(apk, global, outputUri)
           }
         }

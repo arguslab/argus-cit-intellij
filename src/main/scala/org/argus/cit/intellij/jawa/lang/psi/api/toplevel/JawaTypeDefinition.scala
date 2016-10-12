@@ -11,13 +11,11 @@
 package org.argus.cit.intellij.jawa.lang.psi.api.toplevel
 
 import com.intellij.navigation.NavigationItem
-import com.intellij.psi.impl.PsiClassImplUtil
-import com.intellij.psi.{PsiClass, PsiElement}
-import org.argus.cit.intellij.jawa.lang.psi.JawaPsiElement
+import com.intellij.psi.impl.source.PsiExtensibleClass
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
-trait JawaTypeDefinition extends JawaNamedElement with PsiClass with NavigationItem {
+trait JawaTypeDefinition extends JawaNamedElement with PsiExtensibleClass with NavigationItem {
 
 }

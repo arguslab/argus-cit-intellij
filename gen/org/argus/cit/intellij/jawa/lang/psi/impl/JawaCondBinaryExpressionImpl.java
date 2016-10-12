@@ -8,23 +8,17 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
-import org.argus.cit.intellij.jawa.lang.psi.mixins.JawaAccessFlagAnnotationImplMixin;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.argus.cit.intellij.jawa.lang.psi.*;
-import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaAccessFlagStub;
-import com.intellij.psi.stubs.IStubElementType;
 
-public class JawaAccessFlagAnnotationImpl extends JawaAccessFlagAnnotationImplMixin implements JawaAccessFlagAnnotation {
+public class JawaCondBinaryExpressionImpl extends ASTWrapperPsiElement implements JawaCondBinaryExpression {
 
-  public JawaAccessFlagAnnotationImpl(ASTNode node) {
+  public JawaCondBinaryExpressionImpl(ASTNode node) {
     super(node);
   }
 
-  public JawaAccessFlagAnnotationImpl(JawaAccessFlagStub stub, IStubElementType nodeType) {
-    super(stub, nodeType);
-  }
-
   public void accept(@NotNull JawaVisitor visitor) {
-    visitor.visitAccessFlagAnnotation(this);
+    visitor.visitCondBinaryExpression(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -34,12 +28,14 @@ public class JawaAccessFlagAnnotationImpl extends JawaAccessFlagAnnotationImplMi
 
   @Override
   @Nullable
-  public PsiElement getId() {
-    return findChildByType(ID);
+  public JawaNumberLiteral getNumberLiteral() {
+    return PsiTreeUtil.getChildOfType(this, JawaNumberLiteral.class);
   }
 
-  public int getModifiers() {
-    return JawaPsiImplUtil.getModifiers(this);
+  @Override
+  @NotNull
+  public List<JawaVarSymbol> getVarSymbolList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, JawaVarSymbol.class);
   }
 
 }

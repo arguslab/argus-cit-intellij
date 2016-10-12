@@ -58,13 +58,13 @@
         <element id="archive" name="jawa-nailgun-runner.jar">
           <element id="module-output" name="nailgun-runners" />
         </element>
-        <element id="library" level="project" name="SBT: com.github.arguslab:saf-library_2.11:1.1.1:jar" />
-        <element id="library" level="project" name="SBT: com.github.arguslab:jawa-core_2.11:1.1.1:jar" />
-        <element id="library" level="project" name="SBT: com.github.arguslab:amandroid-core_2.11:1.1.1:jar" />
         <element id="directory" name="templates">
           <element id="dir-copy" path="$PROJECT_DIR$/templates" />
         </element>
         <element id="library" level="project" name="SBT: org.ini4j:ini4j:0.5.4:jar" />
+        <element id="library" level="project" name="SBT: com.github.arguslab:amandroid-core_2.11:1.1.2:jar" />
+        <element id="library" level="project" name="SBT: com.github.arguslab:jawa-core_2.11:1.1.2:jar" />
+        <element id="library" level="project" name="SBT: com.github.arguslab:saf-library_2.11:1.1.2:jar" />
       </element>
     </root>
   </artifact>

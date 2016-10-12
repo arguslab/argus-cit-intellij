@@ -5,9 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface JawaConstClassExpression extends PsiElement {
+public interface JawaCondBinaryExpression extends PsiElement {
+
+  @Nullable
+  JawaNumberLiteral getNumberLiteral();
 
   @NotNull
-  JawaTypeAnnotation getTypeAnnotation();
+  List<JawaVarSymbol> getVarSymbolList();
 
 }

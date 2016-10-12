@@ -81,6 +81,14 @@
     SHR='^>'
     USHR='^>>'
 
+    EQ='=='
+    NQ='!='
+    LT='<'
+    GE='>='
+    GT='>'
+    LE='<='
+    NOT='~'
+
     ID='regexp:(\p{Alpha}([\w]|[$])*)'
     APOSTROPHE_ID="regexp:(`[^`@]+`)"
     STATIC_ID="regexp:(`@@[^`@]+`)"
@@ -211,7 +219,7 @@ ArgClause ::= '(' (VarSymbol (',' VarSymbol)*)? ')' {pin=3}
 
 ThrowStatement ::= 'throw' VarSymbol
 
-IfStatement ::= 'if' BinaryExpression 'then' 'goto' LocationSymbol
+IfStatement ::= 'if' CondBinaryExpression 'then' 'goto' LocationSymbol
 
 SwitchStatement ::= 'switch' VarSymbol SwitchCase* SwitchDefaultCase?
 SwitchCase ::= '|' NUMBER_LITERAL '=>' 'goto' LocationSymbol {pin=2}
@@ -281,7 +289,11 @@ IndexingExpression ::= VarSymbol '[' (VarSymbol|NUMBER_LITERAL) ']' {pin=2}
 
 private binary_op ::= '+' | '-' | '*' | '/' | '%%' | '^&' | '^|' | '^~' | '^<' | '^>' | '^>>'
 
-BinaryExpression ::= VarSymbol binary_op (VarSymbol|NUMBER_LITERAL|'null')
+BinaryExpression ::= VarSymbol binary_op (VarSymbol|NUMBER_LITERAL)
+
+private cond_binary_op ::= '!=' | '==' | '>' | '<' | '>=' | '<='
+
+CondBinaryExpression ::= VarSymbol cond_binary_op (VarSymbol|NUMBER_LITERAL|'null')
 
 CatchClause ::= 'catch' JwType CatchRange 'goto' LocationSymbol ';'
 CatchRange ::= '@' '[' LocationSymbol '..' LocationSymbol ']' {pin=2}

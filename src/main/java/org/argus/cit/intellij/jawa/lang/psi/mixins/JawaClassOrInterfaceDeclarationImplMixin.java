@@ -14,15 +14,17 @@ import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.ItemPresentationProviders;
 import com.intellij.openapi.util.Pair;
+import com.intellij.openapi.util.UserDataHolder;
 import com.intellij.pom.java.LanguageLevel;
 import com.intellij.psi.*;
-import com.intellij.psi.impl.InheritanceImplUtil;
-import com.intellij.psi.impl.PsiClassImplUtil;
-import com.intellij.psi.impl.PsiImplUtil;
-import com.intellij.psi.impl.PsiSuperMethodImplUtil;
+import com.intellij.psi.impl.*;
+import com.intellij.psi.impl.source.ClassInnerStuffCache;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.util.CachedValueProvider;
+import com.intellij.psi.util.CachedValuesManager;
+import com.intellij.psi.util.PsiModificationTracker;
 import com.intellij.psi.util.PsiUtil;
 import org.argus.cit.intellij.jawa.icons.Icons;
 import org.argus.cit.intellij.jawa.lang.psi.*;
@@ -35,7 +37,6 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -48,10 +49,58 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
 
     public JawaClassOrInterfaceDeclarationImplMixin(@NotNull JawaClassOrInterfaceStub stub, @NotNull IStubElementType nodeType) {
         super(stub, nodeType);
+        addTrace(null);
     }
 
     public JawaClassOrInterfaceDeclarationImplMixin(@NotNull ASTNode node) {
         super(node);
+        addTrace(null);
+    }
+
+    private final ClassInnerStuffCache myInnersCache = new ClassInnerStuffCache(this);
+    private volatile String myCachedName;
+
+    private void addTrace(@Nullable JawaClassOrInterfaceStub stub) {
+        if (ourTraceStubAstBinding) {
+            String creationTrace = "Creation thread: " + Thread.currentThread() + "\n" + DebugUtil.currentStackTrace();
+            if (stub != null) {
+                creationTrace += "\nfrom stub " + stub + "@" + System.identityHashCode(stub) + "\n";
+                if (stub instanceof UserDataHolder) {
+                    String stubTrace = ((UserDataHolder)stub).getUserData(CREATION_TRACE);
+                    if (stubTrace != null) {
+                        creationTrace += stubTrace;
+                    }
+                }
+            }
+            putUserData(CREATION_TRACE, creationTrace);
+        }
+    }
+
+    @Override
+    public void subtreeChanged() {
+        dropCaches();
+        super.subtreeChanged();
+    }
+
+    private void dropCaches() {
+        myInnersCache.dropCaches();
+        myCachedName = null;
+    }
+
+    @Override
+    protected Object clone() {
+        JawaClassOrInterfaceDeclarationImplMixin clone = (JawaClassOrInterfaceDeclarationImplMixin)super.clone();
+        clone.dropCaches();
+        return clone;
+    }
+
+    @Override
+    public PsiElement getOriginalElement() {
+        return CachedValuesManager.getCachedValue(this, () -> {
+            final JavaPsiImplementationHelper helper = JavaPsiImplementationHelper.getInstance(getProject());
+            final PsiClass result = helper != null ? helper.getOriginalClass(JawaClassOrInterfaceDeclarationImplMixin.this) : JawaClassOrInterfaceDeclarationImplMixin.this;
+            return CachedValueProvider.Result.create(result, PsiModificationTracker.JAVA_STRUCTURE_MODIFICATION_COUNT);
+        });
     }
 
     @Nullable
@@ -136,38 +185,25 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
     @NotNull
     @Override
     public PsiField[] getFields() {
-        List<JawaFieldDeclaration> jfds = new ArrayList<>();
-        List<JawaInstanceFieldDeclaration> ifl = getInstanceFieldDeclarationBlock().getInstanceFieldDeclarationList();
-        List<JawaStaticFieldDeclaration> sfl = getStaticFieldDeclarationList();
-        ifl.forEach(i -> jfds.add(i.getFieldDeclaration()));
-        sfl.forEach(i -> jfds.add(i.getFieldDeclaration()));
-        PsiField[] fields = new PsiField[jfds.size()];
-        return jfds.toArray(fields);
+        return myInnersCache.getFields();
     }
 
     @NotNull
     @Override
     public PsiMethod[] getMethods() {
-        List<JawaMethodDeclaration> mds = getMethodDeclarationList();
-        PsiMethod[] methods = new PsiMethod[mds.size()];
-        return mds.toArray(methods);
+        return myInnersCache.getMethods();
     }
 
     @NotNull
     @Override
     public PsiMethod[] getConstructors() {
-        List<PsiMethod> consts = new ArrayList<>();
-        Arrays.asList(getMethods()).forEach(m -> {
-            if(m.isConstructor()) consts.add(m);
-        });
-        PsiMethod[] methods = new PsiMethod[consts.size()];
-        return consts.toArray(methods);
+        return myInnersCache.getConstructors();
     }
 
     @NotNull
     @Override
     public PsiClass[] getInnerClasses() {
-        return new PsiClass[0];
+        return myInnersCache.getInnerClasses();
     }
 
     @NotNull
@@ -197,7 +233,7 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
     @Nullable
     @Override
     public PsiField findFieldByName(@NonNls String name, boolean checkBases) {
-        return PsiClassImplUtil.findFieldByName(this, name, checkBases);
+        return myInnersCache.findFieldByName(name, checkBases);
     }
 
     @Nullable
@@ -215,7 +251,7 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
     @NotNull
     @Override
     public PsiMethod[] findMethodsByName(@NonNls String name, boolean checkBases) {
-        return PsiClassImplUtil.findMethodsByName(this, name, checkBases);
+        return myInnersCache.findMethodsByName(name, checkBases);
     }
 
     @NotNull
@@ -232,8 +268,8 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
 
     @Nullable
     @Override
-    public PsiClass findInnerClassByName(@NonNls String s, boolean b) {
-        return null;
+    public PsiClass findInnerClassByName(@NonNls String name, boolean checkBases) {
+        return myInnersCache.findInnerClassByName(name, checkBases);
     }
 
     @Nullable
@@ -381,9 +417,13 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
 
     @Override
     public String name() {
+        String name = myCachedName;
+        if(name != null) return name;
         JawaClassOrInterfaceStub stub = getStub();
-        if(stub != null) return stub.getName();
-        else return getTypeDefSymbol().getJawaType().simpleName();
+        if(stub != null) name = stub.getName();
+        else name = getTypeDefSymbol().getJawaType().simpleName();
+        myCachedName = name;
+        return name;
     }
 
     @Override
@@ -391,12 +431,16 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
         return getTypeDefSymbol();
     }
 
+//    @Override
+//    public Icon getIcon(int flags) {
+//        int mods = getAccessFlagAnnotation().getModifiers();
+//        if(isInterface()) return Icons.Interface();
+//        else if(AccessFlag.isAbstract(mods)) return Icons.AbstractClass();
+//        else return Icons.Class();
+//    }
     @Override
-    public Icon getIcon(int flags) {
-        int mods = getAccessFlagAnnotation().getModifiers();
-        if(isInterface()) return Icons.Interface();
-        else if(AccessFlag.isAbstract(mods)) return Icons.AbstractClass();
-        else return Icons.Class();
+    public Icon getElementIcon(int flags) {
+        return PsiClassImplUtil.getClassIcon(flags, this);
     }
 
     @Override
@@ -406,6 +450,37 @@ public abstract class JawaClassOrInterfaceDeclarationImplMixin
 
     @Override
     public int getTextOffset() {
-        return getNameIdentifier().getTextOffset();
+        return nameId().getTextOffset();
+    }
+
+    @Override
+    protected boolean isVisibilitySupported() {
+        return true;
+    }
+
+    @NotNull
+    @Override
+    public List<PsiField> getOwnFields() {
+        List<PsiField> jfds = new ArrayList<>();
+        List<JawaInstanceFieldDeclaration> ifl = getInstanceFieldDeclarationBlock().getInstanceFieldDeclarationList();
+        List<JawaStaticFieldDeclaration> sfl = getStaticFieldDeclarationList();
+        ifl.forEach(i -> jfds.add(i.getFieldDeclaration()));
+        sfl.forEach(i -> jfds.add(i.getFieldDeclaration()));
+        return jfds;
+    }
+
+    @NotNull
+    @Override
+    public List<PsiMethod> getOwnMethods() {
+        List<PsiMethod> jmds = new ArrayList<>();
+        List<JawaMethodDeclaration> mds = getMethodDeclarationList();
+        mds.forEach(jmds::add);
+        return jmds;
+    }
+
+    @NotNull
+    @Override
+    public List<PsiClass> getOwnInnerClasses() {
+        return new ArrayList<>();
     }
 }

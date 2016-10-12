@@ -139,7 +139,8 @@ object ApkInfoPresentation {
               if(f.getCategorys.nonEmpty) fStr += "\n  categories: " + f.getCategorys.mkString(", ")
               if(!f.getData.isEmpty){
                 fStr +=
-                  s"""  data:
+                  s"""
+                     |  data:
                      |    schemes = ${f.getData.getSchemes.mkString(", ")}
                      |    authorities = ${f.getData.getAuthorities.mkString(", ")}
                      |    paths = ${f.getData.getPaths.mkString(", ")}
@@ -155,7 +156,7 @@ object ApkInfoPresentation {
       )
     }
 
-    val urls = AndroidUrlCollector.collectUrls(global, apk.nameUri, apk.outApkUri)
+    val urls = AndroidUrlCollector.collectUrls(global, apk.nameUri)
     var apisAndStrings = ""
     if(urls.nonEmpty) {
       apisAndStrings +=

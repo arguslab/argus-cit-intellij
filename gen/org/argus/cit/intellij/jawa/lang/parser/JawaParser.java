@@ -1,13 +1,3 @@
-/*
- * Copyright (c) 2016. Fengguo (Hugo) Wei and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Detailed contributors are listed in the CONTRIBUTOR.md
- */
-
 // This is a generated file. Not intended for manual editing.
 package org.argus.cit.intellij.jawa.lang.parser;
 
@@ -77,6 +67,9 @@ public class JawaParser implements PsiParser, LightPsiParser {
     }
     else if (t == CMP_EXPRESSION) {
       r = CmpExpression(b, 0);
+    }
+    else if (t == COND_BINARY_EXPRESSION) {
+      r = CondBinaryExpression(b, 0);
     }
     else if (t == CONST_CLASS_EXPRESSION) {
       r = ConstClassExpression(b, 0);
@@ -419,7 +412,7 @@ public class JawaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // VarSymbol binary_op (VarSymbol|NUMBER_LITERAL|'null')
+  // VarSymbol binary_op (VarSymbol|NUMBER_LITERAL)
   public static boolean BinaryExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "BinaryExpression")) return false;
     if (!nextTokenIs(b, ID)) return false;
@@ -432,14 +425,13 @@ public class JawaParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // VarSymbol|NUMBER_LITERAL|'null'
+  // VarSymbol|NUMBER_LITERAL
   private static boolean BinaryExpression_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "BinaryExpression_2")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = VarSymbol(b, l + 1);
     if (!r) r = NUMBER_LITERAL(b, l + 1);
-    if (!r) r = consumeToken(b, NULL_LITERAL);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -624,6 +616,32 @@ public class JawaParser implements PsiParser, LightPsiParser {
       c = current_position_(b);
     }
     return true;
+  }
+
+  /* ********************************************************** */
+  // VarSymbol cond_binary_op (VarSymbol|NUMBER_LITERAL|'null')
+  public static boolean CondBinaryExpression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "CondBinaryExpression")) return false;
+    if (!nextTokenIs(b, ID)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = VarSymbol(b, l + 1);
+    r = r && cond_binary_op(b, l + 1);
+    r = r && CondBinaryExpression_2(b, l + 1);
+    exit_section_(b, m, COND_BINARY_EXPRESSION, r);
+    return r;
+  }
+
+  // VarSymbol|NUMBER_LITERAL|'null'
+  private static boolean CondBinaryExpression_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "CondBinaryExpression_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = VarSymbol(b, l + 1);
+    if (!r) r = NUMBER_LITERAL(b, l + 1);
+    if (!r) r = consumeToken(b, NULL_LITERAL);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   /* ********************************************************** */
@@ -820,14 +838,14 @@ public class JawaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // 'if' BinaryExpression 'then' 'goto' LocationSymbol
+  // 'if' CondBinaryExpression 'then' 'goto' LocationSymbol
   public static boolean IfStatement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "IfStatement")) return false;
     if (!nextTokenIs(b, IF)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, IF);
-    r = r && BinaryExpression(b, l + 1);
+    r = r && CondBinaryExpression(b, l + 1);
     r = r && consumeToken(b, THEN);
     r = r && consumeToken(b, GOTO);
     r = r && LocationSymbol(b, l + 1);
@@ -1717,6 +1735,7 @@ public class JawaParser implements PsiParser, LightPsiParser {
   // unary_op VarSymbol
   public static boolean UnaryExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "UnaryExpression")) return false;
+    if (!nextTokenIs(b, "<unary expression>", SUB, NOT)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, UNARY_EXPRESSION, "<unary expression>");
     r = unary_op(b, l + 1);
@@ -1771,13 +1790,30 @@ public class JawaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // '!=' | '==' | '>' | '<' | '>=' | '<='
+  static boolean cond_binary_op(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "cond_binary_op")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, NQ);
+    if (!r) r = consumeToken(b, EQ);
+    if (!r) r = consumeToken(b, GT);
+    if (!r) r = consumeToken(b, LT);
+    if (!r) r = consumeToken(b, GE);
+    if (!r) r = consumeToken(b, LE);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // '-' | '~'
   static boolean unary_op(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "unary_op")) return false;
+    if (!nextTokenIs(b, "", SUB, NOT)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, SUB);
-    if (!r) r = consumeToken(b, "~");
+    if (!r) r = consumeToken(b, NOT);
     exit_section_(b, m, null, r);
     return r;
   }
