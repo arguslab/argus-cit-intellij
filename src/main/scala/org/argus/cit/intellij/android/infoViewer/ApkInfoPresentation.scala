@@ -65,7 +65,7 @@ object ApkInfoPresentation {
     val services = components.filter(_.typ == ComponentType.SERVICE)
     val receivers = components.filter(_.typ == ComponentType.RECEIVER)
     val providers = components.filter(_.typ == ComponentType.PROVIDER)
-    var applicationInfo: StringBuilder = new StringBuilder
+    val applicationInfo: StringBuilder = new StringBuilder
     applicationInfo.append(s"""Uses Permissions:
                               |${uses_permissions.mkString("\n").trim}
                             """.stripMargin)

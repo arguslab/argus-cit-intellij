@@ -15,16 +15,19 @@ object CitVersions {
   val sbtVersion = "0.13.9"
   val ideaVersion = "163.5644.15"
   val sbtStructureVersion = "5.1.2"
-  val argusSafVersion = "1.1.2"
-  val jawaCompilerVersion = "1.0.4"
+  val argusSafVersion = "1.1.3"
+  val jawaCompilerVersion = "1.0.5"
 }
 
 object Dependencies {
   import CitVersions._
 
   val scalaLibrary = "org.scala-lang" % "scala-library" % scalaVersion
+  val scalaReflect = "org.scala-lang" % "scala-reflect" % scalaVersion
+  val scalaXml = "org.scala-lang.modules" %% "scala-xml" % "1.0.2"
+  val scalaParserCombinators = "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4"
 
-  val sfaLibrary = "com.github.arguslab" %% "saf-library" % argusSafVersion
+  val safLibrary = "com.github.arguslab" %% "saf-library" % argusSafVersion
   val jawaCore = "com.github.arguslab" %% "jawa-core" % argusSafVersion
   val amandroidCore = "com.github.arguslab" %% "amandroid-core" % argusSafVersion
   val jawaCompiler = "com.github.arguslab" %% "jawa-compiler" % jawaCompilerVersion
@@ -45,8 +48,19 @@ object DependencyGroups {
 //    sbtInterface
   )
 
-  val jawa = Seq(sfaLibrary, jawaCore)
+  val jawa = Seq(safLibrary, jawaCore)
 
   val amandroid = jawa ++ Seq(amandroidCore)
 
+  val argus_cit = Seq(
+    scalaLibrary,
+    scalaReflect,
+    scalaXml,
+    scalaParserCombinators
+  ) ++ amandroid
+
+  val jc = Seq(
+    nailgun,
+    jawaCompiler
+  ) ++ jawa ++ sbtBundled
 }

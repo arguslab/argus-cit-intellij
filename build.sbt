@@ -39,7 +39,7 @@ lazy val argus_cit_intellij: Project =
       ideExcludedDirectories := Seq(baseDirectory.value / "testdata" / "projects"),
       javacOptions in Global ++= Seq("-source", "1.8", "-target", "1.8"),
       scalacOptions in Global += "-target:jvm-1.8",
-      libraryDependencies ++= DependencyGroups.amandroid,
+      libraryDependencies ++= DependencyGroups.argus_cit,
       unmanagedJars in Compile +=  file(System.getProperty("java.home")).getParentFile / "lib" / "tools.jar",
       ideaInternalPlugins := Seq(
         "copyright",
@@ -67,7 +67,7 @@ lazy val jc_plugin  =
     .dependsOn(compiler_settings)
     .enablePlugins(SbtIdeaPlugin)
     .settings(
-      libraryDependencies ++= Seq(Dependencies.nailgun) ++ DependencyGroups.sbtBundled ++ DependencyGroups.jawa ++ Seq(Dependencies.jawaCompiler)
+      libraryDependencies ++= DependencyGroups.jc
     )
 
 lazy val compiler_settings =
@@ -120,9 +120,15 @@ lazy val plugin_packager =
         ).map { (a,b) => a ++ b },
       mappings := {
         import Packaging.PackageEntry._
-        val crossLibraries = List(Dependencies.sfaLibrary, Dependencies.jawaCore, Dependencies.jawaCompiler)
-        val librariesToCopyAsIs = DependencyGroups.jawa.filterNot(lib =>
-          crossLibraries.contains(lib))
+        val crossLibraries = List(
+          (Dependencies.safLibrary, "lib"),
+          (Dependencies.jawaCore, "lib"),
+          (Dependencies.jawaCompiler, "lib/jc"),
+          (Dependencies.amandroidCore, "lib"),
+          (Dependencies.scalaParserCombinators, "lib"),
+          (Dependencies.scalaXml, "lib"))
+        val librariesToCopyAsIs = DependencyGroups.argus_cit.filterNot(lib =>
+          crossLibraries.map(_._1).contains(lib) || lib == Dependencies.scalaLibrary)
         val jc = Seq(
           Artifact(pack.in(jc_plugin, Compile).value,
             "lib/jc/jawa-jc-plugin.jar"),
@@ -133,9 +139,7 @@ lazy val plugin_packager =
           Library(Dependencies.incrementalCompiler,
             "lib/jc/incremental-compiler.jar"),
           Library(Dependencies.bundledJline,
-            "lib/jc/jline.jar"),
-          Library(Dependencies.jawaCompiler,
-            "lib/jc/jawa-compiler.jar")
+            "lib/jc/jline.jar")
         )
         val lib = Seq(
           Artifact(pack.in(argus_cit_intellij, Compile).value,
@@ -146,16 +150,10 @@ lazy val plugin_packager =
             "lib/jawa-nailgun-runner.jar"),
           Library(Dependencies.scalaLibrary,
             "lib/scala-library.jar"),
-          Library(Dependencies.sfaLibrary,
-            "lib/saf-library.jar"),
-          Library(Dependencies.jawaCore,
-            "lib/jawa-core.jar"),
-          Library(Dependencies.amandroidCore,
-            "lib/amandroid-core.jar"),
           Directory(baseDirectory.in(ThisBuild).value / "templates", "lib/templates")
         ) ++
-        crossLibraries.map { lib =>
-          Library(lib.copy(name = lib.name + "_2.11"), s"lib/${lib.name}.jar")
+        crossLibraries.map { case (clib, dir) =>
+          Library(clib.copy(name = clib.name + "_2.11"), s"$dir/${clib.name}.jar")
         } ++
         librariesToCopyAsIs.map { lib =>
           Library(lib, s"lib/${lib.name}.jar")
