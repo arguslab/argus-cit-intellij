@@ -126,12 +126,22 @@ lazy val plugin_packager =
           (Dependencies.jawaCompiler, "lib/jc"),
           (Dependencies.amandroidCore, "lib"),
           (Dependencies.scalaParserCombinators, "lib"),
-          (Dependencies.scalaXml, "lib"))
+          (Dependencies.scalaXml, "lib"),
+          (Dependencies.akka_actor, "lib"),
+          (Dependencies.scala_java8_compat, "lib"),
+          (Dependencies.json4s_ext, "lib"),
+          (Dependencies.json4s_native, "lib"),
+          (Dependencies.json4s_core, "lib"),
+          (Dependencies.json4s_ast, "lib"),
+          (Dependencies.json4s_scalap, "lib")
+        )
         val librariesToCopyAsIs = DependencyGroups.argus_cit.filterNot(lib =>
           crossLibraries.map(_._1).contains(lib) || lib == Dependencies.scalaLibrary)
         val jc = Seq(
           Artifact(pack.in(jc_plugin, Compile).value,
             "lib/jc/jawa-jc-plugin.jar"),
+          Library(Dependencies.asm_all,
+            "lib/jc/asm-all.jar"),
           Library(Dependencies.nailgun,
             "lib/jc/nailgun.jar"),
           Library(Dependencies.compilerInterfaceSources,

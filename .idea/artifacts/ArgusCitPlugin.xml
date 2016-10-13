@@ -2,10 +2,10 @@
   <artifact build-on-make="true" name="ArgusCitPlugin">
     <output-path>$PROJECT_DIR$/out/plugin/Argus-CIT</output-path>
     <properties id="ant-postprocessing">
-      <options enabled="true" />
-    </properties>
-    <properties id="ant-preprocessing">
-      <options enabled="true" />
+      <options enabled="true">
+        <file>file://$PROJECT_DIR$/buildutils.xml</file>
+        <target>idea.postbuild</target>
+      </options>
     </properties>
     <root id="root">
       <element id="directory" name="lib">
