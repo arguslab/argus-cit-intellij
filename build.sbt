@@ -26,9 +26,9 @@ onLoad in Global := ((s: State) => { "updateIdea" :: s}) compose (onLoad in Glob
 
 addCommandAlias("downloadIdea", "updateIdea")
 
-addCommandAlias("packagePlugin", "pluginPackager/package")
+addCommandAlias("packagePlugin", "plugin-packager/package")
 
-addCommandAlias("packagePluginZip", "pluginCompressor/package")
+addCommandAlias("packagePluginZip", "plugin-compressor/package")
 
 lazy val argus_cit_intellij: Project =
   newProject("argus-cit-intellij", file("."))
@@ -36,7 +36,11 @@ lazy val argus_cit_intellij: Project =
     .enablePlugins(SbtIdeaPlugin)
     .settings(argusSafSettings)
     .settings(
+      ideExcludedDirectories := Seq(baseDirectory.value / "testdata" / "projects"),
+      javacOptions in Global ++= Seq("-source", "1.8", "-target", "1.8"),
+      scalacOptions in Global += "-target:jvm-1.8",
       libraryDependencies ++= DependencyGroups.amandroid,
+      unmanagedJars in Compile +=  file(System.getProperty("java.home")).getParentFile / "lib" / "tools.jar",
       ideaInternalPlugins := Seq(
         "copyright",
         "gradle",
@@ -79,6 +83,7 @@ lazy val idea_runner =
     .settings(
       autoScalaLibrary := false,
       unmanagedJars in Compile := ideaMainJars.in(argus_cit_intellij).value,
+      unmanagedJars in Compile += file(System.getProperty("java.home")).getParentFile / "lib" / "tools.jar",
       // run configuration
       fork in run := true,
       mainClass in (Compile, run) := Some("com.intellij.idea.Main"),

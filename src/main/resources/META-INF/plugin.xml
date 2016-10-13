@@ -9,9 +9,9 @@
   -->
 
 <idea-plugin version="2">
-  <id>org.arguslab.cit.intellij</id>
+  <id>org.argus.cit.intellij</id>
   <name>Argus-CIT</name>
-  <version>VERSION</version>
+  <version>1.0.0</version>
   <vendor url="http://www.arguslab.org/">Argus Laboratory: Fengguo Wei</vendor>
 
   <depends>org.jetbrains.android</depends>
