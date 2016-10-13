@@ -131,7 +131,11 @@ object DependencyGroups {
     scalaReflect
   ) ++ blueprints ++ st ++ jgrapht
 
-  val akka = Seq(akka_actor, config, scala_java8_compat)
+  val akka = Seq(
+    akka_actor,
+    config,
+    scala_java8_compat
+  )
 
   val json4s = Seq(
     json4s_ext,

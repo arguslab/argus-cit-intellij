@@ -25,7 +25,6 @@
         <element id="library" level="project" name="SBT: org.jgrapht:jgrapht-core:0.9.2:jar" />
         <element id="library" level="project" name="SBT: org.jgrapht:jgrapht-ext:0.9.2:jar" />
         <element id="library" level="project" name="SBT: org.scala-lang.modules:scala-parser-combinators_2.11:1.0.4:jar" />
-        <element id="library" level="project" name="SBT: org.scala-lang:scala-compiler:2.11.8:jar" />
         <element id="library" level="project" name="SBT: org.scala-lang:scala-library:2.11.8:jar" />
         <element id="library" level="project" name="SBT: org.scala-lang:scala-reflect:2.11.8:jar" />
         <element id="archive" name="argus-cit-plugin.jar">
@@ -60,8 +59,6 @@
         <element id="library" level="project" name="SBT: stax:stax-api:1.0.1:jar" />
         <element id="library" level="project" name="SBT: org.scalactic:scalactic_2.11:2.2.6:jar" />
         <element id="library" level="project" name="SBT: org.scalatest:scalatest_2.11:2.2.6:jar" />
-        <element id="library" level="project" name="SBT: org.scoverage:scalac-scoverage-plugin_2.11:1.1.1:jar" />
-        <element id="library" level="project" name="SBT: org.scoverage:scalac-scoverage-runtime_2.11:1.1.1:jar" />
       </element>
     </root>
   </artifact>
