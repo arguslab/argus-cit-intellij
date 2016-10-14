@@ -11,13 +11,13 @@
 <idea-plugin version="2">
   <id>org.argus.cit.intellij</id>
   <name>Argus-CIT</name>
-  <version>1.0.0</version>
-  <vendor url="http://www.arguslab.org/">Argus Laboratory: Fengguo Wei</vendor>
+  <version>VERSION</version>
+  <vendor url="http://www.arguslab.org/">Argus Laboratory: Fengguo (Hugo) Wei</vendor>
 
   <depends>org.jetbrains.android</depends>
 
-    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="145.0"/>
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <idea-version since-build="162"/>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
