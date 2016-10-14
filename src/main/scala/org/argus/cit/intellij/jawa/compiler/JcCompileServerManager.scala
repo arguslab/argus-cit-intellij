@@ -35,7 +35,7 @@ import org.argus.cit.intellij.jawa.project._
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
-class CompileServerManager(project: Project) extends ProjectComponent {
+class JcCompileServerManager(project: Project) extends ProjectComponent {
   private val IconRunning = Icons.COMPILE_SERVER
 
   private val IconStopped = IconLoader.getDisabledIcon(IconRunning)
@@ -97,7 +97,7 @@ class CompileServerManager(project: Project) extends ProjectComponent {
 
   private var installed = false
 
-  private def launcher = CompileServerLauncher.instance
+  private def launcher = JcCompileServerLauncher.instance
 
   private def bar = WindowManager.getInstance.getStatusBar(project)
 
@@ -166,7 +166,7 @@ class CompileServerManager(project: Project) extends ProjectComponent {
 
   private object Configure extends AnAction("&Configure...", "Configure compile server", AllIcons.General.Settings) with DumbAware {
     def actionPerformed(e: AnActionEvent) {
-      CompileServerManager.showCompileServerSettingsDialog()
+      JcCompileServerManager.showCompileServerSettingsDialog()
     }
   }
 
@@ -204,8 +204,8 @@ class CompileServerManager(project: Project) extends ProjectComponent {
   }
 }
 
-object CompileServerManager {
-  def instance(project: Project): CompileServerManager = project.getComponent(classOf[CompileServerManager])
+object JcCompileServerManager {
+  def instance(project: Project): JcCompileServerManager = project.getComponent(classOf[JcCompileServerManager])
 
   def showCompileServerSettingsDialog(): Unit = {
     ShowSettingsUtil.getInstance().showSettingsDialog(null, "Jawa Compile Server")

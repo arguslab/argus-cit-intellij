@@ -23,9 +23,9 @@ import com.intellij.openapi.util.io.FileUtil
 import com.intellij.util.PathUtil
 import com.intellij.util.net.NetUtils
 import gnu.trove.TByteArrayList
-import org.argus.cit.intellij.jawa.compiler.CompileServerLauncher.ConfigureLinkListener
+import org.argus.cit.intellij.jawa.compiler.JcCompileServerLauncher.ConfigureLinkListener
 import org.jetbrains.jps.incremental.BuilderService
-import org.argus.cit.intellij.jawa.compiler.CompileServerLauncher._
+import org.argus.cit.intellij.jawa.compiler.JcCompileServerLauncher._
 import org.argus.cit.intellij.jawa.extensions._
 
 import collection.JavaConverters._
@@ -34,7 +34,7 @@ import scala.util.control.Exception._
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
-class CompileServerLauncher  extends ApplicationComponent {
+class JcCompileServerLauncher  extends ApplicationComponent {
   private var serverInstance: Option[ServerInstance] = None
 
   def initComponent() {}
@@ -86,7 +86,7 @@ class CompileServerLauncher  extends ApplicationComponent {
       case Right(_) =>
         ApplicationManager.getApplication invokeLater new Runnable {
           override def run() {
-            CompileServerManager.instance(project).configureWidget()
+            JcCompileServerManager.instance(project).configureWidget()
           }
         }
 
@@ -95,7 +95,7 @@ class CompileServerLauncher  extends ApplicationComponent {
   }
 
   private def start(project: Project, jdk: JDK): Either[String, Process] = {
-    import org.argus.cit.intellij.jawa.compiler.CompileServerLauncher.{compilerJars, jvmParameters}
+    import org.argus.cit.intellij.jawa.compiler.JcCompileServerLauncher.{compilerJars, jvmParameters}
 
     compilerJars.partition(_.exists) match {
       case (presentFiles, Seq()) =>
@@ -103,7 +103,7 @@ class CompileServerLauncher  extends ApplicationComponent {
         val classpath = (jdk.tools +: presentFiles).map(_.canonicalPath).mkString(File.pathSeparator)
         val settings = JawaCompileServerSettings.getInstance
 
-        val freePort = CompileServerLauncher.findFreePort
+        val freePort = JcCompileServerLauncher.findFreePort
         if (settings.COMPILE_SERVER_PORT != freePort) {
           new RemoteServerStopper(settings.COMPILE_SERVER_PORT).sendStop()
           settings.COMPILE_SERVER_PORT = freePort
@@ -153,7 +153,7 @@ class CompileServerLauncher  extends ApplicationComponent {
 
     ApplicationManager.getApplication invokeLater new Runnable {
       override def run() {
-        CompileServerManager.instance(project).configureWidget()
+        JcCompileServerManager.instance(project).configureWidget()
       }
     }
   }
@@ -167,8 +167,8 @@ class CompileServerLauncher  extends ApplicationComponent {
   def getComponentName: String = getClass.getSimpleName
 }
 
-object CompileServerLauncher {
-  def instance: CompileServerLauncher = ApplicationManager.getApplication.getComponent(classOf[CompileServerLauncher])
+object JcCompileServerLauncher {
+  def instance: JcCompileServerLauncher = ApplicationManager.getApplication.getComponent(classOf[JcCompileServerLauncher])
 
   def compilerJars: Seq[File] = {
     val jcBuildersJar = new File(PathUtil.getJarPathForClass(classOf[BuilderService]))
@@ -217,7 +217,7 @@ object CompileServerLauncher {
   }
 
   def ensureServerRunning(project: Project) {
-    val launcher = CompileServerLauncher.instance
+    val launcher = JcCompileServerLauncher.instance
 
     if (needRestart(project)) launcher.stop()
 
@@ -225,7 +225,7 @@ object CompileServerLauncher {
   }
 
   def needRestart(project: Project): Boolean = {
-    val serverInstance = CompileServerLauncher.instance.serverInstance
+    val serverInstance = JcCompileServerLauncher.instance.serverInstance
     serverInstance match {
       case None => true
       case Some(instance) =>
@@ -236,7 +236,7 @@ object CompileServerLauncher {
   }
 
   def ensureNotRunning(project: Project) {
-    val launcher = CompileServerLauncher.instance
+    val launcher = JcCompileServerLauncher.instance
     if (launcher.running) launcher.stop(project)
   }
 
@@ -258,7 +258,7 @@ object CompileServerLauncher {
 
   object ConfigureLinkListener extends NotificationListener.Adapter {
     def hyperlinkActivated(notification: Notification, event: HyperlinkEvent) {
-      CompileServerManager.showCompileServerSettingsDialog()
+      JcCompileServerManager.showCompileServerSettingsDialog()
       notification.expire()
     }
   }

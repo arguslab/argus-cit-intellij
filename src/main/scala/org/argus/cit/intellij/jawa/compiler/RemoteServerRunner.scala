@@ -61,7 +61,7 @@ class RemoteServerRunner(project: Project) extends RemoteResourceOwner {
     }
 
     override def stop() {
-      CompileServerLauncher.ensureNotRunning(project)
+      JcCompileServerLauncher.ensureNotRunning(project)
     }
   }
 }

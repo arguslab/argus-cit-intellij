@@ -89,19 +89,19 @@
       <implementation-class>org.argus.cit.intellij.jawa.JawaLoader</implementation-class>
     </component>
     <component>
-      <implementation-class>org.argus.cit.intellij.jawa.compiler.CompileServerLauncher</implementation-class>
+      <implementation-class>org.argus.cit.intellij.jawa.compiler.JcCompileServerLauncher</implementation-class>
     </component>
   </application-components>
 
   <project-components>
     <component>
-      <implementation-class>org.argus.cit.intellij.jawa.compiler.ServerMediator</implementation-class>
+      <implementation-class>org.argus.cit.intellij.jawa.compiler.JcServerMediator</implementation-class>
     </component>
     <component>
       <implementation-class>org.argus.cit.intellij.jawa.project.JawaProjectEvents</implementation-class>
     </component>
     <component>
-      <implementation-class>org.argus.cit.intellij.jawa.compiler.CompileServerManager</implementation-class>
+      <implementation-class>org.argus.cit.intellij.jawa.compiler.JcCompileServerManager</implementation-class>
     </component>
   </project-components>
 

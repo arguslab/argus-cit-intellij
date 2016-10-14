@@ -25,7 +25,7 @@ import org.argus.cit.intellij.jawa.extensions._
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
-class ServerMediator(project: Project) extends ProjectComponent {
+class JcServerMediator(project: Project) extends ProjectComponent {
 
   private val settings = JawaCompileServerSettings.getInstance
 
@@ -36,16 +36,16 @@ class ServerMediator(project: Project) extends ProjectComponent {
     override def buildStarted(project: Project, sessionId: UUID, isAutomake: Boolean): Unit = {
       if (settings.COMPILE_SERVER_ENABLED) {
         invokeAndWait {
-          CompileServerManager.instance(project).configureWidget()
+          JcCompileServerManager.instance(project).configureWidget()
         }
 
-        if (CompileServerLauncher.needRestart(project)) {
-          CompileServerLauncher.instance.stop()
+        if (JcCompileServerLauncher.needRestart(project)) {
+          JcCompileServerLauncher.instance.stop()
         }
 
-        if (!CompileServerLauncher.instance.running) {
+        if (!JcCompileServerLauncher.instance.running) {
           invokeAndWait {
-            CompileServerLauncher.instance.tryToStart(project)
+            JcCompileServerLauncher.instance.tryToStart(project)
           }
         }
       }
