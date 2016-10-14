@@ -11,6 +11,7 @@
 package org.argus.cit.intellij.android.newProject
 
 import java.io.{File, IOException}
+import java.util
 
 import com.android.tools.idea.npw.ConfigureAndroidProjectPath
 import com.android.tools.idea.sdk.VersionCheck
@@ -23,9 +24,12 @@ import com.android.tools.idea.wizard.dynamic.ScopedStateStore.Scope
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.PathManager
 import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.progress.{ProgressIndicator, ProgressManager, Task}
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.util.SystemInfo
 import com.intellij.openapi.vfs.{LocalFileSystem, VfsUtilCore}
+import com.intellij.ui.popup.PopupComponent.Factory.Dialog
 import org.argus.amandroid.core.decompile.{ApkDecompiler, DecompileLayout, DecompilerSettings}
 import org.jetbrains.android.sdk.AndroidSdkUtils
 import org.sireum.util.FileUtil
@@ -74,7 +78,6 @@ class ConfigureArgusProjectPath(parentDisposable: Disposable) extends DynamicWiz
   }
 
   private def performFinishingOperation(dryRun: Boolean): Boolean = {
-
     val path = myState.get(NewProjectWizard.APK_LOCATION_KEY)
     val projectLocation = myState.get(WizardConstants.PROJECT_LOCATION_KEY)
     assert(projectLocation != null)
@@ -82,21 +85,14 @@ class ConfigureArgusProjectPath(parentDisposable: Disposable) extends DynamicWiz
     val moduleRootPath = myState.get(NewProjectWizard.MODULE_LOCATION_KEY)
     assert(moduleRootPath != null)
     val moduleRoot = new File(moduleRootPath)
-    try {
-      val main = moduleRootPath + File.separator + "src" + File.separator + "main"
-      val layout = DecompileLayout(FileUtil.toUri(main), createFolder = false, "jawa", createSeparateFolderForDexes = false)
-      val settings = DecompilerSettings(None, dexLog = false, debugMode = false, removeSupportGen = true, forceDelete = true, None, layout)
-      ApkDecompiler.decompile(FileUtil.toUri(path), settings)
-      this.myState.put(WizardConstants.IS_LIBRARY_KEY, Boolean.box(false))
-      this.myState.put(NewProjectWizard.SRC_DIR_KEY, "src/main/jawa")
-      this.myState.put(RES_DIR_KEY, "src/main/res")
-      this.myState.put(NewProjectWizard.MANIFEST_DIR_KEY, "src/main")
-    } catch {
-      case e: Exception =>
-        setErrorHtml("<html>Your APK cannot be decompiled. Error message: " + e.getMessage + "</html>")
-        LOG.error(e)
-        return false
+
+    if(!dryRun && !decompileAndSetState(moduleRootPath, path)) {
+      return false
     }
+    this.myState.put(WizardConstants.IS_LIBRARY_KEY, Boolean.box(false))
+    this.myState.put(NewProjectWizard.SRC_DIR_KEY, "src/main/jawa")
+    this.myState.put(RES_DIR_KEY, "src/main/res")
+    this.myState.put(NewProjectWizard.MANIFEST_DIR_KEY, "src/main")
 
     val project: Project = this.getProject
 
@@ -120,14 +116,40 @@ class ConfigureArgusProjectPath(parentDisposable: Disposable) extends DynamicWiz
     template.render(context)
   }
 
-  def getTemplateRootFolder: File = {
-    val homePath = com.intellij.openapi.util.io.FileUtil.toSystemIndependentName(PathManager.getHomePath)
-    // Release build?
-    var root = LocalFileSystem.getInstance().findFileByPath(com.intellij.openapi.util.io.FileUtil.toSystemIndependentName(homePath + "/plugins/Argus-CIT/lib/templates/NewArgusProject"))
-    if (root == null) {
-      // Development build?
-      root = LocalFileSystem.getInstance().findFileByPath(com.intellij.openapi.util.io.FileUtil.toSystemIndependentName(homePath + "/../../../out/plugin/Argus-CIT/lib/templates/NewArgusProject"))
+  private def decompileAndSetState(moduleRootPath: String, path: String): Boolean = {
+    try {
+      ProgressManager.getInstance().run(new Task.Modal(getProject, "Decompiling APK...", false) {
+        override def run(progressIndicator: ProgressIndicator): Unit = {
+          progressIndicator.setIndeterminate(true)
+          val main = moduleRootPath + File.separator + "src" + File.separator + "main"
+          val layout = DecompileLayout(FileUtil.toUri(main), createFolder = false, "jawa", createSeparateFolderForDexes = false)
+          val settings = DecompilerSettings(None, dexLog = false, debugMode = false, removeSupportGen = true, forceDelete = true, None, layout)
+          ApkDecompiler.decompile(FileUtil.toUri(path), settings)
+        }
+      })
+      val filesToOpen: util.ArrayList[File] = new util.ArrayList[File]()
+      val manifestFile = new File(moduleRootPath + File.separator + "src" + File.separator + "main", "AndroidManifest.xml")
+      filesToOpen.add(manifestFile)
+      this.myState.put(WizardConstants.FILES_TO_OPEN_KEY, filesToOpen)
+      true
+    } catch {
+      case e: Exception =>
+        setErrorHtml("<html>Your APK cannot be decompiled. Error message: " + e.getMessage + "</html>")
+        LOG.error(e)
+        false
     }
+  }
+
+  def getTemplateRootFolder: File = {
+    var pluginsPath = com.intellij.openapi.util.io.FileUtil.toSystemIndependentName(PathManager.getPluginsPath)
+    // Release build?
+    var root = LocalFileSystem.getInstance().findFileByPath(com.intellij.openapi.util.io.FileUtil.toSystemIndependentName(pluginsPath + "/Argus-CIT/lib/templates/NewArgusProject"))
+    if (root == null) {
+      pluginsPath = com.intellij.openapi.util.io.FileUtil.toSystemIndependentName(PathManager.getHomePath)
+      // Development build?
+      root = LocalFileSystem.getInstance().findFileByPath(com.intellij.openapi.util.io.FileUtil.toSystemIndependentName(pluginsPath + "/../../../out/plugin/Argus-CIT/lib/templates/NewArgusProject"))
+    }
+    Messages.showWarningDialog(getProject, pluginsPath, "pluginsPath")
     if (root != null) {
       VfsUtilCore.virtualToIoFile(root)
     } else null

@@ -52,11 +52,7 @@ public class JawaCompileServerForm implements Configurable {
     public JawaCompileServerForm(JawaCompileServerSettings settings) {
         mySettings = settings;
 
-        myEnableCompileServer.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                updateCompilationServerSettingsPanel();
-            }
-        });
+        myEnableCompileServer.addChangeListener(e -> updateCompilationServerSettingsPanel());
 
         ProjectSdksModel model = new ProjectSdksModel();
         model.reset(null);
