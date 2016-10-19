@@ -105,7 +105,7 @@ class ApkInfoView(@NotNull project: Project) extends PersistentStateComponent[Ap
             val reporter = new PrintReporter(MsgLevel.ERROR)
             global = new Global(apkUri, reporter)
             global.setJavaLib(AndroidGlobalConfig.settings.lib_files)
-            global.load(FileUtil.toUri(FileUtil.toFilePath(outputUri) + File.separator + src), Constants.PILAR_FILE_EXT, AndroidLibraryAPISummary)
+            global.load(FileUtil.toUri(FileUtil.toFilePath(outputUri) + File.separator + src), Constants.JAWA_FILE_EXT, AndroidLibraryAPISummary)
             AppInfoCollector.collectInfo(apk, global, outputUri)
           }
         }

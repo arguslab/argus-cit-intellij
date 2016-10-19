@@ -61,7 +61,7 @@ class IdeaIncrementalBuilder(category: BuilderCategory) extends ModuleLevelBuild
     val client = new IdeClientIdea(compilerName, context, modules.map(_.getName).toSeq, outputConsumer,
       callback, successfullyCompiled)
 
-    val jawaSources = sources.filter(_.getName.endsWith(".pilar")).asJava
+    val jawaSources = sources.filter(_.getName.endsWith(".jawa")).asJava
 
     JawaBuilder.compile(context, chunk, sources, modules, client) match {
       case Left(error) =>
@@ -78,7 +78,7 @@ class IdeaIncrementalBuilder(category: BuilderCategory) extends ModuleLevelBuild
     }
   }
 
-  override def getCompilableFileExtensions: util.List[String] = util.Arrays.asList("pilar", "java")
+  override def getCompilableFileExtensions: util.List[String] = util.Arrays.asList("jawa", "java")
 
   private def isDisabled(context: CompileContext, chunk: ModuleChunk): Boolean = {
     val settings = JawaBuilder.projectSettings(context)
@@ -98,7 +98,7 @@ class IdeaIncrementalBuilder(category: BuilderCategory) extends ModuleLevelBuild
 
     val project = context.getProjectDescriptor
 
-    val extensionsToCollect = List(".pilar")
+    val extensionsToCollect = List(".jawa")
 
     def checkAndCollectFile(file: File): Boolean = {
       val fileName = file.getName
@@ -123,7 +123,7 @@ class IdeaIncrementalBuilder(category: BuilderCategory) extends ModuleLevelBuild
 
 
     //if no jawa files to compile, return empty seq
-    if (!result.exists(_.getName.endsWith(".pilar"))) Seq.empty
+    if (!result.exists(_.getName.endsWith(".jawa"))) Seq.empty
     else result
   }
 

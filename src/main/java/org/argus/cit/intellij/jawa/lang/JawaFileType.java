@@ -29,7 +29,7 @@ public class JawaFileType extends LanguageFileType implements FileTypeIdentifiab
     public static final JawaFileType INSTANCE = new JawaFileType();
     public static final Language JAWA_LANGUAGE = JawaLanguage.Instance;
     @NonNls
-    public static final String DEFAULT_EXTENSION = "pilar";
+    public static final String DEFAULT_EXTENSION = "jawa";
 
     private JawaFileType() {
         super(JawaLanguage.Instance);
@@ -58,6 +58,6 @@ public class JawaFileType extends LanguageFileType implements FileTypeIdentifiab
 
     @Override
     public boolean isMyFileType(@NotNull VirtualFile virtualFile) {
-        return StringUtil.endsWith(virtualFile.getNameSequence(), ".pilar");
+        return StringUtil.endsWith(virtualFile.getNameSequence(), ".jawa");
     }
 }

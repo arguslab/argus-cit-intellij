@@ -91,7 +91,7 @@ class NewJawaClassAction extends CreateTemplateInPackageAction[JawaTypeDefinitio
     NewJawaClassAction.createFromTemplate(directory, className, className + JAWA_EXTENSION, templateName, parameters: _*)
   }
 
-  private val JAWA_EXTENSION = ".pilar"
+  private val JAWA_EXTENSION = ".jawa"
 
   def checkPackageExists(directory: PsiDirectory) = {
     JavaDirectoryService.getInstance.getPackage(directory) != null
