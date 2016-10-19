@@ -66,7 +66,7 @@ public class ConfigureArgusProjectStep extends DynamicWizardStepWithHeaderAndDes
         register(WizardConstants.PROJECT_LOCATION_KEY, myProjectLocation);
         registerValueDeriver(WizardConstants.PROJECT_LOCATION_KEY, myProjectLocationDeriver);
 
-        FileChooserDescriptor apkFileChooserDescriptor = new FileChooserDescriptor(false, false, true, false, false, false);
+        FileChooserDescriptor apkFileChooserDescriptor = new FileChooserDescriptor(true, false, true, false, false, false);
         myAppPath.addBrowseFolderListener("Apk Path", "Please choose an APK", null, apkFileChooserDescriptor);
         FileSaverDescriptor projectlocationFileSaverDescriptor = new FileSaverDescriptor("Project Location", "Please choose a location for your project");
         myProjectLocation.addActionListener(e -> browseForFile(myProjectLocation, projectlocationFileSaverDescriptor));

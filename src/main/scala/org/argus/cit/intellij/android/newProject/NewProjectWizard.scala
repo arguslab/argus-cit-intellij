@@ -109,7 +109,7 @@ class NewProjectWizard(project: Project, module: Module, host: DynamicWizardHost
     val rootLocation = new File(rootPath)
     val wrapperPropertiesFilePath = GradleUtil.getGradleWrapperPropertiesFilePath(rootLocation)
     try {
-      GradleUtil.updateGradleDistributionUrl("2.13", wrapperPropertiesFilePath)
+      GradleUtil.updateGradleDistributionUrl("2.14.1", wrapperPropertiesFilePath)
     } catch {
       case e: IOException => LOG.warn("Failed to update Gradle wrapper file", e)
     }

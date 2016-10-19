@@ -7,5 +7,5 @@
     <global id="mavenUrl" value="mavenCentral" />
     <global id="buildToolsVersion" value="18.0.1" />
     <global id="gradlePluginVersion" value="0.6.+" />
-    <global id="androidJawaPluginVersion" value="1.0.2" />
+    <global id="androidJawaPluginVersion" value="1.0.4" />
 </globals>

@@ -148,7 +148,6 @@ class ConfigureArgusProjectPath(parentDisposable: Disposable) extends DynamicWiz
       // Development build?
       root = LocalFileSystem.getInstance().findFileByPath(com.intellij.openapi.util.io.FileUtil.toSystemIndependentName(pluginsPath + "/../../../out/plugin/Argus-CIT/lib/templates/NewArgusProject"))
     }
-    Messages.showWarningDialog(getProject, pluginsPath, "pluginsPath")
     if (root != null) {
       VfsUtilCore.virtualToIoFile(root)
     } else null
