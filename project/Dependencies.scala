@@ -13,7 +13,7 @@ import sbt._
 object CitVersions {
   val scalaVersion = "2.11.8"
   val sbtVersion = "0.13.9"
-  val ideaVersion = "163.6110.12"
+  val ideaVersion = "162.2228.15"
   val sbtStructureVersion = "5.1.2"
   val argusSafVersion = "1.1.4"
   val jawaCompilerVersion = "1.0.6"

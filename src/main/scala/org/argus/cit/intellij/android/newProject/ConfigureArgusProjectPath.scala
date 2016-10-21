@@ -13,7 +13,7 @@ package org.argus.cit.intellij.android.newProject
 import java.io.{File, IOException}
 import java.util
 
-import com.android.tools.idea.npw.deprecated.ConfigureAndroidProjectPath
+import com.android.tools.idea.npw.ConfigureAndroidProjectPath
 import com.android.tools.idea.sdk.VersionCheck
 import com.android.tools.idea.templates.Template
 import com.android.tools.idea.templates.recipe.RenderingContext
@@ -26,7 +26,6 @@ import com.intellij.openapi.application.PathManager
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.progress.{ProgressIndicator, ProgressManager, Task}
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.util.SystemInfo
 import com.intellij.openapi.vfs.{LocalFileSystem, VfsUtilCore}
 import org.argus.amandroid.core.decompile.{ApkDecompiler, DecompileLayout, DecompilerSettings}

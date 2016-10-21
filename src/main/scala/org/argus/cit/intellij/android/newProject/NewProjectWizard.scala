@@ -22,7 +22,8 @@ import brut.androlib.res.decoder.{AXmlResourceParser, ResAttrDecoder}
 import com.android.SdkConstants
 import com.android.tools.idea.gradle.project.GradleProjectImporter
 import com.android.tools.idea.gradle.util.GradleUtil
-import com.android.tools.idea.npw.{FormFactor, FormFactorUtils}
+import com.android.tools.idea.npw.FormFactorUtils
+import com.android.tools.idea.npw.FormFactorUtils.FormFactor
 import com.android.tools.idea.sdk.IdeSdks
 import com.android.tools.idea.startup.AndroidStudioInitializer
 import com.android.tools.idea.templates.{TemplateManager, TemplateMetadata}
