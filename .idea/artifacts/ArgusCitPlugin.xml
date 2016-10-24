@@ -39,7 +39,7 @@
           <element id="library" level="project" name="SBT: org.jetbrains:nailgun-patched:1.0.0:jar" />
           <element id="library" level="project" name="SBT: org.jetbrains:compiler-interface-sources:1.0.0:jar" />
           <element id="library" level="project" name="SBT: org.ow2.asm:asm-all:5.1:jar" />
-          <element id="library" level="project" name="SBT: com.github.arguslab:jawa-compiler_2.11:1.0.6:jar" />
+          <element id="library" level="project" name="SBT: com.github.arguslab:jawa-compiler_2.11:1.0.7:jar" />
         </element>
         <element id="archive" name="compiler-settings.jar">
           <element id="module-output" name="compiler-settings" />
@@ -56,9 +56,9 @@
         <element id="library" level="project" name="SBT: stax:stax-api:1.0.1:jar" />
         <element id="library" level="project" name="SBT: org.scalactic:scalactic_2.11:2.2.6:jar" />
         <element id="library" level="project" name="SBT: org.scalatest:scalatest_2.11:2.2.6:jar" />
-        <element id="library" level="project" name="SBT: com.github.arguslab:jawa-core_2.11:1.1.4:jar" />
-        <element id="library" level="project" name="SBT: com.github.arguslab:amandroid-core_2.11:1.1.4:jar" />
-        <element id="library" level="project" name="SBT: com.github.arguslab:saf-library_2.11:1.1.4:jar" />
+        <element id="library" level="project" name="SBT: com.github.arguslab:jawa-core_2.11:1.1.5:jar" />
+        <element id="library" level="project" name="SBT: com.github.arguslab:saf-library_2.11:1.1.5:jar" />
+        <element id="library" level="project" name="SBT: com.github.arguslab:amandroid-core_2.11:1.1.5:jar" />
       </element>
     </root>
   </artifact>
