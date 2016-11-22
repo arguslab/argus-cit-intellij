@@ -13,7 +13,7 @@ package org.argus.cit.intellij.android.newProject
 import java.io.{File, IOException}
 import java.util
 
-import com.android.tools.idea.npw.ConfigureAndroidProjectPath
+import com.android.tools.idea.npw.deprecated.ConfigureAndroidProjectPath
 import com.android.tools.idea.sdk.VersionCheck
 import com.android.tools.idea.templates.Template
 import com.android.tools.idea.templates.recipe.RenderingContext
