@@ -10,6 +10,15 @@
 
 import sbt._
 
+object BintrayResolvers {
+  def jbBintrayResolver(name: String, repo: String, patterns: Patterns): URLRepository =
+    Resolver.url(name, url(s"http://dl.bintray.com/jetbrains/$repo"))(patterns)
+
+  val scalaPluginDeps  = jbBintrayResolver("scala-plugin-deps", "scala-plugin-deps", Resolver.ivyStylePatterns)
+
+  val allResolvers = Seq(scalaPluginDeps)
+}
+
 object CitVersions {
   val scalaVersion = "2.11.8"
   val sbtVersion = "0.13.9"

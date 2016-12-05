@@ -3,6 +3,8 @@ import com.dancingrobot84.sbtidea.SbtIdeaPlugin
 import com.dancingrobot84.sbtidea.Tasks.{updateIdea => updateIdeaTask}
 import sbt.Keys.{`package` => pack}
 
+resolvers in ThisBuild ++= BintrayResolvers.allResolvers
+
 licenses in ThisBuild := ("Eclipse-1.0" -> url("http://www.opensource.org/licenses/eclipse-1.0.php")) :: Nil // this is required! otherwise Bintray will reject the code
 homepage in ThisBuild := Some(url("https://github.com/arguslab/argus-cit-intellij"))
 
