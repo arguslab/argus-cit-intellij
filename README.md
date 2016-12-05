@@ -16,7 +16,7 @@ In order to take part in argus-cit-intellij development, you need to:
 
 3. Open IntelliJ IDEA, select `File -> New -> Project from existing sources`
 (if from initial window: `Import Project`), point to
-the directory where Scala plugin repository is and then import it as SBT project.
+the directory where Argus-CIT plugin repository is and then import it as SBT project.
 
 4. When importing is finished, go to argus-cit-intellij repo directory and run
 
