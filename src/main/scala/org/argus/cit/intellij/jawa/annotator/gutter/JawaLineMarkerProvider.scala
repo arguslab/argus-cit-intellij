@@ -19,7 +19,7 @@ import com.intellij.psi._
 import org.argus.cit.intellij.jawa.lang.psi._
 import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.synthetic.JavaIdentifier
 
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
@@ -39,10 +39,10 @@ class JawaLineMarkerProvider(daemonSettings: DaemonCodeAnalyzerSettings, colorsM
 
 
   override def collectSlowLineMarkers(elements: util.List[PsiElement], result: util.Collection[LineMarkerInfo[_ <: PsiElement]]): Unit = {
-    val elementsToProcess = elements.map{ e =>
+    val elementsToProcess = elements.asScala.map{ e =>
       if(isIdentifier(e)) new JavaIdentifier(e) else e
     }
-    super.collectSlowLineMarkers(elementsToProcess, result)
+    super.collectSlowLineMarkers(elementsToProcess.asJava, result)
   }
 
 }

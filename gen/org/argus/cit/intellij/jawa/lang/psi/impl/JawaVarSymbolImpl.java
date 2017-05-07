@@ -27,9 +27,19 @@ public class JawaVarSymbolImpl extends JawaVarSymbolImplMixin implements JawaVar
   }
 
   @Override
-  @NotNull
+  @Nullable
+  public PsiElement getApostropheId() {
+    return findChildByType(APOSTROPHE_ID);
+  }
+
+  @Override
+  @Nullable
   public PsiElement getId() {
-    return notNullChild(findChildByType(ID));
+    return findChildByType(ID);
+  }
+
+  public String getName() {
+    return JawaPsiImplUtil.getName(this);
   }
 
 }

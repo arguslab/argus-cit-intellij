@@ -11,6 +11,6 @@ public interface JawaLengthExpression extends PsiElement {
   JawaVarSymbol getVarSymbol();
 
   @NotNull
-  PsiElement getId();
+  PsiElement getAnnotationKey();
 
 }

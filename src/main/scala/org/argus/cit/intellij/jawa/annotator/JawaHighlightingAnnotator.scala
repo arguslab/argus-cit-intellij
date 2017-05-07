@@ -19,67 +19,67 @@ import org.argus.cit.intellij.jawa.lang.psi._
   */
 class JawaHighlightingAnnotator extends JawaAnnotator {
   override def annotate(psiElement: PsiElement, annotationHolder: AnnotationHolder): Unit = psiElement.accept(new JawaVisitor{
-    override def visitTypeDefSymbol(o: JawaTypeDefSymbol) = {
+    override def visitTypeDefSymbol(o: JawaTypeDefSymbol): Unit = {
       AnnotatorHighlighter.highlightElement(o, annotationHolder)
       super.visitTypeDefSymbol(o)
     }
-    override def visitTypeSymbol(o:JawaTypeSymbol) = {
+    override def visitTypeSymbol(o:JawaTypeSymbol): Unit = {
       AnnotatorHighlighter.highlightElement(o, annotationHolder)
       super.visitTypeSymbol(o)
     }
-    override def visitVarDefSymbol(o: JawaVarDefSymbol) = {
+    override def visitVarDefSymbol(o: JawaVarDefSymbol): Unit = {
       AnnotatorHighlighter.highlightElement(o, annotationHolder)
       super.visitVarDefSymbol(o)
     }
-    override def visitVarSymbol(o:JawaVarSymbol) = {
+    override def visitVarSymbol(o:JawaVarSymbol): Unit = {
       AnnotatorHighlighter.highlightElement(o, annotationHolder)
       super.visitVarSymbol(o)
     }
-    override def visitFieldDefSymbol(o: JawaFieldDefSymbol) = {
+    override def visitFieldDefSymbol(o: JawaFieldDefSymbol): Unit = {
       AnnotatorHighlighter.highlightElement(o, annotationHolder)
       super.visitFieldDefSymbol(o)
     }
-    override def visitFieldNameSymbol(o:JawaFieldNameSymbol) = {
+    override def visitFieldNameSymbol(o:JawaFieldNameSymbol): Unit = {
       AnnotatorHighlighter.highlightElement(o, annotationHolder)
       super.visitFieldNameSymbol(o)
     }
-    override def visitStaticFieldDefSymbol(o: JawaStaticFieldDefSymbol) = {
+    override def visitStaticFieldDefSymbol(o: JawaStaticFieldDefSymbol): Unit = {
       AnnotatorHighlighter.highlightElement(o, annotationHolder)
       super.visitStaticFieldDefSymbol(o)
     }
-    override def visitStaticFieldNameSymbol(o:JawaStaticFieldNameSymbol) = {
+    override def visitStaticFieldNameSymbol(o:JawaStaticFieldNameSymbol): Unit = {
       AnnotatorHighlighter.highlightElement(o, annotationHolder)
       super.visitStaticFieldNameSymbol(o)
     }
-    override def visitMethodDefSymbol(o: JawaMethodDefSymbol) = {
+    override def visitMethodDefSymbol(o: JawaMethodDefSymbol): Unit = {
       AnnotatorHighlighter.highlightElement(o, annotationHolder)
       super.visitMethodDefSymbol(o)
     }
-    override def visitMethodNameSymbol(o:JawaMethodNameSymbol) = {
+    override def visitMethodNameSymbol(o:JawaMethodNameSymbol): Unit = {
       AnnotatorHighlighter.highlightElement(o, annotationHolder)
       super.visitMethodNameSymbol(o)
     }
-    override def visitLocationDefSymbol(o: JawaLocationDefSymbol) = {
+    override def visitLocationDefSymbol(o: JawaLocationDefSymbol): Unit = {
       AnnotatorHighlighter.highlightElement(o, annotationHolder)
       super.visitLocationDefSymbol(o)
     }
-    override def visitLocationSymbol(o:JawaLocationSymbol) = {
+    override def visitLocationSymbol(o:JawaLocationSymbol): Unit = {
       AnnotatorHighlighter.highlightElement(o, annotationHolder)
       super.visitLocationSymbol(o)
     }
-    override def visitAnnotationKey(o: JawaAnnotationKey) = {
+    override def visitDefaultAnnotation(o: JawaDefaultAnnotation): Unit = {
       AnnotatorHighlighter.highlightElement(o, annotationHolder)
-      super.visitAnnotationKey(o)
+      super.visitDefaultAnnotation(o)
     }
-    override def visitNumberLiteral(o: JawaNumberLiteral) = {
+    override def visitNumberLiteral(o: JawaNumberLiteral): Unit = {
       AnnotatorHighlighter.highlightElement(o, annotationHolder)
       super.visitNumberLiteral(o)
     }
-    override def visitParam(o: JawaParam) = {
+    override def visitParam(o: JawaParam): Unit = {
       AnnotatorHighlighter.highlightElement(o, annotationHolder)
       super.visitParam(o)
     }
-    override def visitSignatureSymbol(o: JawaSignatureSymbol) = {
+    override def visitSignatureSymbol(o: JawaSignatureSymbol): Unit = {
       AnnotatorHighlighter.highlightElement(o, annotationHolder)
       super.visitSignatureSymbol(o)
     }

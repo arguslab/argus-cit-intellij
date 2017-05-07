@@ -16,10 +16,10 @@ import com.intellij.openapi.editor.Document
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
-import org.argus.cit.intellij.jawa.lang.psi.{JawaJwBody, JawaInstanceFieldDeclarationBlock}
-import org.sireum.util._
+import org.argus.cit.intellij.jawa.lang.psi.{JawaInstanceFieldDeclarationBlock, JawaJwBody}
+import org.argus.jawa.core.util._
 
-import scala.collection.JavaConversions._
+import collection.JavaConverters._
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
@@ -29,8 +29,8 @@ class JawaFoldingBuilder extends FoldingBuilderEx {
 
   override def buildFoldRegions(root: PsiElement, document: Document, quick: Boolean): Array[FoldingDescriptor] = {
     val descriptors: MSet[FoldingDescriptor] = msetEmpty
-    val ifblocks = PsiTreeUtil.findChildrenOfType(root, classOf[JawaInstanceFieldDeclarationBlock])
-    val bodys = PsiTreeUtil.findChildrenOfType(root, classOf[JawaJwBody])
+    val ifblocks = PsiTreeUtil.findChildrenOfType(root, classOf[JawaInstanceFieldDeclarationBlock]).asScala
+    val bodys = PsiTreeUtil.findChildrenOfType(root, classOf[JawaJwBody]).asScala
     ifblocks.foreach { ifblock=>
       if(ifblock.getTextRange.getEndOffset - 1 > ifblock.getTextRange.getStartOffset + 1)
         descriptors.add(new FoldingDescriptor(

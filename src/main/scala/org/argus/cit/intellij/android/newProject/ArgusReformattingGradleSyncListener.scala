@@ -25,9 +25,7 @@ class ArgusReformattingGradleSyncListener(targetFile: util.Collection[File], fil
   override def syncSucceeded(project: Project): Unit = {
     val manager = StartupManagerEx.getInstanceEx(project)
     if(manager.postStartupActivityPassed()) reformatRearrangeAndOpen(project)
-    else manager.registerPostStartupActivity(new Runnable {
-      override def run(): Unit = reformatRearrangeAndOpen(project)
-    })
+    else manager.registerPostStartupActivity(() => reformatRearrangeAndOpen(project))
   }
   private def reformatRearrangeAndOpen(project: Project): Unit = {
     TemplateUtils.reformatAndRearrange(project, targetFile)

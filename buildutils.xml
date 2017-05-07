@@ -64,12 +64,12 @@
         </move>
     </target>
 
-    <target name="rename.jawa-core">
+    <target name="rename.jawa">
         <move todir="out/plugin/Argus-CIT/lib">
             <fileset dir="out/plugin/Argus-CIT/lib">
-                <include name="jawa-core*.jar"/>
+                <include name="jawa*.jar"/>
             </fileset>
-            <mapper type="glob" from="*" to="jawa-core.jar"/>
+            <mapper type="glob" from="*" to="jawa.jar"/>
         </move>
     </target>
 
@@ -82,24 +82,15 @@
         </move>
     </target>
 
-    <target name="rename.jawa-compiler">
-        <move todir="out/plugin/Argus-CIT/lib/jc">
-            <fileset dir="out/plugin/Argus-CIT/lib/jc">
-                <include name="jawa-compiler*.jar"/>
-            </fileset>
-            <mapper type="glob" from="*" to="jawa-compiler.jar"/>
-        </move>
-    </target>
-
-    <target name="rename.amandroid-core">
+    <target name="rename.amandroid">
         <move todir="out/plugin/Argus-CIT/lib">
             <fileset dir="out/plugin/Argus-CIT/lib">
-                <include name="amandroid-core*.jar"/>
+                <include name="amandroid*.jar"/>
             </fileset>
-            <mapper type="glob" from="*" to="amandroid-core.jar"/>
+            <mapper type="glob" from="*" to="amandroid.jar"/>
         </move>
     </target>
 
     <target name="idea.postbuild"
-            depends="rename.scala.library,rename.compiler-interface-sources,rename.incremental-compiler,rename.jline,rename.nailgun,rename.saf-library,rename.jawa-core,rename.asm-all,rename.jawa-compiler,rename.amandroid-core"/>
+            depends="rename.scala.library,rename.compiler-interface-sources,rename.incremental-compiler,rename.jline,rename.nailgun,rename.saf-library,rename.asm-all,rename.amandroid"/>
 </project>

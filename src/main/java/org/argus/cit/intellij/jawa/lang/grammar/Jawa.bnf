@@ -26,7 +26,6 @@
     ARROW='=>'
     DOT='.'
     RANGE='..'
-    POUND='#'
 
     LBRACE='{'
     RBRACE='}'
@@ -62,6 +61,8 @@
     SIGNATURE_KEY='@signature'
     KIND_KEY='@kind'
     ACCESS_FLAG_KEY='@AccessFlag'
+    MONITOR_ENTER_KEY='@monitorenter'
+    MONITOR_EXIT_KEY='@monitorexit'
 
     fcmpl='fcmpl'
     fcmpg='fcmpg'
@@ -92,9 +93,10 @@
     ID='regexp:(\p{Alpha}([\w]|[$])*)'
     APOSTROPHE_ID="regexp:(`[^`@]+`)"
     STATIC_ID="regexp:(`@@[^`@]+`)"
-    LOCATION_ID="regexp:(#[\w]*\.)"
+    LOCATION_ID="regexp:#([\w]+\.)?"
     number='regexp:\d+(\.\d*)?'
     STRING_LITERAL="regexp:('([^'\\]|\\.)*'|\"([^\"\\]|\\.)*\")"
+    ANNOTATION_KEY="regexp:(@[\w]+)"
   ]
 
   implements("ClassOrInterfaceDeclaration")="org.argus.cit.intellij.jawa.lang.psi.api.toplevel.JawaTypeDefinition"
@@ -171,12 +173,12 @@ CompilationUnit ::= ClassOrInterfaceDeclaration*
 
 ClassOrInterfaceDeclaration ::= 'record' TypeDefSymbol KindAnnotation AccessFlagAnnotation ExtendsAndImplementsClause? InstanceFieldDeclarationBlock StaticFieldDeclaration* MethodDeclaration*
 
-Annotation ::= TypeAnnotation | SignatureAnnotation | KindAnnotation | AccessFlagAnnotation | AnnotationKey ID?
+Annotation ::= TypeAnnotation | SignatureAnnotation | KindAnnotation | AccessFlagAnnotation | DefaultAnnotation
 TypeAnnotation ::= ('@owner'|'@type'|'@classDescriptor') TypeExpression
 SignatureAnnotation ::= '@signature' SignatureSymbol
 KindAnnotation ::= '@kind' ID
 AccessFlagAnnotation ::= '@AccessFlag' ID? {methods=[getModifiers]}
-AnnotationKey ::= '@' ID
+DefaultAnnotation ::= ANNOTATION_KEY (ID|APOSTROPHE_ID)? {methods=[getKey getValue]}
 
 ExtendsAndImplementsClause ::= 'extends' ExtendAndImplement (',' ExtendAndImplement)* {pin=2}
 ExtendAndImplement ::= TypeSymbol KindAnnotation {methods=[isImplements]}
@@ -195,11 +197,11 @@ TypeFragmentWithInit ::= '[' VarSymbol (',' VarSymbol)* ']'
 MethodDeclaration ::= 'procedure' JwType MethodDefSymbol ParamClause TypeAnnotation SignatureAnnotation AccessFlagAnnotation JwBody
 
 ParamClause ::= '(' (Param (',' Param)*)? ')'
-Param ::= JwType VarDefSymbol KindAnnotation?
+Param ::= JwType VarDefSymbol Annotation*
 
 JwBody ::= '{' LocalVarDeclaration* Location* CatchClause* '}'
 
-LocalVarDeclaration ::= JwType VarDefSymbol ';'
+LocalVarDeclaration ::= JwType? VarDefSymbol ';'
 
 Location ::= LocationDefSymbol Statement? ';'?
 
@@ -229,7 +231,7 @@ ReturnStatement ::= 'return' VarSymbol? KindAnnotation?
 
 GotoStatement ::= 'goto' LocationSymbol
 
-MonitorStatement ::= '@' ('monitorenter'|'monitorexit') VarSymbol {pin=2}
+MonitorStatement ::= (MONITOR_ENTER_KEY|MONITOR_EXIT_KEY) VarSymbol {pin=2}
 
 AssignmentStatement ::= Expression_Lhs ':=' Expression_Rhs KindAnnotation? TypeAnnotation?
 
@@ -267,9 +269,9 @@ ConstClassExpression ::= 'constclass' TypeAnnotation
 
 TypeExpression ::= '^' JwType
 
-LengthExpression ::= 'length' '@' ID VarSymbol
+LengthExpression ::= 'length' ANNOTATION_KEY VarSymbol
 
-InstanceofExpression ::= 'instanceof' '@' ID VarSymbol TypeAnnotation
+InstanceofExpression ::= 'instanceof' ANNOTATION_KEY VarSymbol TypeAnnotation
 
 NullExpression ::= 'null' TypeAnnotation
 
@@ -296,13 +298,13 @@ private cond_binary_op ::= '!=' | '==' | '>' | '<' | '>=' | '<='
 CondBinaryExpression ::= VarSymbol cond_binary_op (VarSymbol|NUMBER_LITERAL|'null')
 
 CatchClause ::= 'catch' JwType CatchRange 'goto' LocationSymbol ';'
-CatchRange ::= '@' '[' LocationSymbol '..' LocationSymbol ']' {pin=2}
+CatchRange ::= AT '[' LocationSymbol '..' LocationSymbol ']' {pin=2}
 
 TypeDefSymbol ::= APOSTROPHE_ID {methods=[getJawaType]}
 TypeSymbol ::= APOSTROPHE_ID {methods=[getJawaType]}
 
-VarDefSymbol ::= ID
-VarSymbol ::= ID
+VarDefSymbol ::= ID | APOSTROPHE_ID {methods=[getName]}
+VarSymbol ::= ID | APOSTROPHE_ID {methods=[getName]}
 
 FieldDefSymbol ::= APOSTROPHE_ID
 FieldNameSymbol ::= APOSTROPHE_ID {methods=[getFQN]}

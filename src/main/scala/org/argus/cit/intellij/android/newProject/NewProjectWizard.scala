@@ -38,14 +38,12 @@ import com.intellij.openapi.options.ConfigurationException
 import com.intellij.openapi.project.{Project, ProjectManager}
 import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.ui.Messages
-import com.intellij.openapi.util.Computable
 import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.pom.java.LanguageLevel
 import com.intellij.util.containers.HashSet
 import com.intellij.util.ui.UIUtil
 import org.argus.cit.intellij.jawa.icons.Icons
 import org.jetbrains.android.sdk.AndroidSdkUtils
-import org.sireum.util._
 
 /**
   * Presents a wizard to the user to create a new project.
@@ -58,14 +56,14 @@ class NewProjectWizard(project: Project, module: Module, host: DynamicWizardHost
 
   setTitle("Create New Project")
 
-  override def init() = {
+  override def init(): Unit = {
     checkSdk()
     addPaths()
     initState()
     super.init()
   }
 
-  protected def checkSdk() = {
+  protected def checkSdk(): Unit = {
     if(!AndroidSdkUtils.isAndroidSdkAvailable || !TemplateManager.templatesAreValid()) {
       val title = "SDK problem"
       val msg = "<html>Your Android SDK is missing, out of date, or is missing templates.<br>" +
@@ -75,9 +73,9 @@ class NewProjectWizard(project: Project, module: Module, host: DynamicWizardHost
     }
   }
 
-  protected def addPaths() = addPath(new ConfigureArgusProjectPath(getDisposable))
+  protected def addPaths(): Unit = addPath(new ConfigureArgusProjectPath(getDisposable))
 
-  protected def initState() = {
+  protected def initState(): AnyVal = {
     myState.put(WizardConstants.GRADLE_PLUGIN_VERSION_KEY, SdkConstants.GRADLE_PLUGIN_RECOMMENDED_VERSION)
     myState.put(WizardConstants.GRADLE_VERSION_KEY, SdkConstants.GRADLE_LATEST_VERSION)
     myState.put(WizardConstants.IS_GRADLE_PROJECT_KEY, Boolean.box(true))
@@ -90,12 +88,10 @@ class NewProjectWizard(project: Project, module: Module, host: DynamicWizardHost
     if(data != null) myState.put(WizardConstants.SDK_DIR_KEY, data.getLocation.getPath)
   }
 
-  override def getWizardActionDescription: ResourceUri = String.format("Create %1$s", getState.get(WizardConstants.APPLICATION_NAME_KEY))
+  override def getWizardActionDescription: String = String.format("Create %1$s", getState.get(WizardConstants.APPLICATION_NAME_KEY))
 
   override def performFinishingActions(): Unit = {
-    ApplicationManager.getApplication.invokeLater(new Runnable {
-      override def run(): Unit = runFinish()
-    })
+    ApplicationManager.getApplication.invokeLater(() => runFinish())
   }
 
   private def runFinish(): Unit = {
@@ -132,7 +128,7 @@ class NewProjectWizard(project: Project, module: Module, host: DynamicWizardHost
     }
 
     if(!AndroidStudioInitializer.isAndroidStudio) {
-      val jdk = IdeSdks.getJdk()
+      val jdk = IdeSdks.getJdk
       if(jdk != null) {
         ApplicationManager.getApplication.runWriteAction(new Runnable {
           override def run(): Unit = ProjectRootManager.getInstance(myProject).setProjectSdk(jdk)
@@ -177,16 +173,14 @@ class NewProjectWizard(project: Project, module: Module, host: DynamicWizardHost
     }
   }
 
-  override def getProgressTitle: ResourceUri = "Creating project..."
+  override def getProgressTitle: String = "Creating project..."
 
-  override def doFinishAction(): Unit = checkFinish() match {
-    case true =>
-      try {
-        doFinish()
-      } catch {
-        case e: IOException => LOG.error(e)
-      }
-    case false =>
+  override def doFinishAction(): Unit = if (checkFinish()) {
+    try {
+      doFinish()
+    } catch {
+      case e: IOException => LOG.error(e)
+    }
   }
 
   override def doFinish(): Unit = {
@@ -199,9 +193,7 @@ class NewProjectWizard(project: Project, module: Module, host: DynamicWizardHost
     myState.put(MODULE_LOCATION_KEY, moduleLocation)
     myState.put(PROJECT_NAME_KEY, "app")
     val name = new File(path).getName.substring(0, new File(path).getName.lastIndexOf("."))
-    myProject = UIUtil.invokeAndWaitIfNeeded(new Computable[Project] {
-      override def compute(): Project = ProjectManager.getInstance().createProject(name, location)
-    })
+    myProject = UIUtil.invokeAndWaitIfNeeded(() => ProjectManager.getInstance().createProject(name, location))
     super.doFinish()
   }
 
@@ -218,7 +210,7 @@ class NewProjectWizard(project: Project, module: Module, host: DynamicWizardHost
 
 object NewProjectWizard {
   final def ERROR_MSG_TITLE: String = "Error in New Project Wizard"
-  final val LOG = Logger.getInstance(classOf[NewProjectWizard])
+  final val LOG: Logger = Logger.getInstance(classOf[NewProjectWizard])
   final val APK_LOCATION_KEY: ScopedStateStore.Key[String] = ScopedStateStore.createKey("apkLocation", Scope.WIZARD, classOf[String])
   final val MODULE_LOCATION_KEY: ScopedStateStore.Key[String] = ScopedStateStore.createKey(TemplateMetadata.ATTR_PROJECT_OUT, Scope.WIZARD, classOf[String])
   final val PROJECT_NAME_KEY: ScopedStateStore.Key[String] = ScopedStateStore.createKey("projectName", Scope.WIZARD, classOf[String])
@@ -249,7 +241,7 @@ object NewProjectWizard {
       }
     } catch {
       case ie: InterruptedException => throw ie
-      case ef: EntryFound =>
+      case _: EntryFound =>
     } finally {
       if (archive != null)
         archive.close()

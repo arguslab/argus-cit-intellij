@@ -19,9 +19,9 @@ import org.argus.cit.intellij.jawa.lang.psi.JawaExtendsAndImplementsClause
 import org.argus.cit.intellij.jawa.lang.psi.impl.JawaExtendsAndImplementsClauseImpl
 import org.argus.cit.intellij.jawa.lang.psi.stubs.{JawaExtendsAndImplementsClauseStub, JawaStubElementTypes}
 import org.argus.cit.intellij.jawa.lang.psi.stubs.impl.JawaExtendsAndImplementsClausesStubImpl
-import org.sireum.util._
+import org.argus.jawa.core.util._
 
-import collection.JavaConversions._
+import collection.JavaConverters._
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
@@ -52,7 +52,7 @@ class JawaExtendsClauseElementType(debugName: String) extends JawaStubElementTyp
   def createStubImpl[ParentPsi <: PsiElement](psi: JawaExtendsAndImplementsClause, parentStub: StubElement[ParentPsi]): JawaExtendsAndImplementsClauseStub = {
     var extTypeText: String = null
     val impTypeTexts: MSet[String] = msetEmpty
-    psi.getExtendAndImplementList foreach { eil =>
+    psi.getExtendAndImplementList.asScala foreach { eil =>
       if(eil.isImplements) impTypeTexts += eil.getTypeSymbol.getJawaType.jawaName
       else extTypeText = eil.getTypeSymbol.getJawaType.jawaName
     }

@@ -15,8 +15,8 @@ import com.intellij.psi.stubs.IStubElementType;
 
 public class JawaParamClauseImpl extends JawaParamClauseImplMixin implements JawaParamClause {
 
-  public JawaParamClauseImpl(JawaParamClauseStub stub, IStubElementType nodeType) {
-    super(stub, nodeType);
+  public JawaParamClauseImpl(JawaParamClauseStub stub, IStubElementType type) {
+    super(stub, type);
   }
 
   public JawaParamClauseImpl(ASTNode node) {

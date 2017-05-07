@@ -1,5 +1,4 @@
 import Common._
-import com.dancingrobot84.sbtidea.SbtIdeaPlugin
 import com.dancingrobot84.sbtidea.Tasks.{updateIdea => updateIdeaTask}
 import sbt.Keys.{`package` => pack}
 
@@ -8,8 +7,8 @@ resolvers in ThisBuild ++= BintrayResolvers.allResolvers
 licenses in ThisBuild := ("Eclipse-1.0" -> url("http://www.opensource.org/licenses/eclipse-1.0.php")) :: Nil // this is required! otherwise Bintray will reject the code
 homepage in ThisBuild := Some(url("https://github.com/arguslab/argus-cit-intellij"))
 
-libraryDependencies += "org.scalactic" %% "scalactic" % "2.2.6"
-libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.6" % "test"
+libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.1"
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1" % "test"
 
 val argusSafSettings = Defaults.coreDefaultSettings ++ Seq(
   libraryDependencies += "org.scala-lang" % "scala-compiler" % CitVersions.scalaVersion,
@@ -54,9 +53,10 @@ lazy val argus_cit_intellij: Project =
         "junit",
         "properties"
       ),
-      ideaInternalPluginsJars <<= ideaInternalPluginsJars.map { classpath =>
-        classpath.filterNot(_.data.getName.contains("lucene-core"))
-      },
+      ideaInternalPluginsJars :=
+        ideaInternalPluginsJars.value
+          .filterNot(cp => cp.data.getName.contains("lucene-core") || cp.data.getName.contains("junit-jupiter-api"))
+      ,
       aggregate.in(updateIdea) := false
     )
 
@@ -75,7 +75,7 @@ lazy val jc_plugin  =
 lazy val compiler_settings =
   newProject("compiler-settings", file("compiler-settings"))
     .enablePlugins(SbtIdeaPlugin)
-    .settings(libraryDependencies ++= Seq(Dependencies.nailgun) ++ DependencyGroups.jawa)
+    .settings(libraryDependencies ++= Seq(Dependencies.nailgun, Dependencies.jawa))
 
 // Utility projects
 
@@ -116,21 +116,16 @@ lazy val plugin_packager =
   newProject("plugin-packager")
     .settings(
       artifactPath := packagedPluginDir.value,
-      dependencyClasspath <<= (
-        dependencyClasspath in (argus_cit_intellij, Compile),
-        dependencyClasspath in (jc_plugin, Compile)
-        ).map { (a,b) => a ++ b },
+      dependencyClasspath :=
+        dependencyClasspath.in(argus_cit_intellij, Compile).value ++
+        dependencyClasspath.in(jc_plugin, Compile).value,
       mappings := {
         import Packaging.PackageEntry._
         val crossLibraries = List(
           (Dependencies.safLibrary, "lib"),
-          (Dependencies.jawaCore, "lib"),
-          (Dependencies.jawaCompiler, "lib/jc"),
-          (Dependencies.amandroidCore, "lib"),
-          (Dependencies.scalaParserCombinators, "lib"),
+          (Dependencies.jawa, "lib"),
+          (Dependencies.amandroid, "lib"),
           (Dependencies.scalaXml, "lib"),
-          (Dependencies.akka_actor, "lib"),
-          (Dependencies.scala_java8_compat, "lib"),
           (Dependencies.json4s_ext, "lib"),
           (Dependencies.json4s_native, "lib"),
           (Dependencies.json4s_core, "lib"),
@@ -165,7 +160,7 @@ lazy val plugin_packager =
           Directory(baseDirectory.in(ThisBuild).value / "templates", "lib/templates")
         ) ++
         crossLibraries.map { case (clib, dir) =>
-          Library(clib.copy(name = clib.name + "_2.11"), s"$dir/${clib.name}.jar")
+          Library(clib.copy(name = clib.name + "_2.12"), s"$dir/${clib.name}.jar")
         } ++
         librariesToCopyAsIs.map { lib =>
           Library(lib, s"lib/${lib.name}.jar")
@@ -188,15 +183,17 @@ lazy val plugin_compressor =
       }
     )
 
-updateIdea <<= (ideaBaseDirectory, ideaBuild.in(ThisBuild), streams).map {
-  (baseDir, build, streams) =>
-    try {
-      updateIdeaTask(baseDir, build, Seq.empty, streams)
-    } catch {
-      case e : sbt.TranslatedException if e.getCause.isInstanceOf[java.io.FileNotFoundException] =>
-        val newBuild = build.split('.').init.mkString(".") + "-EAP-CANDIDATE-SNAPSHOT"
-        streams.log.warn(s"Failed to download IDEA $build, trying $newBuild")
-        IO.deleteIfEmpty(Set(baseDir))
-        updateIdeaTask(baseDir, newBuild, Seq.empty, streams)
-    }
+updateIdea := {
+  val baseDir = ideaBaseDirectory.value
+  val build = ideaBuild.in(ThisBuild).value
+
+  try {
+    updateIdeaTask(baseDir, build, Seq.empty, streams.value)
+  } catch {
+    case e : sbt.TranslatedException if e.getCause.isInstanceOf[java.io.FileNotFoundException] =>
+      val newBuild = build.split('.').init.mkString(".") + "-EAP-CANDIDATE-SNAPSHOT"
+      streams.value.log.warn(s"Failed to download IDEA $build, trying $newBuild")
+      IO.deleteIfEmpty(Set(baseDir))
+      updateIdeaTask(baseDir, newBuild, Seq.empty, streams.value)
+  }
 }

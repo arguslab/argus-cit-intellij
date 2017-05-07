@@ -27,7 +27,6 @@ import com.intellij.psi.impl.source.PsiJavaCodeReferenceElementImpl;
 import com.intellij.psi.impl.source.resolve.ClassResolverProcessor;
 import com.intellij.psi.impl.source.resolve.JavaResolveUtil;
 import com.intellij.psi.impl.source.resolve.ResolveCache;
-import com.intellij.psi.impl.source.resolve.VariableResolverProcessor;
 import com.intellij.psi.impl.source.tree.JavaSourceUtil;
 import com.intellij.psi.impl.source.tree.TreeElement;
 import com.intellij.psi.infos.CandidateInfo;
@@ -211,7 +210,6 @@ public abstract class JawaTypeSymbolImplMixin
             return this;
         }
 
-//        List<PsiAnnotation> annotations = getAnnotations();
         String text = qName;
         PsiReferenceParameterList parameterList = getParameterList();
         if (parameterList != null) {
@@ -398,14 +396,6 @@ public abstract class JawaTypeSymbolImplMixin
             JawaTypeSymbolImplMixin referenceElement = (JawaTypeSymbolImplMixin)ref;
             int kind = PsiJavaCodeReferenceElementImpl.CLASS_FQ_NAME_KIND;
             JavaResolveResult[] result = referenceElement.resolve(kind, containingFile);
-            if(incompleteCode && result.length == 0 && kind != 4 && kind != 5) {
-                VariableResolverProcessor processor = new VariableResolverProcessor(referenceElement, containingFile);
-                PsiScopesUtil.resolveAndWalk(processor, referenceElement, (PsiElement)null, true);
-                result = processor.getResult();
-                if(result.length == 0 && kind == 1) {
-                    result = referenceElement.resolve(2, containingFile);
-                }
-            }
 
             JavaResolveUtil.substituteResults(referenceElement, result);
             return result;

@@ -15,8 +15,8 @@ import com.intellij.psi.stubs.IStubElementType;
 
 public class JawaFieldDeclarationImpl extends JawaFieldDeclarationImplMixin implements JawaFieldDeclaration {
 
-  public JawaFieldDeclarationImpl(JawaFieldStub stub, IStubElementType nodeType) {
-    super(stub, nodeType);
+  public JawaFieldDeclarationImpl(JawaFieldStub stub, IStubElementType type) {
+    super(stub, type);
   }
 
   public JawaFieldDeclarationImpl(ASTNode node) {

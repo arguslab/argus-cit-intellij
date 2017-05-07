@@ -16,8 +16,8 @@ import com.intellij.psi.stubs.IStubElementType;
 
 public class JawaJwTypeImpl extends JawaJwTypeImplMixin implements JawaJwType {
 
-  public JawaJwTypeImpl(JawaJwTypeStub stub, IStubElementType nodeType) {
-    super(stub, nodeType);
+  public JawaJwTypeImpl(JawaJwTypeStub stub, IStubElementType type) {
+    super(stub, type);
   }
 
   public JawaJwTypeImpl(ASTNode node) {

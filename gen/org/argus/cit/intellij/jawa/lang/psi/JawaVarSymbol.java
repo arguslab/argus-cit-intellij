@@ -8,7 +8,12 @@ import org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaReferenceExpression;
 
 public interface JawaVarSymbol extends JawaReferenceExpression {
 
-  @NotNull
+  @Nullable
+  PsiElement getApostropheId();
+
+  @Nullable
   PsiElement getId();
+
+  String getName();
 
 }

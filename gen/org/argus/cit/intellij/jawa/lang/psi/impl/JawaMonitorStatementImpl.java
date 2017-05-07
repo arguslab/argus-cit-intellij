@@ -27,9 +27,9 @@ public class JawaMonitorStatementImpl extends ASTWrapperPsiElement implements Ja
   }
 
   @Override
-  @Nullable
+  @NotNull
   public JawaVarSymbol getVarSymbol() {
-    return PsiTreeUtil.getChildOfType(this, JawaVarSymbol.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, JawaVarSymbol.class));
   }
 
 }

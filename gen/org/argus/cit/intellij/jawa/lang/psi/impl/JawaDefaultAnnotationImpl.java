@@ -11,14 +11,14 @@ import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.argus.cit.intellij.jawa.lang.psi.*;
 
-public class JawaAnnotationKeyImpl extends ASTWrapperPsiElement implements JawaAnnotationKey {
+public class JawaDefaultAnnotationImpl extends ASTWrapperPsiElement implements JawaDefaultAnnotation {
 
-  public JawaAnnotationKeyImpl(ASTNode node) {
+  public JawaDefaultAnnotationImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull JawaVisitor visitor) {
-    visitor.visitAnnotationKey(this);
+    visitor.visitDefaultAnnotation(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -28,8 +28,28 @@ public class JawaAnnotationKeyImpl extends ASTWrapperPsiElement implements JawaA
 
   @Override
   @NotNull
+  public PsiElement getAnnotationKey() {
+    return notNullChild(findChildByType(ANNOTATION_KEY));
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getApostropheId() {
+    return findChildByType(APOSTROPHE_ID);
+  }
+
+  @Override
+  @Nullable
   public PsiElement getId() {
-    return notNullChild(findChildByType(ID));
+    return findChildByType(ID);
+  }
+
+  public String getKey() {
+    return JawaPsiImplUtil.getKey(this);
+  }
+
+  public String getValue() {
+    return JawaPsiImplUtil.getValue(this);
   }
 
 }

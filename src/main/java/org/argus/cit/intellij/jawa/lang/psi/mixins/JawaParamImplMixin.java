@@ -105,7 +105,7 @@ public abstract class JawaParamImplMixin
     public final String getName() {
         JawaParamStub stub = getStub();
         if(stub != null) return stub.getName();
-        else return getVarDefSymbol().getId().getText();
+        else return getVarDefSymbol().getName();
     }
 
     public final PsiElement setName(@NotNull String name) throws IncorrectOperationException {

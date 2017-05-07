@@ -42,7 +42,7 @@
         name="Minimum API level"
         type="string"
         constraints="apilevel"
-        default="8" />
+        default="9" />
 
     <!--
       Usually the same as minApi, but when minApi is a code name this will be the corresponding
@@ -53,14 +53,14 @@
         name="Minimum API level"
         type="string"
         constraints="apilevel"
-        default="8" />
+        default="9" />
 
     <parameter
         id="targetApi"
         name="Target API level"
         type="string"
         constraints="apilevel"
-        default="19" />
+        default="23" />
 
     <!--
       Usually the same as targetApi, but when targeting a preview platform this is the code name instead
@@ -70,14 +70,14 @@
         name="Target API"
         type="string"
         constraints="apilevel"
-        default="19" />
+        default="23" />
 
     <parameter
         id="buildApi"
         name="Build API level"
         type="string"
         constraints="apilevel"
-        default="19" />
+        default="25" />
 
     <!--
       Usually the same as buildApi, but when targeting a preview platform this is the code name instead
@@ -87,7 +87,7 @@
         name="Build API level"
         type="string"
         constraints="apilevel"
-        default="19" />
+        default="25" />
 
     <parameter
         id="makeIgnore"

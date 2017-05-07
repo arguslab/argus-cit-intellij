@@ -40,8 +40,8 @@ public class JawaInstanceofExpressionImpl extends ASTWrapperPsiElement implement
 
   @Override
   @NotNull
-  public PsiElement getId() {
-    return notNullChild(findChildByType(ID));
+  public PsiElement getAnnotationKey() {
+    return notNullChild(findChildByType(ANNOTATION_KEY));
   }
 
 }

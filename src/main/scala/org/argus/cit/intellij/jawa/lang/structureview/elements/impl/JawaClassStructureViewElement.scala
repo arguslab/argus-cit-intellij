@@ -15,8 +15,9 @@ import com.intellij.navigation.ItemPresentation
 import org.argus.cit.intellij.jawa.lang.psi.JawaClassOrInterfaceDeclaration
 import org.argus.cit.intellij.jawa.lang.structureview.elements.JawaStructureViewElement
 import org.argus.cit.intellij.jawa.lang.structureview.presentations.impl.JawaClassItemPresentation
-import org.sireum.util._
-import collection.JavaConversions._
+import org.argus.jawa.core.util._
+
+import collection.JavaConverters._
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
@@ -25,13 +26,13 @@ class JawaClassStructureViewElement(element: JawaClassOrInterfaceDeclaration) ex
   def getPresentation: ItemPresentation = new JawaClassItemPresentation(element)
   def getChildren: Array[TreeElement] = {
     val children: MSet[TreeElement] = msetEmpty
-    element.getMethodDeclarationList.foreach { md =>
+    element.getMethodDeclarationList.asScala.foreach { md =>
       children += new JawaMethodStructureViewElement(md)
     }
-    element.getInstanceFieldDeclarationBlock.getInstanceFieldDeclarationList.foreach { fd =>
+    element.getInstanceFieldDeclarationBlock.getInstanceFieldDeclarationList.asScala.foreach { fd =>
       children += new JawaFieldStructureViewElement(fd.getFieldDeclaration)
     }
-    element.getStaticFieldDeclarationList.foreach { fd =>
+    element.getStaticFieldDeclarationList.asScala.foreach { fd =>
       children += new JawaFieldStructureViewElement(fd.getFieldDeclaration)
     }
     children.toArray

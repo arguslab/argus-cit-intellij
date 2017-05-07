@@ -16,6 +16,7 @@ import java.net.InetAddress
 import com.intellij.openapi.diagnostic.{Logger => JpsLogger}
 import org.argus.jc.incremental.jawa.data.{CompilationData, CompilerData}
 import org.argus.jc.incremental.jawa.local.LocalServer
+import org.argus.jc.incremental.jawa.model.ProjectSettings
 import org.argus.jc.incremental.jawa.remote.RemoteServer
 import org.jetbrains.jps.ModuleChunk
 import org.jetbrains.jps.builders.java.JavaBuilderUtil
@@ -47,11 +48,11 @@ object JawaBuilder {
   }
 
   def hasBuildModules(chunk: ModuleChunk): Boolean = {
-    import _root_.scala.collection.JavaConversions._
-    chunk.getModules.exists(_.getName.endsWith("-build")) // gen-idea doesn't use the SBT module type
+    import _root_.scala.collection.JavaConverters._
+    chunk.getModules.asScala.exists(_.getName.endsWith("-build")) // gen-idea doesn't use the SBT module type
   }
 
-  def projectSettings(context: CompileContext) = SettingsManager.getProjectSettings(context.getProjectDescriptor.getProject)
+  def projectSettings(context: CompileContext): ProjectSettings = SettingsManager.getProjectSettings(context.getProjectDescriptor.getProject)
 
   def isMakeProject(context: CompileContext): Boolean = JavaBuilderUtil.isCompileJavaIncrementally(context) && {
     for {
@@ -63,14 +64,14 @@ object JawaBuilder {
     true
   }
 
-  val Log = JpsLogger.getInstance(JawaBuilder.getClass.getName)
+  val Log: JpsLogger = JpsLogger.getInstance(JawaBuilder.getClass.getName)
 
   // Cached local localServer
   private var cachedServer: Option[Server] = None
 
   private val lock = new Object()
 
-  def localServer = {
+  def localServer: Server = {
     lock.synchronized {
       val server = cachedServer.getOrElse(new LocalServer())
       cachedServer = Some(server)

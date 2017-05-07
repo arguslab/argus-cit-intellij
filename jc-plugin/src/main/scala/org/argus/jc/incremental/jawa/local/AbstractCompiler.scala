@@ -11,12 +11,11 @@
 package org.argus.jc.incremental.jawa
 package local
 
-import java.io.File
-
-import org.argus.jawa.compiler.compile.CompileProgress
+import com.google.common.base.Preconditions
+import hu.ssh.progressbar.{AbstractProgressBar, Progress, ProgressBar}
 import org.argus.jawa.compiler.log.Severity
 import org.argus.jawa.core.{DefaultReporter, Reporter}
-import org.argus.jawa.core.io.{Position, SourceFile}
+import org.argus.jawa.core.io.Position
 import org.jetbrains.jps.incremental.messages.BuildMessage.Kind
 import org.argus.jawa.compiler.log.Logger
 
@@ -29,7 +28,7 @@ abstract class AbstractCompiler extends Compiler {
 
   def getLogger(client: Client): Logger = new ClientLogger(client)
 
-  def getProgress(client: Client): CompileProgress = new ClientProgress(client)
+  def getProgress(client: Client): ProgressBar= new ClientProgress(client)
 
   private class ClientLogger(val client: Client) extends Logger {
     override def error(msg: String) {
@@ -54,24 +53,21 @@ abstract class AbstractCompiler extends Compiler {
     }
   }
 
-  private class ClientProgress(client: Client) extends CompileProgress {
-    def generated(source: SourceFile, module: File, name: String) {
-      client.progress("Generated " + module.getName)
-      client.generated(source, module, name)
-    }
+  private class ClientProgress(client: Client, totalSteps: Int) extends AbstractProgressBar(totalSteps) {
 
-    def deleted(module: File) {
-      client.deleted(module)
-    }
+    def this(client: Client) = this(client, 30)
 
-    def startUnit(unitPath: String) {
-      val unitName = new File(unitPath).getName
-      client.progress("Compile on " + unitName)
-    }
-
-    def advance(current: Int, total: Int) = {
-      client.progress("", Some(current.toFloat / total.toFloat))
+    override def updateProgressBar(progress: Progress): Unit = {
+      client.progress("", Some(progress.getPercentage))
       !client.isCanceled
+    }
+
+    override def finishProgressBar(): Unit = {
+    }
+
+    override def withTotalSteps(totalSteps: Int): ProgressBar = {
+      Preconditions.checkArgument(totalSteps != 0)
+      new ClientProgress(client, totalSteps)
     }
   }
 
@@ -85,8 +81,8 @@ abstract class AbstractCompiler extends Compiler {
       }
 
       val source = pos.source
-      val line = (try Some(pos.line) catch {case e: UnsupportedOperationException => None}).map(_.toLong)
-      val column = (try Some(pos.column) catch {case e: UnsupportedOperationException => None}).map(_.toLong)
+      val line = (try Some(pos.line) catch {case _: UnsupportedOperationException => None}).map(_.toLong)
+      val column = (try Some(pos.column) catch {case _: UnsupportedOperationException => None}).map(_.toLong)
 
       client.message(kind, msg, source, line, column)
     }

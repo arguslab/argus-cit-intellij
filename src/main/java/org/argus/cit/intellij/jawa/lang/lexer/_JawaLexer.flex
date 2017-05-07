@@ -1,7 +1,10 @@
 package org.argus.cit.intellij.jawa.lang.lexer;
 
-import com.intellij.lexer.*;
+import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
+
+import static com.intellij.psi.TokenType.BAD_CHARACTER;
+import static com.intellij.psi.TokenType.WHITE_SPACE;
 import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
 
 %%
@@ -20,18 +23,19 @@ import static org.argus.cit.intellij.jawa.lang.psi.JawaElementTypes.*;
 %unicode
 
 EOL=\R
-WHITE_SPACE=\s
+WHITE_SPACE=\s+
 
 ID=([:letter:]([\w]|[$])*)
 APOSTROPHE_ID=(`[^`@]+`)
 STATIC_ID=(`@@[^`@]+`)
-LOCATION_ID=(#[\w]*\.)
+LOCATION_ID=#([\w]+\.)?
 NUMBER=[0-9]+(\.[0-9]*)?
 STRING_LITERAL=('([^'\\]|\\.)*'|\"([^\"\\]|\\.)*\")
+ANNOTATION_KEY=(@[\w]+)
 
 %%
 <YYINITIAL> {
-  {WHITE_SPACE}           { return com.intellij.psi.TokenType.WHITE_SPACE; }
+  {WHITE_SPACE}           { return WHITE_SPACE; }
 
   ";"                     { return SEMI; }
   ","                     { return COMMA; }
@@ -42,7 +46,6 @@ STRING_LITERAL=('([^'\\]|\\.)*'|\"([^\"\\]|\\.)*\")
   "=>"                    { return ARROW; }
   "."                     { return DOT; }
   ".."                    { return RANGE; }
-  "#"                     { return POUND; }
   "{"                     { return LBRACE; }
   "}"                     { return RBRACE; }
   "["                     { return LBRACKET; }
@@ -76,6 +79,8 @@ STRING_LITERAL=('([^'\\]|\\.)*'|\"([^\"\\]|\\.)*\")
   "@signature"            { return SIGNATURE_KEY; }
   "@kind"                 { return KIND_KEY; }
   "@AccessFlag"           { return ACCESS_FLAG_KEY; }
+  "@monitorenter"         { return MONITOR_ENTER_KEY; }
+  "@monitorexit"          { return MONITOR_EXIT_KEY; }
   "fcmpl"                 { return FCMPL; }
   "fcmpg"                 { return FCMPG; }
   "dcmpl"                 { return DCMPL; }
@@ -106,7 +111,8 @@ STRING_LITERAL=('([^'\\]|\\.)*'|\"([^\"\\]|\\.)*\")
   {LOCATION_ID}           { return LOCATION_ID; }
   {NUMBER}                { return NUMBER; }
   {STRING_LITERAL}        { return STRING_LITERAL; }
+  {ANNOTATION_KEY}        { return ANNOTATION_KEY; }
 
 }
 
-[^] { return com.intellij.psi.TokenType.BAD_CHARACTER; }
+[^] { return BAD_CHARACTER; }

@@ -16,7 +16,7 @@ import com.intellij.psi.stubs.StubElement
 import org.argus.cit.intellij.jawa.JavaArrayFactoryUtil
 import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaStubElementTypes
 import org.argus.cit.intellij.jawa.lang.psi.{JawaClassOrInterfaceDeclaration, JawaPsiElement}
-import org.sireum.util._
+import org.argus.jawa.core.util._
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>

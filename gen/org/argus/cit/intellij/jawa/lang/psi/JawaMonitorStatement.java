@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface JawaMonitorStatement extends PsiElement {
 
-  @Nullable
+  @NotNull
   JawaVarSymbol getVarSymbol();
 
 }

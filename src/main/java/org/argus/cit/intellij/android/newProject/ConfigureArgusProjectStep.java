@@ -14,10 +14,9 @@ import com.android.tools.idea.npw.WizardUtils;
 import com.android.tools.idea.wizard.WizardConstants;
 import com.android.tools.idea.wizard.dynamic.DynamicWizardStepWithHeaderAndDescription;
 import com.android.tools.idea.wizard.dynamic.ScopedStateStore;
+import com.android.tools.idea.wizard.dynamic.ScopedStateStore.Key;
 import com.intellij.openapi.Disposable;
-import com.intellij.openapi.fileChooser.FileChooserDescriptor;
-import com.intellij.openapi.fileChooser.FileChooserFactory;
-import com.intellij.openapi.fileChooser.FileSaverDescriptor;
+import com.intellij.openapi.fileChooser.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.vfs.LocalFileSystem;
@@ -26,10 +25,10 @@ import com.intellij.openapi.vfs.VirtualFileWrapper;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import org.argus.amandroid.core.Apk$;
+import org.argus.amandroid.core.ApkGlobal$;
+import org.argus.jawa.core.util.FileUtil$;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.sireum.util.FileUtil$;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,36 +39,35 @@ import java.util.Set;
  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
  */
 public class ConfigureArgusProjectStep extends DynamicWizardStepWithHeaderAndDescription {
+
     private TextFieldWithBrowseButton myProjectLocation;
     private TextFieldWithBrowseButton myAppPath;
     private JPanel myPanel;
-    private JLabel appName;
-    private JLabel packageName;
+    private JLabel myAppName;
+    private JLabel myPackageName;
 
     public ConfigureArgusProjectStep(@NotNull Disposable disposable) {
         this("Configure your new analysis", disposable);
     }
 
-
     public ConfigureArgusProjectStep(String title, Disposable parentDisposable) {
-        super(title, "", parentDisposable);
+        super(title, null, parentDisposable);
         setBodyComponent(myPanel);
     }
 
     @Override
     public void init() {
         register(NewProjectWizard.APK_LOCATION_KEY(), myAppPath);
-        register(WizardConstants.APPLICATION_NAME_KEY, appName);
+        register(WizardConstants.APPLICATION_NAME_KEY, myAppName);
         registerValueDeriver(WizardConstants.APPLICATION_NAME_KEY, myAppNameDeriver);
-        register(WizardConstants.PACKAGE_NAME_KEY, packageName);
-        registerValueDeriver(WizardConstants.PACKAGE_NAME_KEY, myPackageNameDeriver);
+        register(WizardConstants.PACKAGE_NAME_KEY, myPackageName);
+        registerValueDeriver(WizardConstants.PACKAGE_NAME_KEY, PACKAGE_NAME_DERIVER);
         register(WizardConstants.PROJECT_LOCATION_KEY, myProjectLocation);
         registerValueDeriver(WizardConstants.PROJECT_LOCATION_KEY, myProjectLocationDeriver);
 
         FileChooserDescriptor apkFileChooserDescriptor = new FileChooserDescriptor(true, false, true, false, false, false);
         myAppPath.addBrowseFolderListener("Apk Path", "Please choose an APK", null, apkFileChooserDescriptor);
-        FileSaverDescriptor projectlocationFileSaverDescriptor = new FileSaverDescriptor("Project Location", "Please choose a location for your project");
-        myProjectLocation.addActionListener(e -> browseForFile(myProjectLocation, projectlocationFileSaverDescriptor));
+        myProjectLocation.addActionListener(e -> browseForFile());
         super.init();
     }
 
@@ -85,7 +83,7 @@ public class ConfigureArgusProjectStep extends DynamicWizardStepWithHeaderAndDes
         if (path == null || path.equals("")) {
             return false;
         }
-        if (!Apk$.MODULE$.isValidApk(FileUtil$.MODULE$.toUri(path))) {
+        if (!ApkGlobal$.MODULE$.isValidApk(FileUtil$.MODULE$.toUri(path))) {
             validApk = false;
             errorMessage = "Given APK is not valid. It maybe not an apk file, or don't have AndroidManifest.xml or *.dex files.";
         }
@@ -93,51 +91,63 @@ public class ConfigureArgusProjectStep extends DynamicWizardStepWithHeaderAndDes
         return !locationValidationResult.isError() && validApk;
     }
 
-    private void browseForFile(TextFieldWithBrowseButton button, FileSaverDescriptor saver) {
-        File currentPath = new File(button.getText());
+    @Override
+    public JComponent getPreferredFocusedComponent() {
+        return myAppName;
+    }
+
+    @NotNull
+    @Override
+    public String getStepName() {
+        return "Configure your new analysis";
+    }
+
+    private void browseForFile() {
+        FileSaverDescriptor fileSaverDescriptor = new FileSaverDescriptor("Project Location", "Please choose a location for your project");
+        File currentPath = new File(myProjectLocation.getText());
         File parentPath = currentPath.getParentFile();
         if (parentPath == null) {
             String homePath = System.getProperty("user.home");
-            parentPath = homePath == null ? new File("/") : new File(homePath);
+            parentPath = new File(homePath == null ? File.separator : homePath);
         }
         VirtualFile parent = LocalFileSystem.getInstance().findFileByIoFile(parentPath);
         String filename = currentPath.getName();
         VirtualFileWrapper fileWrapper =
-                FileChooserFactory.getInstance().createSaveFileDialog(saver, (Project) null).save(parent, filename);
+                FileChooserFactory.getInstance().createSaveFileDialog(fileSaverDescriptor, (Project) null).save(parent, filename);
         if (fileWrapper != null) {
-            button.setText(fileWrapper.getFile().getAbsolutePath());
+            myProjectLocation.setText(fileWrapper.getFile().getAbsolutePath());
         }
     }
 
     private static final ValueDeriver<String> myAppNameDeriver = new ValueDeriver<String>() {
         @Nullable
         @Override
-        public Set<ScopedStateStore.Key<?>> getTriggerKeys() {
+        public Set<Key<?>> getTriggerKeys() {
             return makeSetOf(NewProjectWizard.APK_LOCATION_KEY());
         }
 
         @Nullable
         @Override
-        public String deriveValue(@NotNull ScopedStateStore state, @Nullable ScopedStateStore.Key changedKey, @Nullable String currentValue) {
+        public String deriveValue(@NotNull ScopedStateStore state, @Nullable Key changedKey, @Nullable String currentValue) {
             String path = state.get(NewProjectWizard.APK_LOCATION_KEY());
             if (path == null || path.equals("")) return "";
             return new File(path).getName().substring(0, new File(path).getName().lastIndexOf("."));
         }
     };
 
-    private static final ValueDeriver<String> myPackageNameDeriver = new ValueDeriver<String>() {
+    public static final ValueDeriver<String> PACKAGE_NAME_DERIVER = new ValueDeriver<String>() {
         @Nullable
         @Override
-        public Set<ScopedStateStore.Key<?>> getTriggerKeys() {
+        public Set<Key<?>> getTriggerKeys() {
             return makeSetOf(NewProjectWizard.APK_LOCATION_KEY());
         }
 
         @Nullable
         @Override
-        public String deriveValue(@NotNull ScopedStateStore state, @Nullable ScopedStateStore.Key changedKey, @Nullable String currentValue) {
+        public String deriveValue(@NotNull ScopedStateStore state, Key changedKey, @Nullable String currentValue) {
             String path = state.get(NewProjectWizard.APK_LOCATION_KEY());
             if (path == null || path.equals("")) return "";
-            if (!Apk$.MODULE$.isValidApk(FileUtil$.MODULE$.toUri(path))) return "";
+            if (!ApkGlobal$.MODULE$.isValidApk(FileUtil$.MODULE$.toUri(path))) return "";
             return NewProjectWizard.loadPackageNameFromManifestFile(new File(path));
         }
     };
@@ -145,16 +155,15 @@ public class ConfigureArgusProjectStep extends DynamicWizardStepWithHeaderAndDes
     private static final ValueDeriver<String> myProjectLocationDeriver = new ValueDeriver<String>() {
         @Nullable
         @Override
-        public Set<ScopedStateStore.Key<?>> getTriggerKeys() {
-            return makeSetOf(NewProjectWizard.APK_LOCATION_KEY());
+        public Set<Key<?>> getTriggerKeys() {
+            return makeSetOf(WizardConstants.APPLICATION_NAME_KEY);
         }
 
         @Nullable
         @Override
-        public String deriveValue(@NotNull ScopedStateStore state, @Nullable ScopedStateStore.Key changedKey, @Nullable String currentValue) {
-            String path = state.get(NewProjectWizard.APK_LOCATION_KEY());
-            if (path == null || path.equals("")) return "";
-            String name = new File(path).getName().substring(0, new File(path).getName().lastIndexOf("."));
+        public String deriveValue(@NotNull ScopedStateStore state, @Nullable Key changedKey, @Nullable String currentValue) {
+            String name = state.get(WizardConstants.APPLICATION_NAME_KEY);
+            name = name == null ? "" : name;
             name = name.replaceAll(WizardConstants.INVALID_FILENAME_CHARS, "");
             name = name.replaceAll("\\s", "");
             File baseDirectory = WizardUtils.getProjectLocationParent();
@@ -170,23 +179,8 @@ public class ConfigureArgusProjectStep extends DynamicWizardStepWithHeaderAndDes
 
     @NotNull
     @Override
-    public String getStepName() {
-        return "Create Argus-CIT Project";
-    }
-
-    @Override
-    public JComponent getPreferredFocusedComponent() {
-        return myAppPath;
-    }
-
-    @NotNull
-    @Override
     protected WizardStepHeaderSettings getStepHeader() {
-        return ConfigureArgusProjectPath$.MODULE$.buildConfigurationHeader();
-    }
-
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
+        return ConfigureArgusProjectPath.buildConfigurationHeader();
     }
 
     {
@@ -232,12 +226,12 @@ public class ConfigureArgusProjectStep extends DynamicWizardStepWithHeaderAndDes
         label4.setDisplayedMnemonic('P');
         label4.setDisplayedMnemonicIndex(0);
         myPanel.add(label4, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        appName = new JLabel();
-        appName.setText("NewApp");
-        myPanel.add(appName, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        packageName = new JLabel();
-        packageName.setText("com.example");
-        myPanel.add(packageName, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        myAppName = new JLabel();
+        myAppName.setText("NewApp");
+        myPanel.add(myAppName, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        myPackageName = new JLabel();
+        myPackageName.setText("com.example");
+        myPanel.add(myPackageName, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**

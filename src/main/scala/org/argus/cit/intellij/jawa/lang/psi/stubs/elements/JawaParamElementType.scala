@@ -37,7 +37,7 @@ class JawaParamElementType(debugName: String) extends JawaStubElementType[JawaPa
   }
 
   def createStubImpl[ParentPsi <: PsiElement](psi: JawaParam, parentStub: StubElement[ParentPsi]): JawaParamStub = {
-    val name: String = psi.getVarDefSymbol.getId.getText
+    val name: String = psi.getVarDefSymbol.getName
     val jawatypeText: String = psi.getJwType.getJawaType.jawaName
     new JawaParamStubImpl(parentStub, this, name, jawatypeText)
   }

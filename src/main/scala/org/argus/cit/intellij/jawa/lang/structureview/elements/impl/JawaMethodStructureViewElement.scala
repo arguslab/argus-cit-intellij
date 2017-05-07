@@ -15,12 +15,11 @@ import com.intellij.navigation.ItemPresentation
 import org.argus.cit.intellij.jawa.lang.psi.JawaMethodDeclaration
 import org.argus.cit.intellij.jawa.lang.structureview.elements.JawaStructureViewElement
 import org.argus.cit.intellij.jawa.lang.structureview.presentations.impl.JawaMethodItemPresentation
-import org.sireum.util.msetEmpty
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
 class JawaMethodStructureViewElement(element: JawaMethodDeclaration) extends JawaStructureViewElement(element, false) {
   override def getPresentation: ItemPresentation = new JawaMethodItemPresentation(element)
-  override def getChildren: Array[TreeElement] = msetEmpty.toArray
+  override def getChildren: Array[TreeElement] = Array.empty
 }

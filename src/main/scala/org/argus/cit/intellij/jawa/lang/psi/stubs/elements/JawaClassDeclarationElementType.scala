@@ -20,7 +20,7 @@ import org.argus.cit.intellij.jawa.lang.psi.impl.JawaClassOrInterfaceDeclaration
 import org.argus.cit.intellij.jawa.lang.psi.stubs.{JawaClassOrInterfaceStub, JawaStubElementTypes}
 import org.argus.cit.intellij.jawa.lang.psi.stubs.impl.JawaClassOrInterfaceStubImpl
 
-import collection.JavaConversions._
+import collection.JavaConverters._
 
 /**
   *  @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
@@ -28,7 +28,7 @@ import collection.JavaConversions._
 class JawaClassDeclarationElementType(debugName: String) extends JawaStubElementType[JawaClassOrInterfaceStub, JawaClassOrInterfaceDeclaration](debugName) {
   override def createStubImpl[ParentPsi <: PsiElement](psi: JawaClassOrInterfaceDeclaration, parent: StubElement[ParentPsi]): JawaClassOrInterfaceStub = {
     val file = psi.getContainingFile
-    val methodNames = psi.getMethodDeclarationList.map {
+    val methodNames = psi.getMethodDeclarationList.asScala.map {
       md => md.getSignatureAnnotation.getSignatureSymbol.getSignature.methodName
     }.toArray
     val fileName = if (file != null && file.getVirtualFile != null) file.getVirtualFile.getName else null
@@ -59,7 +59,7 @@ class JawaClassDeclarationElementType(debugName: String) extends JawaStubElement
       javaName)
   }
 
-  def indexStub(stub: JawaClassOrInterfaceStub, sink: IndexSink) = {
+  def indexStub(stub: JawaClassOrInterfaceStub, sink: IndexSink): Unit = {
     val javaName = stub.javaName
     sink.occurrence(JavaStubIndexKeys.CLASS_SHORT_NAMES, javaName)
 

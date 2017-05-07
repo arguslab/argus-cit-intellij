@@ -12,7 +12,6 @@ public interface JawaElementTypes {
   IElementType ACCESS_EXPRESSION = JawaElementTypeFactory.getElementType("ACCESS_EXPRESSION");
   IElementType ACCESS_FLAG_ANNOTATION = JawaElementTypeFactory.getElementType("ACCESS_FLAG_ANNOTATION");
   IElementType ANNOTATION = JawaElementTypeFactory.getElementType("ANNOTATION");
-  IElementType ANNOTATION_KEY = JawaElementTypeFactory.getElementType("ANNOTATION_KEY");
   IElementType ARG_CLAUSE = JawaElementTypeFactory.getElementType("ARG_CLAUSE");
   IElementType ASSIGNMENT_STATEMENT = JawaElementTypeFactory.getElementType("ASSIGNMENT_STATEMENT");
   IElementType BINARY_EXPRESSION = JawaElementTypeFactory.getElementType("BINARY_EXPRESSION");
@@ -26,6 +25,7 @@ public interface JawaElementTypes {
   IElementType CMP_EXPRESSION = JawaElementTypeFactory.getElementType("CMP_EXPRESSION");
   IElementType COND_BINARY_EXPRESSION = JawaElementTypeFactory.getElementType("COND_BINARY_EXPRESSION");
   IElementType CONST_CLASS_EXPRESSION = JawaElementTypeFactory.getElementType("CONST_CLASS_EXPRESSION");
+  IElementType DEFAULT_ANNOTATION = JawaElementTypeFactory.getElementType("DEFAULT_ANNOTATION");
   IElementType EXCEPTION_EXPRESSION = JawaElementTypeFactory.getElementType("EXCEPTION_EXPRESSION");
   IElementType EXPRESSION_LHS = JawaElementTypeFactory.getElementType("EXPRESSION_LHS");
   IElementType EXPRESSION_RHS = JawaElementTypeFactory.getElementType("EXPRESSION_RHS");
@@ -84,6 +84,7 @@ public interface JawaElementTypes {
   IElementType ACCESS_FLAG_KEY = new JawaTokenType("@AccessFlag");
   IElementType ADD = new JawaTokenType("+");
   IElementType AND = new JawaTokenType("^&");
+  IElementType ANNOTATION_KEY = new JawaTokenType("ANNOTATION_KEY");
   IElementType APOSTROPHE_ID = new JawaTokenType("APOSTROPHE_ID");
   IElementType ARROW = new JawaTokenType("=>");
   IElementType ASSIGN_OP = new JawaTokenType(":=");
@@ -123,7 +124,9 @@ public interface JawaElementTypes {
   IElementType LT = new JawaTokenType("<");
   IElementType METHOD = new JawaTokenType("procedure");
   IElementType MONITOR_ENTER = new JawaTokenType("monitorenter");
+  IElementType MONITOR_ENTER_KEY = new JawaTokenType("@monitorenter");
   IElementType MONITOR_EXIT = new JawaTokenType("monitorexit");
+  IElementType MONITOR_EXIT_KEY = new JawaTokenType("@monitorexit");
   IElementType MUL = new JawaTokenType("*");
   IElementType NEW = new JawaTokenType("new");
   IElementType NOT = new JawaTokenType("~");
@@ -132,7 +135,6 @@ public interface JawaElementTypes {
   IElementType NUMBER = new JawaTokenType("number");
   IElementType OR = new JawaTokenType("^|");
   IElementType OWNER_KEY = new JawaTokenType("@owner");
-  IElementType POUND = new JawaTokenType("#");
   IElementType RANGE = new JawaTokenType("..");
   IElementType RBRACE = new JawaTokenType("}");
   IElementType RBRACKET = new JawaTokenType("]");
@@ -165,9 +167,6 @@ public interface JawaElementTypes {
       }
       else if (type == ANNOTATION) {
         return new JawaAnnotationImpl(node);
-      }
-      else if (type == ANNOTATION_KEY) {
-        return new JawaAnnotationKeyImpl(node);
       }
       else if (type == ARG_CLAUSE) {
         return new JawaArgClauseImpl(node);
@@ -207,6 +206,9 @@ public interface JawaElementTypes {
       }
       else if (type == CONST_CLASS_EXPRESSION) {
         return new JawaConstClassExpressionImpl(node);
+      }
+      else if (type == DEFAULT_ANNOTATION) {
+        return new JawaDefaultAnnotationImpl(node);
       }
       else if (type == EXCEPTION_EXPRESSION) {
         return new JawaExceptionExpressionImpl(node);

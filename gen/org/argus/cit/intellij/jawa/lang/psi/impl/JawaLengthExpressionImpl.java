@@ -34,8 +34,8 @@ public class JawaLengthExpressionImpl extends ASTWrapperPsiElement implements Ja
 
   @Override
   @NotNull
-  public PsiElement getId() {
-    return notNullChild(findChildByType(ID));
+  public PsiElement getAnnotationKey() {
+    return notNullChild(findChildByType(ANNOTATION_KEY));
   }
 
 }

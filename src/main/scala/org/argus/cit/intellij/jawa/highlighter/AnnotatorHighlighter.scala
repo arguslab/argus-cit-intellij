@@ -40,7 +40,7 @@ object AnnotatorHighlighter {
     case _: JawaLocationDefSymbol | _: JawaLocationSymbol =>
       val annotation = holder.createInfoAnnotation(element, null)
       annotation.setTextAttributes(DefaultHighlighter.LOCATION)
-    case _: JawaAnnotationKey =>
+    case _: JawaDefaultAnnotation =>
       val annotation = holder.createInfoAnnotation(element, null)
       annotation.setTextAttributes(DefaultHighlighter.ANNOTATION)
     case _: JawaNumberLiteral =>

@@ -27,9 +27,9 @@ public class JawaLocalVarDeclarationImpl extends JawaLocalVarDeclarationImplMixi
   }
 
   @Override
-  @NotNull
+  @Nullable
   public JawaJwType getJwType() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, JawaJwType.class));
+    return PsiTreeUtil.getChildOfType(this, JawaJwType.class);
   }
 
   @Override

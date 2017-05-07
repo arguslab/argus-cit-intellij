@@ -34,8 +34,8 @@ public class JawaAnnotationImpl extends ASTWrapperPsiElement implements JawaAnno
 
   @Override
   @Nullable
-  public JawaAnnotationKey getAnnotationKey() {
-    return PsiTreeUtil.getChildOfType(this, JawaAnnotationKey.class);
+  public JawaDefaultAnnotation getDefaultAnnotation() {
+    return PsiTreeUtil.getChildOfType(this, JawaDefaultAnnotation.class);
   }
 
   @Override
@@ -54,12 +54,6 @@ public class JawaAnnotationImpl extends ASTWrapperPsiElement implements JawaAnno
   @Nullable
   public JawaTypeAnnotation getTypeAnnotation() {
     return PsiTreeUtil.getChildOfType(this, JawaTypeAnnotation.class);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getId() {
-    return findChildByType(ID);
   }
 
 }

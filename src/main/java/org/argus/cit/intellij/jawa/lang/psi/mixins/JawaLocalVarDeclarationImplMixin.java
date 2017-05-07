@@ -24,6 +24,7 @@ import com.intellij.util.IncorrectOperationException;
 import com.intellij.util.PlatformIcons;
 import org.argus.cit.intellij.jawa.lang.psi.JawaExpressionPsiElement;
 import org.argus.cit.intellij.jawa.lang.psi.JawaLocalVarDeclaration;
+import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.synthetic.FakeTypeElement;
 import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.synthetic.JavaIdentifier;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -52,7 +53,9 @@ public abstract class JawaLocalVarDeclarationImplMixin extends JawaExpressionPsi
     @NotNull
     @Override
     public PsiTypeElement getTypeElement() {
-        return getJwType();
+        PsiTypeElement jt = getJwType();
+        if(jt == null) jt = new FakeTypeElement(nameId().getNode());
+        return jt;
     }
 
     @Nullable
@@ -117,8 +120,6 @@ public abstract class JawaLocalVarDeclarationImplMixin extends JawaExpressionPsi
 
     @Override
     public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
-//        if (lastParent == null) return true;
-//        if (lastParent.getParent() != this) return true;
         return processor.execute(this, state);
     }
 

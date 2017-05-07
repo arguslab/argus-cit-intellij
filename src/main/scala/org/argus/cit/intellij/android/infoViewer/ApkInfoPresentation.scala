@@ -16,11 +16,10 @@ import java.nio.file.attribute.BasicFileAttributes
 import java.security.MessageDigest
 import java.text.SimpleDateFormat
 
-import org.argus.amandroid.core.Apk
+import org.argus.amandroid.core.ApkGlobal
 import org.argus.amandroid.core.parser.ComponentType
 import org.argus.amandroid.core.util.AndroidUrlCollector
-import org.argus.jawa.core.Global
-import org.sireum.util.FileUtil
+import org.argus.jawa.core.util.FileUtil
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
@@ -28,8 +27,8 @@ import org.sireum.util.FileUtil
 object ApkInfoPresentation {
   case class Presentation(apkInfo: String, applicationInfo: String, apisAndStrings: String)
 
-  def prepare(apk: Apk, global: Global): Presentation = {
-    val appName = apk.getAppName
+  def prepare(apk: ApkGlobal): Presentation = {
+    val appName = apk.model.getAppName
     val app = FileUtil.toFile(apk.nameUri)
     var md = MessageDigest.getInstance("MD5")
     val md5checksum = getFileChecksum(md, app)
@@ -38,7 +37,7 @@ object ApkInfoPresentation {
     md = MessageDigest.getInstance("SHA-256")
     val sha256checksum = getFileChecksum(md, app)
     val fileSize = getFileSize(app)
-    val certs = apk.getCertificates
+    val certs = apk.model.getCertificates
     val sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     val attr = Files.readAttributes(Paths.get(app.getPath), classOf[BasicFileAttributes])
     val highestDatetime = sdf.format(attr.lastModifiedTime().toMillis)
@@ -59,8 +58,8 @@ object ApkInfoPresentation {
          |${certs.mkString("\n\n")}
        """.stripMargin
 
-    val uses_permissions = apk.getUsesPermissions
-    val components = apk.getComponentInfos
+    val uses_permissions = apk.model.getUsesPermissions
+    val components = apk.model.getComponentInfos
     val activities = components.filter(_.typ == ComponentType.ACTIVITY)
     val services = components.filter(_.typ == ComponentType.SERVICE)
     val receivers = components.filter(_.typ == ComponentType.RECEIVER)
@@ -125,7 +124,7 @@ object ApkInfoPresentation {
        """.stripMargin
       )
     }
-    val filterMap = apk.getIntentFilterDB.getIntentFmap
+    val filterMap = apk.model.getIntentFilterDB.getIntentFmap
     if(filterMap.nonEmpty) {
       val filters = filterMap.values.reduce(_ ++ _)
       applicationInfo.append(
@@ -156,7 +155,7 @@ object ApkInfoPresentation {
       )
     }
 
-    val urls = AndroidUrlCollector.collectUrls(global, apk.nameUri)
+    val urls = AndroidUrlCollector.collectUrls(apk, apk.nameUri)
     var apisAndStrings = ""
     if(urls.nonEmpty) {
       apisAndStrings +=

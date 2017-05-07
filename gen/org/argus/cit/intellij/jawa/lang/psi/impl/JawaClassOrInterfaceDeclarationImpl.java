@@ -15,8 +15,8 @@ import com.intellij.psi.stubs.IStubElementType;
 
 public class JawaClassOrInterfaceDeclarationImpl extends JawaClassOrInterfaceDeclarationImplMixin implements JawaClassOrInterfaceDeclaration {
 
-  public JawaClassOrInterfaceDeclarationImpl(JawaClassOrInterfaceStub stub, IStubElementType nodeType) {
-    super(stub, nodeType);
+  public JawaClassOrInterfaceDeclarationImpl(JawaClassOrInterfaceStub stub, IStubElementType type) {
+    super(stub, type);
   }
 
   public JawaClassOrInterfaceDeclarationImpl(ASTNode node) {

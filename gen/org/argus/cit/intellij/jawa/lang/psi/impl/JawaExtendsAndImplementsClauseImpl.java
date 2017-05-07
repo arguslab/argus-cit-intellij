@@ -15,8 +15,8 @@ import com.intellij.psi.stubs.IStubElementType;
 
 public class JawaExtendsAndImplementsClauseImpl extends JawaExtendsAndImplementsClauseImplMixin implements JawaExtendsAndImplementsClause {
 
-  public JawaExtendsAndImplementsClauseImpl(JawaExtendsAndImplementsClauseStub stub, IStubElementType nodeType) {
-    super(stub, nodeType);
+  public JawaExtendsAndImplementsClauseImpl(JawaExtendsAndImplementsClauseStub stub, IStubElementType type) {
+    super(stub, type);
   }
 
   public JawaExtendsAndImplementsClauseImpl(ASTNode node) {

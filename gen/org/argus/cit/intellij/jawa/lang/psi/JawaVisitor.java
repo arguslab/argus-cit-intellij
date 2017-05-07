@@ -4,21 +4,21 @@ package org.argus.cit.intellij.jawa.lang.psi;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
-import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaModifierList;
-import org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaExpressionList;
-import org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaMethodCallExpression;
-import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.JawaTypeDefinition;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaPsiReferenceList;
-import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaPsiField;
-import org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaReferenceExpression;
-import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaCodeBlock;
-import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaTypeElement;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaLocalVariable;
-import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaJwStatement;
+import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaCodeBlock;
+import org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaReferenceExpression;
+import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaTypeElement;
+import org.argus.cit.intellij.jawa.lang.psi.api.toplevel.JawaTypeDefinition;
+import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaModifierList;
+import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaParameterList;
+import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaPsiField;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaPsiMethod;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaParameter;
-import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaParameterList;
 import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaReference;
+import org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaExpressionList;
+import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaJwStatement;
+import org.argus.cit.intellij.jawa.lang.psi.api.expr.JawaMethodCallExpression;
 
 public class JawaVisitor extends PsiElementVisitor {
 
@@ -31,10 +31,6 @@ public class JawaVisitor extends PsiElementVisitor {
   }
 
   public void visitAnnotation(@NotNull JawaAnnotation o) {
-    visitPsiElement(o);
-  }
-
-  public void visitAnnotationKey(@NotNull JawaAnnotationKey o) {
     visitPsiElement(o);
   }
 
@@ -87,6 +83,10 @@ public class JawaVisitor extends PsiElementVisitor {
   }
 
   public void visitConstClassExpression(@NotNull JawaConstClassExpression o) {
+    visitPsiElement(o);
+  }
+
+  public void visitDefaultAnnotation(@NotNull JawaDefaultAnnotation o) {
     visitPsiElement(o);
   }
 

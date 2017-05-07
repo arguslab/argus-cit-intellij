@@ -22,13 +22,14 @@ import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.ui.content.{ContentFactory, ContentManager}
 import com.intellij.util.xmlb.annotations.Attribute
-import org.argus.amandroid.core.{AndroidGlobalConfig, Apk}
+import org.argus.amandroid.core.ApkGlobal
 import org.argus.amandroid.core.appInfo.AppInfoCollector
-import org.argus.amandroid.core.util.AndroidLibraryAPISummary
+import org.argus.amandroid.core.decompile.DecompileLayout
+import org.argus.amandroid.core.model.ApkModel
 import org.argus.cit.intellij.jawa.JawaBundle
-import org.argus.jawa.core.{Constants, Global, MsgLevel, PrintReporter}
+import org.argus.jawa.core.util._
+import org.argus.jawa.core.{MsgLevel, PrintReporter}
 import org.jetbrains.annotations.NotNull
-import org.sireum.util._
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
@@ -74,10 +75,9 @@ class ApkInfoView(@NotNull project: Project) extends PersistentStateComponent[Ap
     Disposer.register(this, interestingApiStringPanel)
 
     ProgressManager.getInstance().run(new Task.Backgroundable(project, "Collecting APK Information...") {
-      private var apk: Apk = _
-      private var global: Global = _
       private var errorMessage: String = _
       private var errorTitle: String = _
+      private var apk: ApkGlobal = _
 
       override def run(progressIndicator: ProgressIndicator): Unit = {
         val propFile = new File(project.getBasePath, "argus_cit.properties")
@@ -101,12 +101,13 @@ class ApkInfoView(@NotNull project: Project) extends PersistentStateComponent[Ap
           } else {
             val apkUri = FileUtil.toUri(apkPath)
             val outputUri = FileUtil.toUri(moduleLocation)
-            apk = new Apk(apkUri, outputUri, Set(src))
             val reporter = new PrintReporter(MsgLevel.ERROR)
-            global = new Global(apkUri, reporter)
-            global.setJavaLib(AndroidGlobalConfig.settings.lib_files)
-            global.load(FileUtil.toUri(FileUtil.toFilePath(outputUri) + File.separator + src), Constants.JAWA_FILE_EXT, AndroidLibraryAPISummary)
-            AppInfoCollector.collectInfo(apk, global, outputUri)
+            val layout = DecompileLayout(FileUtil.toUri(moduleLocation))
+            layout.sourceFolders += src
+            val model = ApkModel(apkUri, layout)
+            apk = new ApkGlobal(model, reporter)
+            apk.load()
+            AppInfoCollector.collectInfo(apk)
           }
         }
       }
@@ -117,7 +118,7 @@ class ApkInfoView(@NotNull project: Project) extends PersistentStateComponent[Ap
           Messages.showWarningDialog(project, errorMessage, errorTitle)
           return
         }
-        val presentation = ApkInfoPresentation.prepare(apk, global)
+        val presentation = ApkInfoPresentation.prepare(apk)
         apkInfoPanel.setText(presentation.apkInfo)
         applicationInfoPanel.setText(presentation.applicationInfo)
         interestingApiStringPanel.setText(presentation.apisAndStrings)

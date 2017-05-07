@@ -11,7 +11,7 @@ public interface JawaAnnotation extends PsiElement {
   JawaAccessFlagAnnotation getAccessFlagAnnotation();
 
   @Nullable
-  JawaAnnotationKey getAnnotationKey();
+  JawaDefaultAnnotation getDefaultAnnotation();
 
   @Nullable
   JawaKindAnnotation getKindAnnotation();
@@ -21,8 +21,5 @@ public interface JawaAnnotation extends PsiElement {
 
   @Nullable
   JawaTypeAnnotation getTypeAnnotation();
-
-  @Nullable
-  PsiElement getId();
 
 }

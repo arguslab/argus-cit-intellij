@@ -28,9 +28,11 @@ import com.intellij.openapi.progress.{ProgressIndicator, ProgressManager, Task}
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.SystemInfo
 import com.intellij.openapi.vfs.{LocalFileSystem, VfsUtilCore}
-import org.argus.amandroid.core.decompile.{ApkDecompiler, DecompileLayout, DecompilerSettings}
+import org.argus.amandroid.core.AndroidConstants
+import org.argus.amandroid.core.decompile._
+import org.argus.jawa.core.{Constants, DefaultReporter}
+import org.argus.jawa.core.util.FileUtil
 import org.jetbrains.android.sdk.AndroidSdkUtils
-import org.sireum.util.FileUtil
 
 /**
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
@@ -38,7 +40,7 @@ import org.sireum.util.FileUtil
 class ConfigureArgusProjectPath(parentDisposable: Disposable) extends DynamicWizardPath {
   import ConfigureArgusProjectPath._
 
-  override def init() = {
+  override def init(): Unit = {
     ConfigureAndroidProjectPath.putSdkDependentParams(myState)
     addStep(new ConfigureArgusProjectStep(parentDisposable))
   }
@@ -118,11 +120,16 @@ class ConfigureArgusProjectPath(parentDisposable: Disposable) extends DynamicWiz
     try {
       ProgressManager.getInstance().run(new Task.Modal(getProject, "Decompiling APK...", false) {
         override def run(progressIndicator: ProgressIndicator): Unit = {
-          progressIndicator.setIndeterminate(true)
+          progressIndicator.start()
+          val progressBar = new IdeaProgressBar(progressIndicator)
+          progressBar.textMap(1) = "Decompiling dex..."
+          progressBar.textMap(2) = "Resolving local types..."
           val main = moduleRootPath + File.separator + "src" + File.separator + "main"
-          val layout = DecompileLayout(FileUtil.toUri(main), createFolder = false, "jawa", createSeparateFolderForDexes = false)
-          val settings = DecompilerSettings(None, dexLog = false, debugMode = false, removeSupportGen = true, forceDelete = true, None, layout)
+          val layout = DecompileLayout(FileUtil.toUri(main), createFolder = false, Constants.JAWA_FILE_EXT, createSeparateFolderForDexes = false)
+          val strategy = DecompileStrategy(layout, sourceLevel = DecompileLevel.TYPED, thirdPartyLibLevel = DecompileLevel.SIGNATURE)
+          val settings = DecompilerSettings(debugMode = false, forceDelete = true, strategy, new DefaultReporter, progressBar = progressBar)
           ApkDecompiler.decompile(FileUtil.toUri(path), settings)
+          progressIndicator.stop()
         }
       })
       val filesToOpen: util.ArrayList[File] = new util.ArrayList[File]()
@@ -155,9 +162,9 @@ class ConfigureArgusProjectPath(parentDisposable: Disposable) extends DynamicWiz
 }
 
 object ConfigureArgusProjectPath {
-  final val LOG = Logger.getInstance(classOf[ConfigureArgusProjectPath])
+  final val LOG: Logger = Logger.getInstance(classOf[ConfigureArgusProjectPath])
 
-  protected def buildConfigurationHeader = WizardStepHeaderSettings.createTitleOnlyHeader("New Analysis")
+  def buildConfigurationHeader: WizardStepHeaderSettings = WizardStepHeaderSettings.createTitleOnlyHeader("New Analysis")
 
   final val RES_DIR_KEY: ScopedStateStore.Key[String] = ScopedStateStore.createKey("resDir", Scope.PATH, classOf[String])
 
@@ -167,7 +174,7 @@ object ConfigureArgusProjectPath {
     * executable bit.
     *
     */
-  def setGradleWrapperExecutable(projectRoot: File) = {
+  def setGradleWrapperExecutable(projectRoot: File): Unit = {
     if (SystemInfo.isUnix) {
       val gradlewFile = new File(projectRoot, "gradlew")
       if (!gradlewFile.isFile) {

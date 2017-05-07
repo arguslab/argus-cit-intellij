@@ -5,9 +5,19 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface JawaAnnotationKey extends PsiElement {
+public interface JawaDefaultAnnotation extends PsiElement {
 
   @NotNull
+  PsiElement getAnnotationKey();
+
+  @Nullable
+  PsiElement getApostropheId();
+
+  @Nullable
   PsiElement getId();
+
+  String getKey();
+
+  String getValue();
 
 }

@@ -15,8 +15,8 @@ import com.intellij.psi.stubs.IStubElementType;
 
 public class JawaMethodDeclarationImpl extends JawaMethodDeclarationImplMixin implements JawaMethodDeclaration {
 
-  public JawaMethodDeclarationImpl(JawaMethodStub stub, IStubElementType nodeType) {
-    super(stub, nodeType);
+  public JawaMethodDeclarationImpl(JawaMethodStub stub, IStubElementType type) {
+    super(stub, type);
   }
 
   public JawaMethodDeclarationImpl(ASTNode node) {

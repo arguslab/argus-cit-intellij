@@ -7,7 +7,12 @@ import com.intellij.psi.PsiElement;
 
 public interface JawaVarDefSymbol extends PsiElement {
 
-  @NotNull
+  @Nullable
+  PsiElement getApostropheId();
+
+  @Nullable
   PsiElement getId();
+
+  String getName();
 
 }

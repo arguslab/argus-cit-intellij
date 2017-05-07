@@ -25,6 +25,8 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 /**
  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
  */
@@ -42,7 +44,8 @@ public abstract class JawaLocationDefSymbolImplMixin extends JawaExpressionPsiEl
     @Override
     public String getName() {
         String loc = getNameIdentifier().getText();
-        loc = loc.substring(1, loc.length() - 1);
+        if(!loc.equals("#") && loc.length() >= 2)
+            loc = loc.substring(1, loc.length() - 1);
         return loc;
     }
 

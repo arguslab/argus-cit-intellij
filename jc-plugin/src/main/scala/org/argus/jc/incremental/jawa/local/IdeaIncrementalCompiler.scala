@@ -20,10 +20,8 @@ import org.argus.jc.incremental.jawa.data.CompilationData
 class IdeaIncrementalCompiler(javaVersion: String) extends AbstractCompiler {
   def compile(compilationData: CompilationData, client: Client): Unit = {
     val progress = getProgress(client)
-    val reporter = getReporter(client)
-    val logger = getLogger(client)
 
-    new JawaCompiler(javaVersion).compile(compilationData.sources.toArray, Seq(compilationData.output).toArray, reporter, logger, progress)
+    new JawaCompiler(javaVersion).compile(compilationData.sources.toArray, Seq(compilationData.output).toArray, None, progress)
   }
 
 }

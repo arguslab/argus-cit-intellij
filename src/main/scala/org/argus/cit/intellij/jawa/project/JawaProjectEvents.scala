@@ -23,7 +23,7 @@ class JawaProjectEvents(project: Project) extends AbstractProjectComponent(proje
 
   private val connection = project.getMessageBus.connect()
 
-  override def projectOpened()= {
+  override def projectOpened(): Unit = {
     connection.subscribe(ProjectTopics.PROJECT_ROOTS, new ModuleRootAdapter {
       override def rootsChanged(event: ModuleRootEvent) {
         listeners.foreach(_.onJawaProjectChanged())

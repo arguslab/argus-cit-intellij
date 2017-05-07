@@ -8,17 +8,17 @@
   ~ Detailed contributors are listed in the CONTRIBUTOR.md
   -->
 
-<idea-plugin version="2">
+<idea-plugin>
   <id>org.argus.cit.intellij</id>
   <name>Argus-CIT</name>
   <description>Argus CIT plugin provides Jawa language support, and integrates Argus products (eg., Argus-SAF, jawa2java, etc) for Android APK analysis.</description>
-  <version>1.0.4</version>
+  <version>1.1.0</version>
   <vendor url="http://fgwei.arguslab.org/">Argus Laboratory: Fengguo (Hugo) Wei</vendor>
 
   <depends>org.jetbrains.android</depends>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="163" until-build="163.*"/>
+  <idea-version since-build="171.3780.15" until-build="172.1909.2"/>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->

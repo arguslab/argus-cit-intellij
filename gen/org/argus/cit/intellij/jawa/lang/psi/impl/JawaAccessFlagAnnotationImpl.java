@@ -19,8 +19,8 @@ public class JawaAccessFlagAnnotationImpl extends JawaAccessFlagAnnotationImplMi
     super(node);
   }
 
-  public JawaAccessFlagAnnotationImpl(JawaAccessFlagStub stub, IStubElementType nodeType) {
-    super(stub, nodeType);
+  public JawaAccessFlagAnnotationImpl(JawaAccessFlagStub stub, IStubElementType type) {
+    super(stub, type);
   }
 
   public void accept(@NotNull JawaVisitor visitor) {

@@ -15,8 +15,8 @@ import com.intellij.psi.stubs.IStubElementType;
 
 public class JawaParamImpl extends JawaParamImplMixin implements JawaParam {
 
-  public JawaParamImpl(JawaParamStub stub, IStubElementType nodeType) {
-    super(stub, nodeType);
+  public JawaParamImpl(JawaParamStub stub, IStubElementType type) {
+    super(stub, type);
   }
 
   public JawaParamImpl(ASTNode node) {
@@ -34,14 +34,14 @@ public class JawaParamImpl extends JawaParamImplMixin implements JawaParam {
 
   @Override
   @NotNull
-  public JawaJwType getJwType() {
-    return notNullChild(PsiTreeUtil.getStubChildOfType(this, JawaJwType.class));
+  public List<JawaAnnotation> getAnnotationList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, JawaAnnotation.class);
   }
 
   @Override
-  @Nullable
-  public JawaKindAnnotation getKindAnnotation() {
-    return PsiTreeUtil.getChildOfType(this, JawaKindAnnotation.class);
+  @NotNull
+  public JawaJwType getJwType() {
+    return notNullChild(PsiTreeUtil.getStubChildOfType(this, JawaJwType.class));
   }
 
   @Override

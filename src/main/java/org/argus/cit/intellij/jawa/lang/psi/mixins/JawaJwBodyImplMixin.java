@@ -126,7 +126,7 @@ public abstract class JawaJwBodyImplMixin extends JawaExpressionPsiElement imple
                 return PsiScopesUtil.walkChildrenScopes(this, processor, state, lastParent, place);
             }
             if ((elementClassHint == null || elementClassHint.shouldProcess(ElementClassHint.DeclarationKind.VARIABLE)) && locationsSet.contains(name)) {
-                return PsiScopesUtil.walkChildrenScopes(this, processor, state, lastParent, place);
+                return PsiScopesUtil.walkChildrenScopes(this, processor, state, null, place);
             }
         }
         else {

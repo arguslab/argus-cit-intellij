@@ -30,12 +30,20 @@ public abstract class JawaVarSymbolImplMixin extends JawaReferenceExpressionPsiE
     @Nullable
     @Override
     public PsiElement getReferenceNameElement() {
-        return getId();
+        PsiElement e = getApostropheId();
+        if(e == null) e = getId();
+        return e;
+    }
+
+    @Nullable
+    @Override
+    public String getReferenceName() {
+        return getName();
     }
 
     @Override
     public TextRange getRangeInElement() {
-        return new TextRange(getId().getStartOffsetInParent(), getTextLength());
+        return new TextRange(getReferenceNameElement().getStartOffsetInParent(), getTextLength());
     }
 
     @Override

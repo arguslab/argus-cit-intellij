@@ -84,11 +84,9 @@ class JcCompileServerLauncher  extends ApplicationComponent {
         Notifications.Bus.notify(new Notification("jawa", title, content, NotificationType.ERROR, ConfigureLinkListener))
         false
       case Right(_) =>
-        ApplicationManager.getApplication invokeLater new Runnable {
-          override def run() {
-            JcCompileServerManager.instance(project).configureWidget()
-          }
-        }
+        ApplicationManager.getApplication invokeLater (() => {
+          JcCompileServerManager.instance(project).configureWidget()
+        })
 
         true
     }
@@ -151,11 +149,9 @@ class JcCompileServerLauncher  extends ApplicationComponent {
   def stop(project: Project) {
     stop()
 
-    ApplicationManager.getApplication invokeLater new Runnable {
-      override def run() {
-        JcCompileServerManager.instance(project).configureWidget()
-      }
-    }
+    ApplicationManager.getApplication invokeLater (() => {
+      JcCompileServerManager.instance(project).configureWidget()
+    })
   }
 
   def running: Boolean = serverInstance.exists(_.running)
@@ -184,14 +180,13 @@ object JcCompileServerLauncher {
       trove4jJar,
       new File(pluginRoot, "scala-library.jar"),
       new File(pluginRoot, "saf-library.jar"),
-      new File(pluginRoot, "jawa-core.jar"),
-      new File(pluginRoot, "amandroid-core.jar"),
+      new File(pluginRoot, "jawa.jar"),
+      new File(pluginRoot, "amandroid.jar"),
       new File(pluginRoot, "jawa-nailgun-runner.jar"),
       new File(pluginRoot, "compiler-settings.jar"),
       new File(jcRoot, "nailgun.jar"),
       new File(jcRoot, "incremental-compiler.jar"),
       new File(jcRoot, "asm-all.jar"),
-      new File(jcRoot, "jawa-compiler.jar"),
       new File(jcRoot, "jawa-jc-plugin.jar")
     )
   }
@@ -228,7 +223,7 @@ object JcCompileServerLauncher {
     val serverInstance = JcCompileServerLauncher.instance.serverInstance
     serverInstance match {
       case None => true
-      case Some(instance) =>
+      case Some(_) =>
         val useProjectHome = JawaCompileServerSettings.getInstance().USE_PROJECT_HOME_AS_WORKING_DIR
         val workingDirChanged = useProjectHome && projectHome(project) != serverInstance.map(_.workingDir)
         workingDirChanged

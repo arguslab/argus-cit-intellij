@@ -8,7 +8,7 @@ import org.argus.cit.intellij.jawa.lang.psi.api.base.JawaLocalVariable;
 
 public interface JawaLocalVarDeclaration extends JawaLocalVariable {
 
-  @NotNull
+  @Nullable
   JawaJwType getJwType();
 
   @NotNull

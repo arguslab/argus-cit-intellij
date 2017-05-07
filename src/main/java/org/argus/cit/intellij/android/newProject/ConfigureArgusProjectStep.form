@@ -65,7 +65,7 @@
           <text value="&amp;Package Name:"/>
         </properties>
       </component>
-      <component id="4e583" class="javax.swing.JLabel" binding="appName">
+      <component id="4e583" class="javax.swing.JLabel" binding="myAppName">
         <constraints>
           <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -73,7 +73,7 @@
           <text value="NewApp"/>
         </properties>
       </component>
-      <component id="b889" class="javax.swing.JLabel" binding="packageName">
+      <component id="b889" class="javax.swing.JLabel" binding="myPackageName">
         <constraints>
           <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>

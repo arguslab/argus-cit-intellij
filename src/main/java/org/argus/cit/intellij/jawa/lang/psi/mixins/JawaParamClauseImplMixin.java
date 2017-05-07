@@ -13,15 +13,13 @@ package org.argus.cit.intellij.jawa.lang.psi.mixins;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiParameter;
 import com.intellij.psi.stubs.IStubElementType;
-import org.argus.cit.intellij.jawa.lang.psi.JawaParam;
-import org.argus.cit.intellij.jawa.lang.psi.JawaParamClause;
-import org.argus.cit.intellij.jawa.lang.psi.JawaStubBasedPsiElementBase;
+import org.argus.cit.intellij.jawa.lang.psi.*;
 import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaParamClauseStub;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
@@ -42,18 +40,21 @@ public abstract class JawaParamClauseImplMixin
     @Override
     public PsiParameter[] getParameters() {
         List<JawaParam> list = getParamList();
-        List<JawaParam> thises = list.stream().filter(jawaParam -> {
-            String kind = "";
-            if(jawaParam.getKindAnnotation() != null)
-                kind = jawaParam.getKindAnnotation().getId().getText();
-            return kind.equals("this");
-        }).collect(Collectors.toList());
-        list.removeAll(thises);
+        List<JawaParam> tmp = new ArrayList<>();
+        for(JawaParam jawaParam: list) {
+            for(JawaAnnotation anno: jawaParam.getAnnotationList()) {
+                JawaKindAnnotation ka = anno.getKindAnnotation();
+                if(ka != null && ka.getId().getText().equals("this")) {
+                    tmp.add(jawaParam);
+                }
+            }
+        }
+        list.removeAll(tmp);
         return list.toArray(new JawaParam[list.size()]);
     }
 
     @Override
-    public int getParameterIndex(PsiParameter psiParameter) {
+    public int getParameterIndex(@NotNull PsiParameter psiParameter) {
         return Arrays.asList(getParameters()).indexOf(psiParameter);
     }
 

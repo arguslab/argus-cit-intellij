@@ -56,4 +56,25 @@ object JawaPsiImplUtil {
   def isImplements(element: JawaExtendAndImplement): Boolean = {
     element.getKindAnnotation.getId.getText == "interface"
   }
+  def getName(element: JawaVarDefSymbol): String = {
+    Option(element.getId) match {
+      case Some(id) => id.getText
+      case None => element.getApostropheId.getText.replaceAll("`", "")
+    }
+  }
+  def getName(element: JawaVarSymbol): String = {
+    Option(element.getId) match {
+      case Some(id) => id.getText
+      case None => element.getApostropheId.getText.replaceAll("`", "")
+    }
+  }
+  def getKey(element: JawaDefaultAnnotation): String = {
+    element.getAnnotationKey.getText.replaceAll("@", "")
+  }
+  def getValue(element: JawaDefaultAnnotation): String = {
+    Option(element.getId) match {
+      case Some(id) => id.getText
+      case None => element.getApostropheId.getText.replaceAll("`", "")
+    }
+  }
 }

@@ -11,7 +11,7 @@
 package org.argus.cit.intellij.jawa.annotator
 
 import com.intellij.lang.annotation.{Annotation, Annotator}
-import com.intellij.openapi.editor.colors.{CodeInsightColors, EditorColorsManager, TextAttributesKey}
+import com.intellij.openapi.editor.colors.{CodeInsightColors, EditorColorsManager, EditorColorsScheme, TextAttributesKey}
 import com.intellij.openapi.editor.markup.TextAttributes
 import org.argus.cit.intellij.jawa.highlighter.JawaSyntaxHighlighter
 
@@ -19,14 +19,14 @@ import org.argus.cit.intellij.jawa.highlighter.JawaSyntaxHighlighter
   * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>
   */
 abstract class JawaAnnotator extends Annotator {
-  val currentScheme = EditorColorsManager.getInstance().getGlobalScheme
-  def adjustTextAttributes(textAttributes: TextAttributes, isBuiltIn: Boolean, isDeprecated: Boolean) = {
+  val currentScheme: EditorColorsScheme = EditorColorsManager.getInstance().getGlobalScheme
+  def adjustTextAttributes(textAttributes: TextAttributes, isBuiltIn: Boolean, isDeprecated: Boolean): TextAttributes = {
     var newtextAttributes: TextAttributes = textAttributes
     if(isBuiltIn) newtextAttributes = TextAttributes.merge(newtextAttributes, JawaSyntaxHighlighter.BOLD)
     if(isDeprecated) newtextAttributes = TextAttributes.merge(newtextAttributes, currentScheme.getAttributes(CodeInsightColors.DEPRECATED_ATTRIBUTES))
     newtextAttributes
   }
-  def decorateElement(annotation: Annotation, key: TextAttributesKey, builtin: Boolean, deprecated: Boolean) = {
+  def decorateElement(annotation: Annotation, key: TextAttributesKey, builtin: Boolean, deprecated: Boolean): Unit = {
     annotation.setEnforcedTextAttributes(adjustTextAttributes(currentScheme.getAttributes(key), builtin, deprecated))
   }
 }

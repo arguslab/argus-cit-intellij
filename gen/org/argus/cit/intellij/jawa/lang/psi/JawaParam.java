@@ -11,10 +11,10 @@ import org.argus.cit.intellij.jawa.lang.psi.stubs.JawaParamStub;
 public interface JawaParam extends JawaParameter, StubBasedPsiElement<JawaParamStub> {
 
   @NotNull
-  JawaJwType getJwType();
+  List<JawaAnnotation> getAnnotationList();
 
-  @Nullable
-  JawaKindAnnotation getKindAnnotation();
+  @NotNull
+  JawaJwType getJwType();
 
   @NotNull
   JawaVarDefSymbol getVarDefSymbol();
