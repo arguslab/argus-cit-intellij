@@ -21,6 +21,7 @@ import com.android.tools.idea.wizard.WizardConstants
 import com.android.tools.idea.wizard.dynamic.{DynamicWizardPath, ScopedStateStore}
 import com.android.tools.idea.wizard.dynamic.DynamicWizardStepWithHeaderAndDescription.WizardStepHeaderSettings
 import com.android.tools.idea.wizard.dynamic.ScopedStateStore.Scope
+import com.google.common.collect.{HashMultimap, SetMultimap}
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.PathManager
 import com.intellij.openapi.diagnostic.Logger
@@ -28,10 +29,9 @@ import com.intellij.openapi.progress.{ProgressIndicator, ProgressManager, Task}
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.SystemInfo
 import com.intellij.openapi.vfs.{LocalFileSystem, VfsUtilCore}
-import org.argus.amandroid.core.AndroidConstants
 import org.argus.amandroid.core.decompile._
 import org.argus.jawa.core.{Constants, DefaultReporter}
-import org.argus.jawa.core.util.FileUtil
+import org.argus.jawa.core.util._
 import org.jetbrains.android.sdk.AndroidSdkUtils
 
 /**
@@ -117,6 +117,7 @@ class ConfigureArgusProjectPath(parentDisposable: Disposable) extends DynamicWiz
   }
 
   private def decompileAndSetState(moduleRootPath: String, path: String): Boolean = {
+    var main: String = ""
     try {
       ProgressManager.getInstance().run(new Task.Modal(getProject, "Decompiling APK...", false) {
         override def run(progressIndicator: ProgressIndicator): Unit = {
@@ -124,7 +125,7 @@ class ConfigureArgusProjectPath(parentDisposable: Disposable) extends DynamicWiz
           val progressBar = new IdeaProgressBar(progressIndicator)
           progressBar.textMap(1) = "Decompiling dex..."
           progressBar.textMap(2) = "Resolving local types..."
-          val main = moduleRootPath + File.separator + "src" + File.separator + "main"
+          main = moduleRootPath + File.separator + "src" + File.separator + "main"
           val layout = DecompileLayout(FileUtil.toUri(main), createFolder = false, Constants.JAWA_FILE_EXT, createSeparateFolderForDexes = false)
           val strategy = DecompileStrategy(layout, sourceLevel = DecompileLevel.TYPED, thirdPartyLibLevel = DecompileLevel.SIGNATURE)
           val settings = DecompilerSettings(debugMode = false, forceDelete = true, strategy, new DefaultReporter, progressBar = progressBar)
@@ -133,7 +134,7 @@ class ConfigureArgusProjectPath(parentDisposable: Disposable) extends DynamicWiz
         }
       })
       val filesToOpen: util.ArrayList[File] = new util.ArrayList[File]()
-      val manifestFile = new File(moduleRootPath + File.separator + "src" + File.separator + "main", "AndroidManifest.xml")
+      val manifestFile = new File(main, "AndroidManifest.xml")
       filesToOpen.add(manifestFile)
       this.myState.put(WizardConstants.FILES_TO_OPEN_KEY, filesToOpen)
       true

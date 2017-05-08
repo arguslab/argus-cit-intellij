@@ -24,7 +24,7 @@ object CitVersions {
   val sbtVersion = "0.13.13"
   val ideaVersion = "171.4424.14"
   val sbtStructureVersion = "5.1.2"
-  val argusSafVersion = "3.1.1-SNAPSHOT"
+  val argusSafVersion = "3.1.1"
   val jgraphtVersion = "1.0.1"
   val json4sVersion = "3.5.0"
 }
