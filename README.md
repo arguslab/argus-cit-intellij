@@ -28,9 +28,9 @@ the directory where Argus-CIT plugin repository is and then import it as SBT pro
   
 5. If you want to build argus-cit-intellij from command line, go to argus-cit-intellij repo directory and run
 
-   ```
-   $ tools/bin/sbt clean compile test
-   ```
+  ```
+  $ tools/bin/sbt clean compile test
+  ```
 
 ## How to contribute
 
