@@ -1,5 +1,14 @@
 # argus-cit-intellij: Argus Code Inspection Tool for Intellij
 
+## Obtain argus-cit-intellij plugin
+
+You can obtain **Argus-CIT** plugin from Intellij-Idea's plugin repo.
+
+1. Open IntelliJ IDEA, select `Intellij IDEA -> Preferences -> Plugins`
+(if from initial window: `Configure -> Plugins`)
+
+2. Choose `Browse Reporitories`, search **Argus-CIT**, then **Install**.
+
 
 ## Developing argus-cit-intellij
 
