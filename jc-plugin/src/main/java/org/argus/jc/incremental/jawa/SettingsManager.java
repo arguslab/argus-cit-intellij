@@ -11,15 +11,9 @@
 package org.argus.jc.incremental.jawa;
 
 import org.argus.jc.incremental.jawa.model.*;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jps.model.JpsGlobal;
 import org.jetbrains.jps.model.JpsProject;
 import org.jetbrains.jps.model.ex.JpsElementChildRoleBase;
-import org.jetbrains.jps.model.java.JpsJavaExtensionService;
-import org.jetbrains.jps.model.library.JpsLibrary;
-import org.jetbrains.jps.model.module.JpsModule;
-
-import java.util.Collection;
 
 /**
  * @author <a href="mailto:fgwei521@gmail.com">Fengguo Wei</a>

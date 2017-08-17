@@ -20,9 +20,9 @@ object BintrayResolvers {
 }
 
 object CitVersions {
-  val scalaVersion = "2.12.2"
+  val scalaVersion = "2.12.3"
   val sbtVersion = "0.13.13"
-  val ideaVersion = "171.4424.14"
+  val ideaVersion = "172.3757.52"
   val sbtStructureVersion = "5.1.2"
   val argusSafVersion = "3.1.1"
   val jgraphtVersion = "1.0.1"

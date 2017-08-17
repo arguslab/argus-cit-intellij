@@ -37,9 +37,9 @@ import scala.util.control.Exception._
 class JcCompileServerLauncher  extends ApplicationComponent {
   private var serverInstance: Option[ServerInstance] = None
 
-  def initComponent() {}
+  override def initComponent() {}
 
-  def disposeComponent() {
+  override def disposeComponent() {
     if (running) stop()
   }
 
@@ -160,7 +160,7 @@ class JcCompileServerLauncher  extends ApplicationComponent {
 
   def port: Option[Int] = serverInstance.map(_.port)
 
-  def getComponentName: String = getClass.getSimpleName
+  override def getComponentName: String = getClass.getSimpleName
 }
 
 object JcCompileServerLauncher {

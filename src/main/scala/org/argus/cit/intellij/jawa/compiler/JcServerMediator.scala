@@ -123,13 +123,13 @@ class JcServerMediator(project: Project) extends ProjectComponent {
     result
   }
 
-  def getComponentName: String = getClass.getSimpleName
+  override def getComponentName: String = getClass.getSimpleName
 
-  def initComponent() {}
+  override def initComponent() {}
 
-  def disposeComponent() {}
+  override def disposeComponent() {}
 
-  def projectOpened() {}
+  override def projectOpened() {}
 
-  def projectClosed() {}
+  override def projectClosed() {}
 }

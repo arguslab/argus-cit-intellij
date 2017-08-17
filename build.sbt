@@ -23,7 +23,7 @@ ideaBuild in ThisBuild := CitVersions.ideaVersion
 
 ideaDownloadDirectory in ThisBuild := sdkDirectory.value / "ideaSDK"
 
-onLoad in Global := ((s: State) => { "updateIdea" :: s}) compose (onLoad in Global).value
+onLoad in Global := ((s: State) => { "updateIdea" :: s }) compose (onLoad in Global).value
 
 addCommandAlias("downloadIdea", "updateIdea")
 

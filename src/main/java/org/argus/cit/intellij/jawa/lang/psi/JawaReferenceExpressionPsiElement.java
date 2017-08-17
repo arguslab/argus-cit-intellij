@@ -179,15 +179,7 @@ public abstract class JawaReferenceExpressionPsiElement extends JawaExpressionPs
             filter.addFilter(ElementClassFilter.PACKAGE_FILTER);
         }
 
-        filter.addFilter(new AndFilter(ElementClassFilter.METHOD, new NotFilter(new ConstructorFilter()), new ElementFilter() {
-            public boolean isAcceptable(Object element, @Nullable PsiElement context) {
-                return LambdaUtil.isValidQualifier4InterfaceStaticMethodCall((PsiMethod)element, JawaReferenceExpressionPsiElement.this, null, PsiUtil.getLanguageLevel(JawaReferenceExpressionPsiElement.this));
-            }
-
-            public boolean isClassAcceptable(Class hintClass) {
-                return true;
-            }
-        }));
+        filter.addFilter(new AndFilter(ElementClassFilter.METHOD, new NotFilter(new ConstructorFilter())));
         filter.addFilter(ElementClassFilter.VARIABLE);
         FilterScopeProcessor filterProcessor = new FilterScopeProcessor(filter, processor) {
             private final Set<String> myVarNames = new THashSet<>();

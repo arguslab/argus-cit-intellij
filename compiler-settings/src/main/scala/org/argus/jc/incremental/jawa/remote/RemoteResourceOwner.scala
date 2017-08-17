@@ -12,8 +12,8 @@ package org.argus.jc.incremental.jawa.remote
 
 import java.io._
 import java.net.{InetAddress, Socket}
+import java.util.Base64
 
-import com.intellij.util.Base64Converter
 import com.martiansoftware.nailgun.NGConstants
 import org.jetbrains.jps.incremental.messages.BuildMessage.Kind
 import org.argus.jc.incremental.jawa._
@@ -25,11 +25,11 @@ trait RemoteResourceOwner {
   protected val address: InetAddress
   protected val port: Int
 
-  protected val currentDirectory = System.getProperty("user.dir")
+  protected val currentDirectory: String = System.getProperty("user.dir")
   protected val serverAlias = "compile-server"
 
   def send(command: String, arguments: Seq[String], client: Client) {
-    val encodedArgs = arguments.map(s => Base64Converter.encode(s.getBytes("UTF-8")))
+    val encodedArgs = arguments.map(s => Base64.getEncoder.encode(s.getBytes("UTF-8")))
     using(new Socket(address, port)) { socket =>
       using(new DataOutputStream(new BufferedOutputStream(socket.getOutputStream))) { output =>
         createChunks(command, encodedArgs).foreach(_.writeTo(output))
@@ -48,11 +48,11 @@ trait RemoteResourceOwner {
 
     while (!client.isCanceled) {
       Chunk.readFrom(input) match {
-        case Chunk(NGConstants.CHUNKTYPE_EXIT, code) =>
+        case Chunk(NGConstants.CHUNKTYPE_EXIT, _) =>
           return
         case Chunk(NGConstants.CHUNKTYPE_STDOUT, data) =>
           try {
-            val event = Event.fromBytes(Base64Converter.decode(data))
+            val event = Event.fromBytes(Base64.getDecoder.decode(data))
             processor.process(event)
           } catch {
             case e: Exception =>
@@ -69,14 +69,14 @@ trait RemoteResourceOwner {
         // Report such output not as errors, but as warings (to continue make process).
         case Chunk(NGConstants.CHUNKTYPE_STDERR, data) =>
           client.message(Kind.WARNING, fromBytes(data))
-        case Chunk(kind, data) =>
+        case Chunk(_, data) =>
           client.message(Kind.ERROR, "Unexpected server output: " + data)
       }
     }
   }
 
-  protected def createChunks(command: String, args: Seq[String]): Seq[Chunk] = {
-    args.map(s => Chunk(NGConstants.CHUNKTYPE_ARGUMENT.toChar, toBytes(s))) :+
+  protected def createChunks(command: String, args: Seq[Array[Byte]]): Seq[Chunk] = {
+    args.map(s => Chunk(NGConstants.CHUNKTYPE_ARGUMENT.toChar, s)) :+
       Chunk(NGConstants.CHUNKTYPE_WORKINGDIRECTORY.toChar, toBytes(currentDirectory)) :+
       Chunk(NGConstants.CHUNKTYPE_COMMAND.toChar, toBytes(command))
   }

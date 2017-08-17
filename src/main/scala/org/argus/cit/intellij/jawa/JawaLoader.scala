@@ -25,7 +25,7 @@ class JawaLoader extends ApplicationComponent {
   val JAWA_EXTENSION: String = "jawa"
   val JAWA_EXTENSIONS = Set(JAWA_EXTENSION)
 
-  def initComponent() {
+  override def initComponent() {
     if (!JawaLoader.isUnderUpsource) {
       loadJawa()
     }
@@ -41,9 +41,9 @@ class JawaLoader extends ApplicationComponent {
     })
   }
 
-  def disposeComponent() = {}
+  override def disposeComponent(): Unit = {}
 
-  def getComponentName: String = "Jawa Loader"
+  override def getComponentName: String = "Jawa Loader"
 }
 
 object JawaLoader {

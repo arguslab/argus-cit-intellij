@@ -13,7 +13,7 @@ package org.argus.cit.intellij.android.newProject
 import java.io.File
 import java.util
 
-import com.android.tools.idea.gradle.project.NewProjectImportGradleSyncListener
+import com.android.tools.idea.gradle.project.importing.NewProjectImportGradleSyncListener
 import com.android.tools.idea.templates.TemplateUtils
 import com.intellij.ide.startup.StartupManagerEx
 import com.intellij.openapi.project.Project

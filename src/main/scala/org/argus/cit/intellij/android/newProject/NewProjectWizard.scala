@@ -20,12 +20,13 @@ import brut.androlib.ApkDecoder
 import brut.androlib.res.data.ResTable
 import brut.androlib.res.decoder.{AXmlResourceParser, ResAttrDecoder}
 import com.android.SdkConstants
-import com.android.tools.idea.gradle.project.GradleProjectImporter
-import com.android.tools.idea.gradle.util.GradleUtil
+import com.android.tools.idea.IdeInfo
+import com.android.tools.idea.gradle.project.importing.GradleProjectImporter
+import com.android.tools.idea.gradle.util.{GradleUtil, GradleWrapper}
 import com.android.tools.idea.npw.{FormFactor, FormFactorUtils}
-import com.android.tools.idea.sdk.IdeSdks
+import com.android.tools.idea.sdk.{AndroidSdks, IdeSdks}
 import com.android.tools.idea.startup.AndroidStudioInitializer
-import com.android.tools.idea.templates.{TemplateManager, TemplateMetadata}
+import com.android.tools.idea.templates.{TemplateManager, TemplateMetadata, TemplateUtils}
 import com.android.tools.idea.wizard.WizardConstants
 import com.android.tools.idea.wizard.dynamic.ScopedStateStore.Scope
 import com.android.tools.idea.wizard.dynamic.{DynamicWizard, DynamicWizardHost, ScopedStateStore}
@@ -84,7 +85,7 @@ class NewProjectWizard(project: Project, module: Module, host: DynamicWizardHost
     myState.put(WizardConstants.FILES_TO_OPEN_KEY, new util.ArrayList[File]())
     val mavenUrl = System.getProperty(TemplateWizard.MAVEN_URL_PROPERTY)
     if (mavenUrl != null) myState.put(WizardConstants.MAVEN_URL_KEY, mavenUrl)
-    val data = AndroidSdkUtils.tryToChooseAndroidSdk()
+    val data = AndroidSdks.getInstance().tryToChooseAndroidSdk()
     if(data != null) myState.put(WizardConstants.SDK_DIR_KEY, data.getLocation.getPath)
   }
 
@@ -103,9 +104,9 @@ class NewProjectWizard(project: Project, module: Module, host: DynamicWizardHost
       return
     }
     val rootLocation = new File(rootPath)
-    val wrapperPropertiesFilePath = GradleUtil.getGradleWrapperPropertiesFilePath(rootLocation)
+    val wrapperPropertiesFilePath = GradleWrapper.getDefaultPropertiesFilePath(rootLocation)
     try {
-      GradleUtil.updateGradleDistributionUrl("2.14.1", wrapperPropertiesFilePath)
+      GradleWrapper.get(wrapperPropertiesFilePath).updateDistributionUrl(SdkConstants.GRADLE_LATEST_VERSION);
     } catch {
       case e: IOException => LOG.warn("Failed to update Gradle wrapper file", e)
     }
@@ -115,9 +116,7 @@ class NewProjectWizard(project: Project, module: Module, host: DynamicWizardHost
     }
 
     var initialLanguageLevel: LanguageLevel = null
-    val iterator = FormFactor.iterator()
-    while(iterator.hasNext) {
-      val factor = iterator.next()
+    FormFactor.values foreach { factor =>
       val version = getState.get(FormFactorUtils.getLanguageLevelKey(factor))
       if(version != null) {
         val level = LanguageLevel.parse(version.toString)
@@ -127,8 +126,8 @@ class NewProjectWizard(project: Project, module: Module, host: DynamicWizardHost
       }
     }
 
-    if(!AndroidStudioInitializer.isAndroidStudio) {
-      val jdk = IdeSdks.getJdk
+    if(!IdeInfo.getInstance.isAndroidStudio) {
+      val jdk = IdeSdks.getInstance.getJdk
       if(jdk != null) {
         ApplicationManager.getApplication.runWriteAction(new Runnable {
           override def run(): Unit = ProjectRootManager.getInstance(myProject).setProjectSdk(jdk)
@@ -136,12 +135,18 @@ class NewProjectWizard(project: Project, module: Module, host: DynamicWizardHost
       }
     }
     try {
-      val targetFiles = myState.get(WizardConstants.TARGET_FILES_KEY)
-      assert(targetFiles != null)
-      val filesToOpen = myState.get(WizardConstants.FILES_TO_OPEN_KEY)
-      assert(filesToOpen != null)
-      val listener = new ArgusReformattingGradleSyncListener(targetFiles, filesToOpen)
-      projectImporter.importNewlyCreatedProject(projectName, rootLocation, listener, myProject, initialLanguageLevel)
+      val listener = new PostStartupGradleSyncListener(() => {
+        val targetFiles = myState.get(WizardConstants.TARGET_FILES_KEY)
+        assert(targetFiles != null)
+        TemplateUtils.reformatAndRearrange(myProject, targetFiles)
+        val filesToOpen = myState.get(WizardConstants.FILES_TO_OPEN_KEY)
+        assert(filesToOpen != null)
+        TemplateUtils.openEditors(myProject, filesToOpen, true)
+      })
+
+      val request = new GradleProjectImporter.Request
+      request.setLanguageLevel(initialLanguageLevel).setProject(myProject)
+      projectImporter.importProject(projectName, rootLocation, request, listener)
       createArgusCitProperties()
     } catch {
       case e: IOException =>

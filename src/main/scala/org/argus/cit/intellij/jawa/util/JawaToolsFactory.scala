@@ -10,7 +10,6 @@
 
 package org.argus.cit.intellij.jawa.util
 
-import com.intellij.formatting.FormattingModelBuilder
 import com.intellij.ide.structureView.StructureViewBuilder
 import com.intellij.lang.ParserDefinition
 import com.intellij.lang.folding.FoldingBuilder
@@ -23,9 +22,9 @@ import com.intellij.psi.PsiFile
   */
 abstract class JawaToolsFactory extends ApplicationComponent {
   def getInstance: JawaToolsFactory = ApplicationManager.getApplication.getComponent(classOf[JawaToolsFactory])
-  def getComponentName: String = "jawa.JawaToolsFactory"
-  def initComponent() = {}
-  def disposeComponent() = {}
+  override def getComponentName: String = "jawa.JawaToolsFactory"
+  override def initComponent(): Unit = {}
+  override def disposeComponent(): Unit = {}
 
   def createJawaParserDefinition: ParserDefinition
 

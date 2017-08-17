@@ -42,11 +42,11 @@ class JcCompileServerManager(project: Project) extends ProjectComponent {
 
   private val timer = new Timer(1000, TimerListener)
 
-  def initComponent() {}
+  override def initComponent() {}
 
-  def disposeComponent() {}
+  override def disposeComponent() {}
 
-  def projectOpened() {
+  override def projectOpened() {
     if (ApplicationManager.getApplication.isUnitTestMode) return
 
     project.jawaEvents.addJawaProjectListener(JawaListener)
@@ -55,7 +55,7 @@ class JcCompileServerManager(project: Project) extends ProjectComponent {
     timer.start()
   }
 
-  def projectClosed() {
+  override def projectClosed() {
     if (ApplicationManager.getApplication.isUnitTestMode) return
 
     project.jawaEvents.removeJawaProjectListener(JawaListener)
@@ -63,7 +63,7 @@ class JcCompileServerManager(project: Project) extends ProjectComponent {
     timer.stop()
   }
 
-  def getComponentName: String = getClass.getSimpleName
+  override def getComponentName: String = getClass.getSimpleName
 
   def configureWidget() {
     if (ApplicationManager.getApplication.isUnitTestMode) return
@@ -104,11 +104,11 @@ class JcCompileServerManager(project: Project) extends ProjectComponent {
   private object Widget extends StatusBarWidget {
     def ID = "Compile server"
 
-    def getPresentation(platformType : PlatformType) = Presentation
+    override def getPresentation(platformType : PlatformType) = Presentation
 
-    def install(statusBar: StatusBar) {}
+    override def install(statusBar: StatusBar) {}
 
-    def dispose() {}
+    override def dispose() {}
 
     object Presentation extends StatusBarWidget.IconPresentation {
       def getIcon: Icon = if(running) IconRunning else IconStopped
@@ -118,7 +118,7 @@ class JcCompileServerManager(project: Project) extends ProjectComponent {
       def getTooltipText: String = title + launcher.port.map(_.formatted(" (TCP %d)")).getOrElse("")
 
       object ClickConsumer extends Consumer[MouseEvent] {
-        def consume(t: MouseEvent) {
+        override def consume(t: MouseEvent) {
           toggleList(t)
         }
       }
@@ -149,7 +149,7 @@ class JcCompileServerManager(project: Project) extends ProjectComponent {
       e.getPresentation.setEnabled(!launcher.running)
     }
 
-    def actionPerformed(e: AnActionEvent) {
+    override def actionPerformed(e: AnActionEvent) {
       launcher.tryToStart(project)
     }
   }
