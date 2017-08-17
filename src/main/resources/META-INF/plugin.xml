@@ -12,7 +12,7 @@
   <id>org.argus.cit.intellij</id>
   <name>Argus-CIT</name>
   <description>Argus CIT plugin provides Jawa language support, and integrates Argus products (eg., Argus-SAF, jawa2java, etc) for Android APK analysis.</description>
-  <version>1.1.0</version>
+  <version>1.2.0</version>
   <vendor url="http://fgwei.arguslab.org/">Argus Laboratory: Fengguo (Hugo) Wei</vendor>
 
   <depends>org.jetbrains.android</depends>
